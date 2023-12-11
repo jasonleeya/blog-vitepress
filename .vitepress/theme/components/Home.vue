@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {ref, onMounted, onUnmounted, computed} from 'vue'
+import {ref, onMounted, onUnmounted} from 'vue'
 import {useData} from "vitepress";
-import {ArrowLeftBold, ArrowRightBold, Location, ArrowDownBold} from "@element-plus/icons-vue";
+import {ArrowLeftBold, ArrowRightBold, Location} from "@element-plus/icons-vue";
 import PostList from "./PostList.vue";
 
 interface BingImg {
