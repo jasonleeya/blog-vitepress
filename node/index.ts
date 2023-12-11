@@ -10,7 +10,10 @@ function readAllPosts(parentPath = './posts') {
         readAllPosts(path)
       } else {
         const content = fs.readFileSync(path, 'utf-8');
-        console.log(grayMatter(content).data)
+        posts.push({
+          path,
+          ...grayMatter(content).data
+        })
       }
     })
   }catch(err) {
@@ -18,3 +21,5 @@ function readAllPosts(parentPath = './posts') {
   }
 }
 readAllPosts()
+
+fs.writeFileSync('./.vitepress/posts.json', JSON.stringify(posts))

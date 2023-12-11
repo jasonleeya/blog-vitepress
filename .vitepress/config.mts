@@ -15,7 +15,7 @@ export default defineConfig({
     nav: [
       {text: '首页', link: '/'},
       {text: '关于我', link: '/intro'},
-      {text: '测试', link: '/posts/category2/test'},
+      {text: '测试', link: '/posts/category1/测试文章1'},
     ],
     logo: "/logo.svg",
     sidebar: [
