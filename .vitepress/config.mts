@@ -1,10 +1,9 @@
-import {defineConfig, useRoute} from 'vitepress'
+import {defineConfig} from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "我的技术分享",
   description: "欢迎来到我的技术分享小站",
-  icon: './logo.svg',
   // 官方bug刷新就404了
   // rewrites: {
   //   'posts/:category/:post': '/:category/:post',
@@ -12,12 +11,13 @@ export default defineConfig({
   lastUpdated:true,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
+    logo: './logo.svg',
+    author: 'JasonLee',
     nav: [
       {text: '首页', link: '/'},
       {text: '关于我', link: '/intro'},
       {text: '测试', link: '/posts/category1/测试文章1'},
     ],
-    logo: "/logo.svg",
     sidebar: [
       {
         text: 'Examples',
