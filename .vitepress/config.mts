@@ -27,5 +27,12 @@ export default defineConfig({
         ]
       }
     ],
+    footer:{
+      message: '<a href="https://beian.miit.gov.cn" target=”_blank”>蜀ICP备19027681号</a>',
+      copyright: "Copyright © 2019-present JasonLee"
+    },
+    search: {
+      provider: 'local'
+    }
   }
 })
