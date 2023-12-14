@@ -1,4 +1,5 @@
-import {formatDate} from "../.vitepress/utils";
+import axios from "axios";
+axios.defaults.baseURL = 'https://tcb.lsj97.com/api/blog'
 
 const fs = require('fs');
 const grayMatter = require('gray-matter');
@@ -18,13 +19,15 @@ function readAllPosts(parentPath = './posts') {
         const fileContent = result.content
 
         posts.push({
-          path,
+          path:path.replace(/\.md$/i, '').replace(/^\./,''),
           ...fileData,
           title: fileData.title ? fileData.title : getPostTitle(fileContent) || '',
-          date: formatDate(fileData.date ? fileData.date : getFileLastUpdateTimeFromGit(path)),
+          updateTime: fileData.updateTime ? fileData.updateTime : getFileLastUpdateTimeFromGit(path),
           cover: fileData.cover ? fileData.cover : getPostFirstImgAsCover(fileContent) || '',
-          sticky: fileData.sticky || false,
+          sticky: fileData.sticky || 0,
           author: fileData.author || '',
+          description: fileData.description || getPostDescription(fileContent) || '',
+          createTime:  fileData.updateTime ? fileData.updateTime : getFileCreateTime(path)
         })
       }
     })
@@ -35,6 +38,9 @@ function readAllPosts(parentPath = './posts') {
 }
 
 readAllPosts()
+axios.post('/updatePosts', {postList:posts}).then(res=>{
+  console.log('文章列表更新数据库成功',res.data)
+})
 
 function getFileLastUpdateTimeFromGit(url: string) {
   return childProcess.spawnSync("git", ["log", "-1", '--pretty="%ci"', url]).stdout?.toString().replace(/["']/g, "").trim();
@@ -48,4 +54,10 @@ function getPostFirstImgAsCover(content: string) {
   return content.match(/!\[.*]\((.*)\)/)?.[1]
 }
 
+function getPostDescription(content: string) {
+  return content.match(/(?:\n*# .*\n+)?(?:#+ .*\n+)?\n*(.*)/)?.[1] || ''
+}
 
+function getFileCreateTime(filePath: string) {
+  return fs.statSync(filePath).ctime
+}

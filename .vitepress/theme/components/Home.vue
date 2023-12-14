@@ -3,6 +3,9 @@ import {ref, onMounted, onUnmounted} from 'vue'
 import {useData} from "vitepress";
 import {ArrowLeftBold, ArrowRightBold, Location} from "@element-plus/icons-vue";
 import PostList from "./PostList.vue";
+import BlogInfo from "./BlogInfo.vue";
+import {isMobile} from "../../utils";
+import PostsNav from "./PostsNav.vue";
 
 interface BingImg {
   url: string
@@ -31,26 +34,26 @@ const changeImg = (direction: 1 | -1) => {
   currentImgIndex.value = (currentImgIndex.value + direction + bingImgList.value.length) % bingImgList.value.length
 }
 
-const sentence = ref("")
+const sentenceList = ref([])
 const author = ref("")
 
 const getSentence = () => fetch("https://v1.hitokoto.cn?c=d&c=h&c=i&c=k&c=j")
     .then((res) => res.json())
     .then(({from, hitokoto}) => {
-      sentence.value = "";
+      sentenceList.value.length = 0
       author.value = from;
       let index = 0
       const renderText = (text: string) => {
         if (index < text.length) {
           setTimeout(() => {
-            sentence.value += text[index]
+            sentenceList.value.push(text[index])
             index++
             renderText(text)
-          }, 150);
+          }, 200);
         } else {
           setTimeout(() => {
             getSentence()
-          }, 10000)
+          }, 5000)
         }
       }
       renderText(hitokoto)
@@ -66,7 +69,7 @@ onUnmounted(() => {
   document.querySelector('.Layout')?.classList.remove('is-home')
 })
 
-const isInfoShow = ref(true)
+const isInfoShow = ref(!isMobile())
 const toggleInfoShow = () => {
   isInfoShow.value = !isInfoShow.value
 }
@@ -81,16 +84,14 @@ const scrollToContent = () => {
 
 <template>
   <div class="bing-bg" :style="{backgroundImage:`url(${bingImgList[currentImgIndex]?.url})`}">
-    <div class="hero">
-      <img src="/logo.png" alt="">
-      <div class="sentence">
-        <div class="sentence-text">{{ sentence }}<span class="cursor">|</span></div>
-        <div class="sentence-author">——「{{ author }}」</div>
-      </div>
+    <img class="logo" src="/logo.png" alt="">
+    <div class="sentence">
+      <div class="sentence-text"><span class="character" v-for="(item,index) in sentenceList" :key="index">{{item}}</span><span class="cursor">|</span></div>
+      <div class="sentence-author">——「{{ author }}」</div>
     </div>
     <div class="img-info">
       <div class="switch" :class="{close:!isInfoShow}" @click="toggleInfoShow"></div>
-      <template v-if="isInfoShow">
+      <template v-if="bingImgList[currentImgIndex]?.locales.zh&&isInfoShow">
         <div class="title">{{ bingImgList[currentImgIndex]?.locales.zh?.headline }}</div>
         <div class="description">{{ bingImgList[currentImgIndex]?.locales.zh?.description }}</div>
         <div class="copyright">{{ bingImgList[currentImgIndex]?.locales.zh?.copyright }}</div>
@@ -112,9 +113,9 @@ const scrollToContent = () => {
     </div>
     <div class="scroll-to-content" @click="scrollToContent">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50px" height="50px">
-        <polyline points="10,10 50,40 90,10" stroke="rgba(2255,255,255,0.5)" fill="none" stroke-width="8px"
+        <polyline points="10,10 50,40 90,10" stroke="rgba(2255,255,255,0.7)" fill="none" stroke-width="8px"
                   stroke-linecap="round" stroke-linejoin="round"></polyline>
-        <polyline points="10,40 50,70 90,40" stroke="rgba(2255,255,255,0.8)" fill="none" stroke-width="8px" stroke-linecap="round"
+        <polyline points="10,40 50,70 90,40" stroke="rgba(2255,255,255,0.9)" fill="none" stroke-width="8px" stroke-linecap="round"
                   stroke-linejoin="round"></polyline>
       </svg>
     </div>
@@ -124,11 +125,14 @@ const scrollToContent = () => {
     <div class="post-list">
       <post-list></post-list>
     </div>
-    <div class="aside"></div>
+    <div class="aside">
+      <blog-info></blog-info>
+      <posts-nav style="margin-top: 20px"></posts-nav>
+    </div>
   </div>
 </template>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .bing-bg {
   height: 100vh;
   width: 100%;
@@ -137,6 +141,7 @@ const scrollToContent = () => {
   background-repeat: no-repeat;
   position: relative;
   background-color: #eee;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
 
   .img-info {
     position: absolute;
@@ -245,40 +250,58 @@ const scrollToContent = () => {
         cursor: pointer;
       }
     }
-
-
   }
 
-  .hero {
+  .logo {
+    width: 200px;
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    left: 50%;
+    top: 20%;
+    transform: translateX(-50%);
+  }
+
+  .sentence {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%);
     color: #fff;
 
-    .logo {
-      width: 200px;
+    .cursor {
+      font-size: 1em;
+      margin-left: 0.2em;
+      animation: blink 1s infinite;
+      position: relative;
+      bottom: 2px;
+      font-weight: lighter;
     }
 
-    .sentence {
-      position: relative;
-
-      .cursor {
-        font-size: 0.8em;
-        margin-left: 0.2em;
-        animation: blink 1s infinite;
+    @keyframes blink {
+      0% {
+        opacity: 1;
       }
+      50% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
 
-      @keyframes blink {
+    &-text {
+      font-size: 28px;
+      font-weight: bold;
+      position: relative;
+      word-break: break-all;
+      line-height: 1.2;
+      margin-top: 50px;
+
+      .character{
+        animation: character-appear 0.5s;
+        background-color: rgba(0,0,0,0.1);
+      }
+      @keyframes character-appear {
         0% {
-          opacity: 1;
-        }
-        50% {
           opacity: 0;
         }
         100% {
@@ -286,52 +309,38 @@ const scrollToContent = () => {
         }
       }
 
-      &-text {
-        font-size: 28px;
-        font-weight: bold;
-        position: relative;
-        max-width: 80vw;
-        word-break: break-all;
-        line-height: 1.2;
-        margin-top: 50px;
-        backdrop-filter: blur(1px);
-        -webkit-backdrop-filter: blur(1px);
-
-        &:before {
-          content: "『";
-          position: absolute;
-          top: -20px;
-          left: -30px;
-          font-size: 20px;
-        }
-
-        &:after {
-          content: "』";
-          position: absolute;
-          bottom: -20px;
-          right: -30px;
-          font-size: 20px;
-        }
+      &:before {
+        content: "『";
+        position: absolute;
+        top: -20px;
+        left: -30px;
+        font-size: 20px;
       }
 
-      &-author {
-        font-weight: 400;
-        font-style: italic;
-        font-size: 16px;
-        text-align: right;
-        margin-top: 2em;
+      &:after {
+        content: "』";
         position: absolute;
-        right: 0;
-        white-space: nowrap;
-        backdrop-filter: blur(1px);
-        -webkit-backdrop-filter: blur(1px);
+        bottom: -20px;
+        right: -30px;
+        font-size: 20px;
       }
     }
-  }
 
+    &-author {
+      font-weight: 400;
+      font-style: italic;
+      font-size: 16px;
+      text-align: right;
+      margin-top: 2em;
+      position: absolute;
+      right: 0;
+      white-space: nowrap;
+      background-color: rgba(0,0,0,0.1);
+    }
+  }
   .scroll-to-content {
     position: absolute;
-    bottom: 100px;
+    bottom: 50px;
     left: 50%;
     transform: translateX(-50%);
     cursor: pointer;
@@ -361,18 +370,20 @@ const scrollToContent = () => {
   }
 }
 .content {
-  width: 1200px;
+  width: 1100px;
   margin: 0 auto;
   display: flex;
-  gap: 15px;
-  padding-top: 15px;
+  gap: 20px;
+  padding-top: 20px;
+  align-items: flex-start;
   .post-list{
     flex: 1;
   }
   .aside {
-    width: 240px;
+    width: 300px;
     flex-shrink: 0;
-    background-color: pink;
+    position: sticky;
+    top: 83px;
   }
 
 }
@@ -382,6 +393,9 @@ const scrollToContent = () => {
   }
   .aside{
     display: none;
+  }
+  .sentence{
+    width: 80%;
   }
 }
 </style>

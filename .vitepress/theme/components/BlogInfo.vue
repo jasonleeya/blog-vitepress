@@ -1,0 +1,113 @@
+<script setup lang="ts">
+import {useData, withBase} from "vitepress";
+import {Link,DocumentCopy} from "@element-plus/icons-vue";
+import {ElMessage} from "element-plus";
+const {avatar, author, introduce, medias}: {
+  avatar: string,
+  author: string,
+  introduce: string,
+  medias: {
+    icon: string
+    link: string
+    account: string
+    qrcodeImg?: string
+  }[]
+} = useData().theme.value
+
+const copyText = (text: string) => {
+  if (!navigator.clipboard) {
+    ElMessage.error({
+      message: '复制失败, 请手动复制',
+    })
+  }
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      ElMessage.success({
+        message: '复制成功',
+      })
+    })
+}
+</script>
+
+<template>
+  <div class="blog-info card">
+    <img class="avatar" :src="avatar" alt="">
+    <div class="name">{{ author }}</div>
+    <div class="intro">{{ introduce }}</div>
+
+    <div class="medias">
+      <div class="item" v-for="item in medias">
+        <el-popover
+            placement="bottom"
+            :width="200"
+            trigger="hover"
+        >
+          <div style="text-align: center">
+            <img :src="item.qrcodeImg" alt="" v-if="item.account === 'wx'">
+            <el-link  v-else-if="item.icon === 'mail'" href="javascript:" @click="copyText(item.account)">{{item.account}}&nbsp<el-icon><DocumentCopy /></el-icon></el-link>
+            <el-link v-else type="primary" :href="item.link" target="_blank"><el-icon><Link /></el-icon>{{ item.account }}</el-link>
+          </div>
+          <template #reference>
+            <img class="icon" :src="withBase(`/images/medias/${item.icon}.svg`)" alt="">
+          </template>
+        </el-popover>
+
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped lang="scss">
+.blog-info {
+  width: 300px;
+  color: #2c3e50;
+  text-align: center;
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 20px auto 0;
+  }
+
+  .name {
+    margin: 16px 0;
+    font-size: 22px;
+    font-family: Georgia Pro, Crimson, Georgia, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", STHeiti, "Microsoft YaHei", SimSun, sans-serif;
+  }
+
+  .intro {
+    font-size: 14px;
+    margin: 16px 0;
+  }
+
+  .statistics {
+    display: flex;
+    justify-content: space-around;
+
+    .label {
+      font-size: 12px;
+      color: rgb(134, 144, 156);
+    }
+
+    .value {
+      font-size: 20px;
+      color: rgb(60, 60, 67);
+      font-weight: bold;
+    }
+  }
+
+  .medias {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 15px;
+    margin-bottom: 18px;
+
+    .icon {
+      width: 26px;
+      height: 26px;
+    }
+  }
+}
+</style>
