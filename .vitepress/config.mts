@@ -21,11 +21,31 @@ export default defineConfig({
       {text: '测试', link: '/posts/category1/测试文章1'},
     ],
     medias: [
-      {icon: 'github', account: 'JasonLeeYa', link: 'https://github.com/jasonleeya'},
-      {icon: 'wechat', account: 'wx', qrcodeImg: 'https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/blog/wechat_qrcode.jpg',},
-      {icon: 'mail', account: '1615685977@qq.com', link: 'javascript:;'},
-      {icon: 'zhihu', account: 'JasonLeeYa', link: 'https://www.zhihu.com/people/jasonleeya'},
-      {icon: 'steam', account: 'JasonLeeYa', link: 'https://steamcommunity.com/profiles/76561198961789123/'},
+      {icon: '/images/medias/github.svg', account: 'JasonLeeYa', link: 'https://github.com/jasonleeya'},
+      {icon: '/images/medias/wechat.svg', account: 'wx', qrcodeImg: 'https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/blog/wechat_qrcode.jpg',},
+      {icon: '/images/medias/mail.svg', account: '1615685977@qq.com', link: 'javascript:;'},
+      {icon: '/images/medias/zhihu.svg', account: 'JasonLeeYa', link: 'https://www.zhihu.com/people/jasonleeya'},
+      {icon: '/images/medias/steam.svg', account: 'JasonLeeYa', link: 'https://steamcommunity.com/profiles/76561198961789123/'},
+    ],
+    categoryInfo: [
+      {
+        folder: 'category1',
+        name: '知识点',
+        icon: '/images/categories/knowledge.svg',
+        description: ''
+      },
+      {
+        folder: 'category2',
+        name: '笔记',
+        icon: '/images/categories/note.svg',
+        description: ''
+      },
+      {
+        folder: 'category3',
+        name: '生活',
+        icon: '/images/categories/lift.svg',
+        description: ''
+      }
     ],
     outline: {
       label: '当前页面',

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {usePosts} from "../../hooks/usePosts.ts";
 import {Document, Menu, PriceTag, Clock} from "@element-plus/icons-vue";
-import {ref,shallowRef} from "vue";
-import axios from "axios";
+import {ref, shallowRef} from "vue";
 import {formatDate} from "../../utils";
 import {withBase} from "vitepress";
+import Tag from "./Tag.vue";
 
 enum Type {
   all = 'all',
@@ -13,19 +13,19 @@ enum Type {
   time = 'time'
 }
 
-const {total, tagsCount, categoriesCount, hotList} = usePosts()
+const {total, tagsCount, categoryStatistics, getPostsByCategory, hotList, tags, getPostByTag} = usePosts()
 const typeList = ref([
   {
     type: Type.all,
     name: '文章',
-    icon:shallowRef(Document) ,
+    icon: shallowRef(Document),
     count: total
   },
   {
     type: Type.category,
     name: '分类',
     icon: shallowRef(Menu),
-    count: categoriesCount
+    count: categoryStatistics.length
   },
   {
     type: Type.tag,
@@ -42,6 +42,26 @@ const typeList = ref([
 ])
 const currentType = ref(typeList.value[0])
 
+const currentCategory = ref<Category | undefined>()
+const changeCategory = (item: Category) => {
+  if (currentCategory.value?.name === item.name) {
+    currentCategory.value = undefined
+  } else {
+    currentCategory.value = item
+  }
+
+  getPostsByCategory(currentCategory.value?.name)
+}
+
+const currentTag = ref<string | undefined>()
+const changeTag = (tag: string) => {
+  if (currentTag.value === tag) {
+    currentTag.value = undefined
+  } else {
+    currentTag.value = tag
+  }
+  getPostByTag(currentTag.value)
+}
 </script>
 
 <template>
@@ -77,6 +97,20 @@ const currentType = ref(typeList.value[0])
             <div class="hot-post-time">{{ formatDate(item.updateTime, 'yyyy-MM-dd') }}</div>
           </div>
         </div>
+      </div>
+      <div v-if="currentType.type === Type.category" class="categories">
+        <div class="category" v-for="item in categoryStatistics"
+             :key="item.name" @click="changeCategory(item)" :class="{current: currentCategory?.name === item.name}">
+          <img class="icon" :src="item.icon" alt="">
+          <div class="category-label">{{ item.name }}</div>
+          <div class="category-value">{{ item.count }}</div>
+        </div>
+      </div>
+      <div v-if="currentType.type === Type.tag" class="tags">
+        <tag :text="item" v-for="item in tags" :key="item" @click="changeTag(item)"
+             :background-color="currentTag === item ? '#eaf2ff' : undefined"
+             :color="currentTag === item ? '#1e80ff' : undefined">{{ item }}
+        </tag>
       </div>
     </div>
   </div>
@@ -126,16 +160,16 @@ const currentType = ref(typeList.value[0])
   }
 
   .content {
-    padding: 10px;
-
     .hot-posts {
+      padding: 10px;
+
       &-title {
         font-size: 12px;
         display: flex;
         margin-bottom: 5px;
         color: var(--el-text-color-primary);
 
-        .icon{
+        .icon {
           width: 14px;
           margin-right: 5px;
         }
@@ -172,7 +206,8 @@ const currentType = ref(typeList.value[0])
             color: var(--el-text-color-secondary);
             font-style: italic;
           }
-          &-text{
+
+          &-text {
             max-width: 200px;
             white-space: nowrap;
             overflow: hidden;
@@ -186,6 +221,49 @@ const currentType = ref(typeList.value[0])
           padding-left: 25px;
         }
       }
+    }
+
+    .categories {
+      .category {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 45px;
+        border-radius: 4px;
+        padding: 0 10px;
+        color: var(--vp-c-text-1);
+
+        &-label {
+          font-size: 16px;
+          margin-right: auto;
+        }
+
+        &-value {
+          font-size: 16px;
+        }
+
+        .icon {
+          width: 20px;
+          margin-right: 10px;
+        }
+
+        &.current {
+          color: #1e80ff;
+          background-color: #eaf2ff;
+          overflow: hidden;
+
+          .icon {
+            transform: translateX(-100px);
+            filter: drop-shadow(100px 0px #1e80ff);
+          }
+        }
+      }
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
   }
 }

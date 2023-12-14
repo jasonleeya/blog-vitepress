@@ -48,7 +48,7 @@ const copyText = (text: string) => {
             <el-link v-else type="primary" :href="item.link" target="_blank"><el-icon><Link /></el-icon>{{ item.account }}</el-link>
           </div>
           <template #reference>
-            <img class="icon" :src="withBase(`/images/medias/${item.icon}.svg`)" alt="">
+            <img class="icon" :src="withBase(item.icon)" alt="">
           </template>
         </el-popover>
 

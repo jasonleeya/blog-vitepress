@@ -27,7 +27,7 @@ function readAllPosts(parentPath = './posts') {
           sticky: fileData.sticky || 0,
           author: fileData.author || '',
           description: fileData.description || getPostDescription(fileContent) || '',
-          createTime:  fileData.updateTime ? fileData.updateTime : getFileCreateTime(path)
+          createTime:  fileData.updateTime ? fileData.updateTime : getFileCreateTime(path),
         })
       }
     })

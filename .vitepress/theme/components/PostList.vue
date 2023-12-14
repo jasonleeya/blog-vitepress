@@ -2,7 +2,8 @@
 import {usePosts} from "../../hooks/usePosts.ts";
 import {useData} from "vitepress";
 import {formatDate} from "../../utils";
-import {ref, computed} from "vue";
+import {ref, watch, computed} from "vue";
+import Tag from "./Tag.vue";
 
 const {postList} = usePosts()
 const globalAuthor = useData().theme.value.author
@@ -17,6 +18,8 @@ if (currentPageFromQuery) {
   currentPage.value = parseInt(currentPageFromQuery[1])
 }
 const _postList = computed(() => postList.value.slice((currentPage.value - 1) * pageSize, currentPage.value * pageSize))
+watch(postList.value, ()=>{
+},{deep:true,immediate:true})
 </script>
 
 <template>
@@ -31,7 +34,7 @@ const _postList = computed(() => postList.value.slice((currentPage.value - 1) * 
             <div class="time">{{ formatDate(item.updateTime, 'yyyy-MM-dd') }}</div>
           </div>
           <div class="tags">
-            <div class="tag" v-for="tag in item.tags">{{ tag }}</div>
+            <tag v-for="(tag,index) in item.tags" :key="index" :text="tag"/>
           </div>
         </div>
       </div>
@@ -56,6 +59,7 @@ const _postList = computed(() => postList.value.slice((currentPage.value - 1) * 
   display: flex;
   flex-direction: column;
   gap: 20px;
+  min-height: calc(100vh - 320px);
 }
 
 .post {
@@ -74,7 +78,7 @@ const _postList = computed(() => postList.value.slice((currentPage.value - 1) * 
     }
 
     .description {
-      color: #535861;
+      color: var(--el-text-color-secondary);
       font-size: 15px;
       margin-bottom: 5px;
       overflow: hidden;
@@ -120,27 +124,6 @@ const _postList = computed(() => postList.value.slice((currentPage.value - 1) * 
         }
       }
     }
-
-    .tags {
-      display: flex;
-      overflow-x: auto;
-
-      .tag {
-        background-color: #f2f3f5;
-        padding: 0 6px;
-        border-radius: 2px;
-        max-width: 76px;
-        box-sizing: border-box;
-        margin-left: 6px;
-        color: #8a919f;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        height: 20px;
-        line-height: 20px;
-        font-size: 12px;
-      }
-    }
   }
 }
 
@@ -157,6 +140,9 @@ const _postList = computed(() => postList.value.slice((currentPage.value - 1) * 
   .footer .author{
     display: none;
   }
+  .post-list{
+    gap: 15px;
+  }
   .post {
     box-shadow: none;
     padding: 0 0 15px;
@@ -164,7 +150,7 @@ const _postList = computed(() => postList.value.slice((currentPage.value - 1) * 
     border-bottom: 1px solid #eee;
     .cover{
       width: 100px;
-      height: 80px;
+      height: 85px;
     }
     .description{
       height: 24px!important;
