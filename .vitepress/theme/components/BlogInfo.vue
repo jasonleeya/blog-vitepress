@@ -60,7 +60,7 @@ const copyText = (text: string) => {
 
 <style scoped lang="scss">
 .blog-info {
-  width: 240px;
+  width: var(--aside-width);
   color: #2c3e50;
   text-align: center;
 
@@ -68,7 +68,7 @@ const copyText = (text: string) => {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    margin: 20px auto 0;
+    margin: 10px auto 0;
   }
 
   .name {
@@ -101,9 +101,8 @@ const copyText = (text: string) => {
   .medias {
     display: flex;
     justify-content: center;
-    margin-top: 10px;
     gap: 15px;
-    margin-bottom: 18px;
+    margin: 10px 0;
 
     .icon {
       width: 26px;

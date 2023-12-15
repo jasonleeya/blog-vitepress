@@ -5,6 +5,7 @@ import {ref, shallowRef} from "vue";
 import {formatDate} from "../../utils";
 import {withBase} from "vitepress";
 import Tag from "./Tag.vue";
+import TimeLine from "./TimeLine.vue";
 
 enum Types {
   all = 'all',
@@ -15,34 +16,48 @@ enum Types {
 
 type Type = {
   type: Types,
-  name: string,
-  icon: any,
+  name: string
+  icon: any
+  measureWord: string
   count: number
 }
 
-const {postsTotal, tags,getAllPosts, getTagColorByName, categories, getPostsByCategory, getHotPostList, getPostByTag} = usePosts()
+const {
+  postsTotal,
+  tags,
+  getAllPosts,
+  getTagColorByName,
+  categories,
+  groupPostListByCategory,
+  getHotPostList,
+  groupPostListByTag
+} = usePosts()
 const typeList = ref<Type[]>([
   {
     type: Types.all,
     name: '文章',
+    measureWord: '篇',
     icon: shallowRef(Document),
     count: postsTotal
   },
   {
     type: Types.category,
     name: '分类',
+    measureWord: '个',
     icon: shallowRef(Menu),
     count: categories.length
   },
   {
     type: Types.tag,
     name: '标签',
+    measureWord: '个',
     icon: shallowRef(PriceTag),
     count: tags.length
   },
   {
     type: Types.time,
     name: '时间轴',
+    measureWord: '',
     icon: shallowRef(Clock),
     count: 0
   }
@@ -56,8 +71,8 @@ const currentTypeChange = (type: Type) => {
 }
 
 const hotList = ref<PostMeta[]>([])
-getHotPostList().then(res=>{
-  hotList.value = res||[]
+getHotPostList().then(res => {
+  hotList.value = res || []
 })
 
 const currentCategory = ref<Category | undefined>()
@@ -68,7 +83,7 @@ const changeCategory = (item: Category) => {
     currentCategory.value = item
   }
 
-  getPostsByCategory(currentCategory.value?.name)
+  groupPostListByCategory(currentCategory.value?.name)
 }
 
 const currentTag = ref<string | undefined>()
@@ -78,7 +93,7 @@ const changeTag = (tag: string) => {
   } else {
     currentTag.value = tag
   }
-  getPostByTag(currentTag.value)
+  groupPostListByTag(currentTag.value)
 }
 const mouseOverItem = ref('')
 const mouseOver = (item: string) => {
@@ -101,14 +116,14 @@ const mouseOver = (item: string) => {
         </div>
       </el-tooltip>
     </div>
-    <div class="title">
+    <div class="posts-nav-title">
       <el-icon :class="currentType.icon.__name" class="icon">
         <component :is="currentType.icon"/>
       </el-icon>
-      <span v-if="currentType.count" class="title-text">{{ currentType.count }}</span>{{ currentType.name }}
+      <span v-if="currentType.count" class="title-text">{{ currentType.count }}</span>{{currentType.measureWord}}{{ currentType.name }}
     </div>
-    <div class="content">
-      <div v-if="currentType.type === Types.all" class="hot-posts">
+    <div class="posts-nav-content">
+      <div v-show="currentType.type === Types.all" class="hot-posts">
         <div class="hot-posts-title"><img :src="withBase('/images/hot.svg')" alt="" class="icon">热门文章</div>
         <div class="hot-post-wrapper">
           <div v-for="(item,index) in hotList" :key="index" class="hot-post">
@@ -120,7 +135,7 @@ const mouseOver = (item: string) => {
           </div>
         </div>
       </div>
-      <div v-if="currentType.type === Types.category" class="categories">
+      <div v-show="currentType.type === Types.category" class="categories">
         <div v-for="item in categories" :key="item.name"
              :class="{current: currentCategory?.name === item.name}" class="category" @click="changeCategory(item)">
           <img :src="item.icon" alt="" class="icon">
@@ -128,7 +143,7 @@ const mouseOver = (item: string) => {
           <div class="category-value">{{ item.count }}</div>
         </div>
       </div>
-      <div v-if="currentType.type === Types.tag" class="tags">
+      <div v-show="currentType.type === Types.tag" class="tags">
         <tag v-for="item in tags"
              :key="item.name"
              :background-color="getTagColorByName(item.name).backgroundColor"
@@ -142,13 +157,16 @@ const mouseOver = (item: string) => {
              @mouseover="mouseOver(item.name)">{{ item }}
         </tag>
       </div>
+      <div v-show="currentType.type === Types.time" class="time-line">
+        <time-line></time-line>
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .posts-nav {
-  width: 240px;
+  width: var(--aside-width);
   padding-top: 20px;
 
   .types {
@@ -178,7 +196,7 @@ const mouseOver = (item: string) => {
     }
   }
 
-  .title {
+  &-title {
     font-size: 17px;
     display: flex;
     align-items: center;
@@ -189,7 +207,10 @@ const mouseOver = (item: string) => {
     border-bottom: 1px solid #eee;
   }
 
-  .content {
+  &-content {
+    max-height: calc(100vh - 500px);
+    overflow-y: auto;
+
     .hot-posts {
       padding: 10px;
 
@@ -297,10 +318,14 @@ const mouseOver = (item: string) => {
     .tags {
       display: flex;
       flex-wrap: wrap;
+      gap: 5px;
 
       .tag {
         margin-bottom: 10px;
       }
+    }
+
+    .time-line {
     }
   }
 }

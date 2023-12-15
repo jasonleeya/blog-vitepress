@@ -12,6 +12,12 @@ body {
   --vp-c-brand-1: #1772f6;
   --vp-c-brand-2: #3785f5;
   --vp-c-brand-3: #5497f8;
+  --vp-c-brand-4: #6fa9fd;
+  --vp-c-brand-5: #88b8fd;
+  --vp-c-brand-6: #a6caff;
+  --vp-c-brand-7: #c1d8fc;
+  --vp-c-brand-8: #d6e4fa;
+  --vp-c-brand-9: #e7eefa;
   --vp-c-brand-soft: rgba(23, 114, 246, 0.16);
 
   --vp-c-tip-1: var(--vp-c-brand-1);
@@ -28,6 +34,8 @@ body {
   --vp-c-danger-2: var(--vp-c-red-2);
   --vp-c-danger-3: var(--vp-c-red-3);
   --vp-c-danger-soft: var(--vp-c-red-soft);
+
+  --aside-width: 260px;
 }
 
 /**
@@ -53,12 +61,12 @@ body {
 :root {
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: -webkit-linear-gradient(120deg,
-  #bd34fe 30%,
-  #41d1ff);
+      #bd34fe 30%,
+      #41d1ff);
 
   --vp-home-hero-image-background-image: linear-gradient(-45deg,
-  #bd34fe 50%,
-  #47caff 50%);
+      #bd34fe 50%,
+      #47caff 50%);
   --vp-home-hero-image-filter: blur(44px);
 }
 
@@ -101,8 +109,12 @@ body {
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #ccc;
+    background-color: var(--vp-c-brand-6);
     border-radius: 5px;
+
+    &:hover {
+      background-color: var(--vp-c-brand-3);
+    }
   }
 
   ::-webkit-scrollbar-track {

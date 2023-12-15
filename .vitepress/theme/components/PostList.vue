@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {usePosts} from "../../hooks/usePosts.ts";
-import {useData} from "vitepress";
+import {useData, withBase} from "vitepress";
 import {formatDate} from "../../utils";
 import {ref, watch, computed} from "vue";
 import Tag from "./Tag.vue";
@@ -31,7 +31,13 @@ const isMobile = useIsMobile()
   <div class="post-list">
     <a v-for="item in _postList" v-if="!isMobile" :href="item.path" class="card post">
       <div class="card-left">
-        <div class="title">{{ item.title }}</div>
+        <div class="title"><span v-if="item.sticky" class="top">
+          <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+    <path
+        d="M256 74.67a53.33 53.33 0 1 0 0 106.67h512a53.33 53.33 0 1 0 0-106.67H256zM549.72 260.945a53.33 53.33 0 0 0-75.43 0l-256 256a53.33 53.33 0 0 0 75.43 75.437l165.12-165.12V896a53.33 53.33 0 1 0 106.67 0V427.61l164.78 164.78a53.33 53.33 0 0 0 75.43-75.44l-256-256z"
+        fill="#ff7426"/></svg>
+          置顶</span>{{ item.title }}
+        </div>
         <div class="description">{{ item.description }}</div>
         <div class="footer">
           <div class="footer-left">
@@ -40,7 +46,8 @@ const isMobile = useIsMobile()
             <div class="category">{{ item.category }}</div>
           </div>
           <div class="tags">
-            <tag v-for="(tag,index) in item.tags" :key="index" :background-color="getTagColorByName(tag)?.backgroundColor"
+            <tag v-for="(tag,index) in item.tags" :key="index"
+                 :background-color="getTagColorByName(tag)?.backgroundColor"
                  :color="getTagColorByName(tag)?.color"
                  :text="tag"/>
           </div>
@@ -50,27 +57,15 @@ const isMobile = useIsMobile()
     </a>
 
     <a v-for="item in _postList" v-else :href="item.path" class="post-mobile">
-      <!--      <div class="card-left">
-              <div class="title">{{ item.title }}</div>
-              <div class="description">{{ item.description }}</div>
-              <div class="footer">
-                <div class="footer-left">
-                  <div class="author split">{{ item.author || globalAuthor }}</div>
-                  <div class="time split">{{ formatDate(item.updateTime, 'yyyy-MM-dd') }}</div>
-                  <div class="category">{{ item.category }}</div>
-                </div>
-                <div class="tags">
-                  <tag v-for="(tag,index) in item.tags" :key="index" :text="tag"
-                       :background-color="getTagColorByName(tag)?.backgroundColor"
-                       :color="getTagColorByName(tag)?.color"/>
-                </div>
-              </div>
-            </div>
-            <img class="cover" :src="item.cover" alt="" v-if="item.cover">-->
-
       <div class="content">
         <div class="content-left">
-          <div class="title">{{ item.title }}</div>
+          <div class="title"><span v-if="item.sticky" class="top">
+      <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+    <path
+        d="M256 74.67a53.33 53.33 0 1 0 0 106.67h512a53.33 53.33 0 1 0 0-106.67H256zM549.72 260.945a53.33 53.33 0 0 0-75.43 0l-256 256a53.33 53.33 0 0 0 75.43 75.437l165.12-165.12V896a53.33 53.33 0 1 0 106.67 0V427.61l164.78 164.78a53.33 53.33 0 0 0 75.43-75.44l-256-256z"
+        fill="#ff7426"/></svg>
+            置顶</span>{{ item.title }}
+          </div>
           <div class="description">{{ item.description }}</div>
         </div>
         <img v-if="item.cover" :src="item.cover" alt="" class="cover">
@@ -140,6 +135,7 @@ const isMobile = useIsMobile()
     width: 166px;
     height: 110px;
     object-fit: cover;
+    border-radius: 4px;
   }
 
   .footer {
@@ -168,6 +164,11 @@ const isMobile = useIsMobile()
           transform: translateY(-50%);
         }
       }
+    }
+
+    .tags {
+      flex: 1;
+      margin-left: 5px;
     }
   }
 }
@@ -208,6 +209,7 @@ const isMobile = useIsMobile()
     .cover {
       width: 100px;
       height: 75px;
+      border-radius: 4px;
     }
   }
 
@@ -218,10 +220,11 @@ const isMobile = useIsMobile()
     white-space: nowrap;
     margin-top: 10px;
 
-    .category,.time{
+    .category, .time {
       height: 20px;
       line-height: 20px;
     }
+
     .tags {
       margin-left: 15px;
       display: flex;
@@ -256,5 +259,15 @@ const isMobile = useIsMobile()
 
 .pagination {
   margin-top: 20px;
+}
+.top{
+  display: inline-flex;
+  font-size: 12px;
+  align-items: center;
+  background-color: #fff7e8;
+  color: #ff7426;
+  padding: 0 4px;
+  margin-right: 4px;
+  border-radius: 4px;
 }
 </style>

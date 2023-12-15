@@ -34,23 +34,19 @@ const _backgroundColor = computed(() => {
 </script>
 
 <template>
-  <div class="tag-wrapper">
-    <div :style="{backgroundColor:_backgroundColor, color:_color}" class="tag">
+    <span :style="{backgroundColor:_backgroundColor, color:_color}" class="tag">
       <svg height="20" viewBox="0 0 200 200" width="20" xmlns="http://www.w3.org/2000/svg">
         <path :fill="_backgroundColor"
               d="M200 0 L120 80 Q100 100 120 120 L200 200Z
     M150 100 A20 20 0 1 1 190 100A20 20 0 1 1 150 100z" fill-rule="nonzero"/>
       </svg>
-      <div class="text">{{ text }}</div>
-      <div v-if="num" :style="{backgroundColor:_color, color:_backgroundColor}" class="num">{{ num }}</div>
-    </div>
-  </div>
+      <span class="text">{{ text }}</span>
+      <span v-if="num" :style="{backgroundColor:_color, color:_backgroundColor}" class="num">{{ num }}</span>
+  </span>
 </template>
 
 <style lang="scss" scoped>
-.tag-wrapper {
-  display: inline-block;
-}
+
 
 .tag {
   padding: 0 4px;
@@ -60,7 +56,7 @@ const _backgroundColor = computed(() => {
   height: 20px;
   line-height: 20px;
   font-size: 12px;
-  display: flex;
+  display: inline-flex;
   position: relative;
   margin-left: 15px;
   cursor: pointer;

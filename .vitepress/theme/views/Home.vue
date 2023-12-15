@@ -380,7 +380,7 @@ const scrollToContent = () => {
     flex: 1;
   }
   .aside {
-    width: 240px;
+    width: var(--aside-width);
     flex-shrink: 0;
     position: sticky;
     top: 83px;

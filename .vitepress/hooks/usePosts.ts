@@ -13,9 +13,9 @@ export function usePosts() {
   const postsTotal: number = _postList.length
 
   const getAllPosts = () => {
-    postList.value =  JSON.parse(JSON.stringify(_postList))
+    postList.value = JSON.parse(JSON.stringify(_postList))
   }
-  const getPostByTag = (tag: string) => {
+  const groupPostListByTag = (tag: string) => {
     const list: PostMeta[] = JSON.parse(JSON.stringify(_postList))
     if (!tag) {
       postList.value = list
@@ -47,7 +47,7 @@ export function usePosts() {
     }
   })
 
-  const getPostsByCategory = (category: string) => {
+  const groupPostListByCategory = (category: string) => {
     const list: PostMeta[] = JSON.parse(JSON.stringify(_postList))
     if (!category) {
       postList.value = list
@@ -75,6 +75,11 @@ export function usePosts() {
   //   }
   // })
 
+  const getPostsByCreateTime = () => {
+    const list: PostMeta[] = JSON.parse(JSON.stringify(_postList))
+    list.sort((a, b) => (new Date(b.createTime).getTime() - new Date(a.createTime).getTime()))
+    return list
+  }
 
   const getHotPostList = async () => {
     return axios.post<ResponseData<PostMeta[]>>('/getHotPosts').then(res => {
@@ -83,6 +88,6 @@ export function usePosts() {
   }
 
   return {
-    postList,getAllPosts, postsTotal, tags, getPostByTag, categories, getPostsByCategory, getHotPostList, getTagColorByName
+    postList, getAllPosts, postsTotal, tags, groupPostListByTag, categories, groupPostListByCategory, getHotPostList, getTagColorByName, getPostsByCreateTime
   }
 }
