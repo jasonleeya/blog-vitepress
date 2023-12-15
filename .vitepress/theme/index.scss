@@ -9,10 +9,10 @@ body {
   --vp-c-default-3: var(--vp-c-gray-3);
   --vp-c-default-soft: var(--vp-c-gray-soft);
 
-  --vp-c-brand-1: var(--vp-c-indigo-1);
-  --vp-c-brand-2: var(--vp-c-indigo-2);
-  --vp-c-brand-3: var(--vp-c-indigo-3);
-  --vp-c-brand-soft: var(--vp-c-indigo-soft);
+  --vp-c-brand-1: #1772f6;
+  --vp-c-brand-2: #3785f5;
+  --vp-c-brand-3: #5497f8;
+  --vp-c-brand-soft: rgba(23, 114, 246, 0.16);
 
   --vp-c-tip-1: var(--vp-c-brand-1);
   --vp-c-tip-2: var(--vp-c-brand-2);
@@ -68,7 +68,7 @@ body {
   }
 }
 
-@media (min-width: 960px) {
+@media (min-width: 992px) {
   :root {
     --vp-home-hero-image-filter: blur(68px);
   }
@@ -131,7 +131,7 @@ body {
   padding-top: 0;
 }
 
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 992px) {
   .VPNav {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -164,7 +164,7 @@ body {
   }
 }
 
-@media screen and (min-width: 960px) {
+@media screen and (min-width: 992px) {
   .VPSidebar {
     background: transparent !important;
   }

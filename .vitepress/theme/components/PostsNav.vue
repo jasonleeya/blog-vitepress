@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {usePosts} from "../../hooks/usePosts.ts";
 import {Document, Menu, PriceTag, Clock} from "@element-plus/icons-vue";
 import {ref, shallowRef} from "vue";
@@ -6,41 +6,59 @@ import {formatDate} from "../../utils";
 import {withBase} from "vitepress";
 import Tag from "./Tag.vue";
 
-enum Type {
+enum Types {
   all = 'all',
   tag = 'tag',
   category = 'category',
   time = 'time'
 }
 
-const {total, tagsCount, categoryStatistics, getPostsByCategory, hotList, tags, getPostByTag} = usePosts()
-const typeList = ref([
+type Type = {
+  type: Types,
+  name: string,
+  icon: any,
+  count: number
+}
+
+const {postsTotal, tags,getAllPosts, getTagColorByName, categories, getPostsByCategory, getHotPostList, getPostByTag} = usePosts()
+const typeList = ref<Type[]>([
   {
-    type: Type.all,
+    type: Types.all,
     name: '文章',
     icon: shallowRef(Document),
-    count: total
+    count: postsTotal
   },
   {
-    type: Type.category,
+    type: Types.category,
     name: '分类',
     icon: shallowRef(Menu),
-    count: categoryStatistics.length
+    count: categories.length
   },
   {
-    type: Type.tag,
+    type: Types.tag,
     name: '标签',
     icon: shallowRef(PriceTag),
-    count: tagsCount
+    count: tags.length
   },
   {
-    type: Type.time,
+    type: Types.time,
     name: '时间轴',
     icon: shallowRef(Clock),
     count: 0
   }
 ])
 const currentType = ref(typeList.value[0])
+const currentTypeChange = (type: Type) => {
+  currentType.value = type
+  currentCategory.value = undefined
+  currentTag.value = undefined
+  getAllPosts()
+}
+
+const hotList = ref<PostMeta[]>([])
+getHotPostList().then(res=>{
+  hotList.value = res||[]
+})
 
 const currentCategory = ref<Category | undefined>()
 const changeCategory = (item: Category) => {
@@ -62,6 +80,10 @@ const changeTag = (tag: string) => {
   }
   getPostByTag(currentTag.value)
 }
+const mouseOverItem = ref('')
+const mouseOver = (item: string) => {
+  mouseOverItem.value = item
+}
 </script>
 
 <template>
@@ -69,56 +91,64 @@ const changeTag = (tag: string) => {
     <div class="types">
       <el-tooltip
           v-for="item in typeList"
-          effect="dark"
           :content="item.name"
+          effect="dark"
           placement="top">
-        <div class="type" @click="currentType = item" :class="{current: currentType.type === item.type}">
-          <el-icon class="icon" :class="item.icon.__name">
+        <div :class="{current: currentType.type === item.type}" class="type" @click="currentTypeChange(item)">
+          <el-icon :class="item.icon.__name" class="icon">
             <component :is="item.icon"/>
           </el-icon>
         </div>
       </el-tooltip>
     </div>
     <div class="title">
-      <el-icon class="icon" :class="currentType.icon.__name">
+      <el-icon :class="currentType.icon.__name" class="icon">
         <component :is="currentType.icon"/>
       </el-icon>
-      <span class="title-text" v-if="currentType.count">{{ currentType.count }}</span>{{ currentType.name }}
+      <span v-if="currentType.count" class="title-text">{{ currentType.count }}</span>{{ currentType.name }}
     </div>
     <div class="content">
-      <div v-if="currentType.type === Type.all" class="hot-posts">
-        <div class="hot-posts-title"><img class="icon" :src="withBase('/images/hot.svg')" alt="">热门文章</div>
+      <div v-if="currentType.type === Types.all" class="hot-posts">
+        <div class="hot-posts-title"><img :src="withBase('/images/hot.svg')" alt="" class="icon">热门文章</div>
         <div class="hot-post-wrapper">
-          <div class="hot-post" v-for="(item,index) in hotList" :key="index">
-            <el-link class="hot-post-title" :href="item.path">
+          <div v-for="(item,index) in hotList" :key="index" class="hot-post">
+            <el-link :href="item.path" class="hot-post-title">
               <span class="index">{{ index + 1 }}</span>
-              <div class="hot-post-title-text" :title="item.title">{{ item.title }}</div>
+              <div :title="item.title" class="hot-post-title-text">{{ item.title }}</div>
             </el-link>
             <div class="hot-post-time">{{ formatDate(item.updateTime, 'yyyy-MM-dd') }}</div>
           </div>
         </div>
       </div>
-      <div v-if="currentType.type === Type.category" class="categories">
-        <div class="category" v-for="item in categoryStatistics"
-             :key="item.name" @click="changeCategory(item)" :class="{current: currentCategory?.name === item.name}">
-          <img class="icon" :src="item.icon" alt="">
+      <div v-if="currentType.type === Types.category" class="categories">
+        <div v-for="item in categories" :key="item.name"
+             :class="{current: currentCategory?.name === item.name}" class="category" @click="changeCategory(item)">
+          <img :src="item.icon" alt="" class="icon">
           <div class="category-label">{{ item.name }}</div>
           <div class="category-value">{{ item.count }}</div>
         </div>
       </div>
-      <div v-if="currentType.type === Type.tag" class="tags">
-        <tag :text="item" v-for="item in tags" :key="item" @click="changeTag(item)"
-             :background-color="currentTag === item ? '#eaf2ff' : undefined"
-             :color="currentTag === item ? '#1e80ff' : undefined">{{ item }}
+      <div v-if="currentType.type === Types.tag" class="tags">
+        <tag v-for="item in tags"
+             :key="item.name"
+             :background-color="getTagColorByName(item.name).backgroundColor"
+             :color="getTagColorByName(item.name).color"
+             :is-active="mouseOverItem === item.name || currentTag === item.name"
+             :num="item.count"
+             :text="item.name"
+             class="tag"
+             @click="changeTag(item.name)"
+             @mouseleave="mouseOver('')"
+             @mouseover="mouseOver(item.name)">{{ item }}
         </tag>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .posts-nav {
-  width: 300px;
+  width: 240px;
   padding-top: 20px;
 
   .types {
@@ -208,7 +238,7 @@ const changeTag = (tag: string) => {
           }
 
           &-text {
-            max-width: 200px;
+            max-width: 170px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -232,6 +262,8 @@ const changeTag = (tag: string) => {
         border-radius: 4px;
         padding: 0 10px;
         color: var(--vp-c-text-1);
+        cursor: pointer;
+        margin-bottom: 5px;
 
         &-label {
           font-size: 16px;
@@ -239,7 +271,8 @@ const changeTag = (tag: string) => {
         }
 
         &-value {
-          font-size: 16px;
+          font-size: 18px;
+          font-style: italic;
         }
 
         .icon {
@@ -247,23 +280,27 @@ const changeTag = (tag: string) => {
           margin-right: 10px;
         }
 
-        &.current {
-          color: #1e80ff;
-          background-color: #eaf2ff;
+        &.current, &:hover {
+          color: var(--vp-c-brand);
+          background-color: var(--vp-c-brand-soft);
           overflow: hidden;
 
           .icon {
             transform: translateX(-100px);
-            filter: drop-shadow(100px 0px #1e80ff);
+            filter: drop-shadow(100px 0px var(--vp-c-brand));
           }
         }
+
       }
     }
 
     .tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+
+      .tag {
+        margin-bottom: 10px;
+      }
     }
   }
 }

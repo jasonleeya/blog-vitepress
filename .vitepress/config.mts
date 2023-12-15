@@ -21,11 +21,11 @@ export default defineConfig({
       {text: '测试', link: '/posts/category1/测试文章1'},
     ],
     medias: [
-      {icon: '/images/medias/github.svg', account: 'JasonLeeYa', link: 'https://github.com/jasonleeya'},
-      {icon: '/images/medias/wechat.svg', account: 'wx', qrcodeImg: 'https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/blog/wechat_qrcode.jpg',},
-      {icon: '/images/medias/mail.svg', account: '1615685977@qq.com', link: 'javascript:;'},
-      {icon: '/images/medias/zhihu.svg', account: 'JasonLeeYa', link: 'https://www.zhihu.com/people/jasonleeya'},
-      {icon: '/images/medias/steam.svg', account: 'JasonLeeYa', link: 'https://steamcommunity.com/profiles/76561198961789123/'},
+      {icon: '/images/medias/github.svg', type: 'github', link: 'https://github.com/jasonleeya'},
+      {icon: '/images/medias/wechat.svg', type: 'wx', qrcodeImg: 'https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/blog/wechat_qrcode.jpg',},
+      {icon: '/images/medias/mail.svg', type: 'email', link: 'jasonleeya@qq.com'},
+      {icon: '/images/medias/zhihu.svg', type: 'zhihu', link: 'https://www.zhihu.com/people/jasonleeya'},
+      {icon: '/images/medias/steam.svg', type: 'steam', link: 'https://steamcommunity.com/profiles/76561198961789123/'},
     ],
     categoryInfo: [
       {

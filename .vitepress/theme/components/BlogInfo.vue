@@ -9,7 +9,7 @@ const {avatar, author, introduce, medias}: {
   medias: {
     icon: string
     link: string
-    account: string
+    type: string
     qrcodeImg?: string
   }[]
 } = useData().theme.value
@@ -40,17 +40,18 @@ const copyText = (text: string) => {
         <el-popover
             placement="bottom"
             :width="200"
-            trigger="hover"
+            trigger="click"
+            v-if="item.type === 'wx'||item.type === 'email'"
         >
           <div style="text-align: center">
-            <img :src="item.qrcodeImg" alt="" v-if="item.account === 'wx'">
-            <el-link  v-else-if="item.icon === 'mail'" href="javascript:" @click="copyText(item.account)">{{item.account}}&nbsp<el-icon><DocumentCopy /></el-icon></el-link>
-            <el-link v-else type="primary" :href="item.link" target="_blank"><el-icon><Link /></el-icon>{{ item.account }}</el-link>
+            <img :src="item.qrcodeImg" alt="" v-if="item.type === 'wx'">
+            <el-link  v-else href="javascript:" @click="copyText(item.link)">{{item.link}}&nbsp<el-icon><DocumentCopy /></el-icon></el-link>
           </div>
           <template #reference>
             <img class="icon" :src="withBase(item.icon)" alt="">
           </template>
         </el-popover>
+        <el-link v-else type="primary" :href="item.link" target="_blank" :underline="false"><img class="icon" :src="withBase(item.icon)" alt=""></el-link>
 
       </div>
     </div>
@@ -59,7 +60,7 @@ const copyText = (text: string) => {
 
 <style scoped lang="scss">
 .blog-info {
-  width: 300px;
+  width: 240px;
   color: #2c3e50;
   text-align: center;
 

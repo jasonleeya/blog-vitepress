@@ -25,3 +25,9 @@ interface Category {
   folder: string,
   count: number
 }
+interface Tag {
+  name:string,
+  count?:number,
+  color:string
+  backgroundColor:string
+}

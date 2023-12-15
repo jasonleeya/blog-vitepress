@@ -2,9 +2,9 @@
 import {ref, onMounted, onUnmounted} from 'vue'
 import {useData} from "vitepress";
 import {ArrowLeftBold, ArrowRightBold, Location} from "@element-plus/icons-vue";
-import PostList from "./PostList.vue";
-import BlogInfo from "./BlogInfo.vue";
-import PostsNav from "./PostsNav.vue";
+import PostList from "../components/PostList.vue";
+import BlogInfo from "../components/BlogInfo.vue";
+import PostsNav from "../components/PostsNav.vue";
 import {useIsMobile} from "../../hooks/useIsMobile.ts";
 
 interface BingImg {
