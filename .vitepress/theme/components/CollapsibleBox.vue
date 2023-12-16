@@ -9,15 +9,18 @@ defineProps({
   duration: {
     type: Number as PropType<number>,
     default: 300
+  },
+  direction: {
+    type: String as PropType<'horizontal' | 'vertical' | 'both'>,
+    default: 'vertical'
   }
 })
 
 </script>
 
 <template>
-  <div class="collapsible-box" :class="{expand:open}" :style="{transition:`grid-template-rows ${duration}ms`}">
-    <div></div>
-    <div class="content">
+  <div class="collapsible-box" :class="{expand:open,[direction]:true}" :style="{'--duration':duration + 'ms'}">
+    <div class="collapsible-box-content">
       <slot></slot>
     </div>
   </div>
@@ -26,15 +29,34 @@ defineProps({
 <style scoped lang="scss">
 .collapsible-box {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 0fr 1fr;
-
-  &.expand {
-    grid-template-rows: 0fr 0fr;
+  --duration: 300ms;
+  transition: grid-template-columns var(--duration), grid-template-rows var(--duration);
+  &-content {
+    overflow: hidden;
   }
 
-  .content {
-    overflow: hidden;
+  &.vertical {
+    grid-template-rows: 0fr;
+
+    &.expand {
+      grid-template-rows: 1fr;
+    }
+  }
+
+  &.horizontal {
+    grid-template-columns: 0fr;
+
+    &.expand {
+      grid-template-columns: 1fr;
+    }
+  }
+  &.both {
+    grid-template-columns: 0fr;
+    grid-template-rows: 0fr;
+    &.expand {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+    }
   }
 }
 </style>

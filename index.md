@@ -22,7 +22,3 @@ layout: home
 #  - title: Feature C
 #    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
-<script setup>
-import Home from './.vitepress/theme/views/Home.vue'
-</script>
-<home/>

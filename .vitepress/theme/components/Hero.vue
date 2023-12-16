@@ -1,0 +1,301 @@
+<script setup lang="ts">
+import {ref, onMounted, onUnmounted} from "vue";
+import {useData} from "vitepress";
+import ImgInfo from "./ImgInfo.vue";
+
+const bingImgList = ref<BingImg[]>([])
+const currentImgIndex = ref(0)
+
+const getBingImg = () => {
+  return fetch("https://bing-wallpaper.vuejs.press/api/wallpaper").then((response) => response.json()).then(res => {
+    console.log('%c res ', 'color:white;background:red', res)
+    return bingImgList.value = res
+  })
+};
+const loadedImgSet = new Set<string>()
+
+getBingImg().then(() => {
+  setLoadedImg()
+})
+const setLoadedImg = () => {
+  if (loadedImgSet.size !== bingImgList.value.length) {
+    loadedImgSet.add(bingImgList.value[currentImgIndex.value].url)
+    loadedImgSet.add(bingImgList.value[(currentImgIndex.value + 1) % bingImgList.value.length].url)
+    loadedImgSet.add(bingImgList.value[(currentImgIndex.value - 1 + bingImgList.value.length) % bingImgList.value.length].url)
+  }
+}
+const changeImg = (direction: 1 | -1 | null, index?: number) => {
+  console.log('%c index ', 'color:white;background:red', index)
+  if (direction !== null) {
+    currentImgIndex.value = (currentImgIndex.value + direction + bingImgList.value.length) % bingImgList.value.length
+  } else {
+    currentImgIndex.value = index
+  }
+  setLoadedImg()
+}
+const sentenceList = ref([])
+const author = ref("")
+
+const getSentence = () => fetch("https://v1.hitokoto.cn?c=d&c=h&c=i&c=k&c=j")
+    .then((res) => res.json())
+    .then(({from, hitokoto}) => {
+      sentenceList.value.length = 0
+      author.value = from;
+      let index = 0
+      const renderText = (text: string) => {
+        if (index < text.length) {
+          setTimeout(() => {
+            sentenceList.value.push(text[index])
+            index++
+            renderText(text)
+          }, 200);
+        } else {
+          setTimeout(() => {
+            getSentence()
+          }, 5000)
+        }
+      }
+      renderText(hitokoto)
+    });
+getSentence()
+
+// 手机端首页导航栏position设置为fixed
+onMounted(() => {
+  const {frontmatter} = useData()
+  document.querySelector('.Layout')?.classList.add(frontmatter.value.layout === 'home' ? 'is-home' : '')
+})
+onUnmounted(() => {
+  document.querySelector('.Layout')?.classList.remove('is-home')
+})
+
+
+const scrollToContent = () => {
+  // document.documentElement.scrollTo({
+  //   top: window.innerHeight - 63,
+  //   behavior: 'smooth'
+  // })
+  document.querySelector('.page-scrollbar>.el-scrollbar__wrap').scrollTo({
+    top: window.innerHeight - 63,
+    behavior: 'smooth'
+  })
+}
+</script>
+
+<template>
+  <div class="hero">
+    <img class="img-bg" :class="{current:currentImgIndex === index}" :src="loadedImgSet.has(item.url)?item.url:''"
+         alt=""
+         v-for="(item,index) in bingImgList" :key="item.url">
+    <div class="indicators">
+      <div class="indicator" v-for="(item,index) in bingImgList" :key="item.url"
+           :class="{current:index === currentImgIndex}" @click="changeImg(null,index)"></div>
+    </div>
+    <div class="hero-content">
+      <img class="logo" src="/logo.png" alt="">
+      <div class="sentence">
+        <div class="sentence-text"><span class="character" v-for="(item,index) in sentenceList"
+                                         :key="index">{{ item }}</span><span class="cursor">|</span></div>
+        <div class="sentence-author">——「{{ author }}」</div>
+      </div>
+      <img-info :info="bingImgList[currentImgIndex]" :change-img="changeImg" class="img-info"></img-info>
+      <div class="scroll-to-content" @click="scrollToContent">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50px" height="50px">
+          <polyline points="10,10 50,40 90,10" stroke="rgba(2255,255,255,0.7)" fill="none" stroke-width="8px"
+                    stroke-linecap="round" stroke-linejoin="round"></polyline>
+          <polyline points="10,40 50,70 90,40" stroke="rgba(2255,255,255,0.9)" fill="none" stroke-width="8px"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></polyline>
+        </svg>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped lang="scss">
+.hero {
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  background-color: #eee;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
+
+  .img-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 1s;
+    opacity: 0;
+    background-color: var(--card-bg);
+
+    &.current {
+      opacity: 1;
+    }
+  }
+
+  .indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+
+    .indicator {
+      width: 40px;
+      height: 3px;
+      background-color: rgba(255, 255, 255, 0.4);
+      margin: 0 5px;
+      cursor: pointer;
+
+      &.current {
+        background-color: rgba(255, 255, 255, 0.8);
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.8);
+      }
+    }
+  }
+
+  &-content {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+
+    .img-info {
+      position: absolute;
+      right: 0;
+      top: 60px;
+    }
+
+    .logo {
+      width: 200px;
+      position: absolute;
+      left: 50%;
+      top: 20%;
+      transform: translateX(-50%);
+    }
+
+    .sentence {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+
+      .cursor {
+        font-size: 1em;
+        margin-left: 0.2em;
+        animation: blink 1s infinite;
+        position: relative;
+        bottom: 2px;
+        font-weight: lighter;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      &-text {
+        font-size: 28px;
+        font-weight: bold;
+        position: relative;
+        word-break: break-all;
+        line-height: 1.2;
+        margin-top: 50px;
+
+        .character {
+          animation: character-appear 0.5s;
+          background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes character-appear {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+
+        &:before {
+          content: "『";
+          position: absolute;
+          top: -20px;
+          left: -30px;
+          font-size: 20px;
+        }
+
+        &:after {
+          content: "』";
+          position: absolute;
+          bottom: -20px;
+          right: -30px;
+          font-size: 20px;
+        }
+      }
+
+      &-author {
+        font-weight: 400;
+        font-style: italic;
+        font-size: 16px;
+        text-align: right;
+        margin-top: 2em;
+        position: absolute;
+        right: 0;
+        white-space: nowrap;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    .scroll-to-content {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+      animation: floating 2s infinite ease-in-out;
+      width: 50px;
+      height: 50px;
+    }
+
+
+    @keyframes floating {
+      0% {
+        transform: translate(-50%, 0);
+      }
+      50% {
+        transform: translate(-50%, -10px);
+      }
+      100% {
+        transform: translate(-50%, 0);
+      }
+    }
+  }
+}
+@media screen and (max-width: 992px) {
+  .sentence{
+    width: 80%;
+  }
+}
+</style>

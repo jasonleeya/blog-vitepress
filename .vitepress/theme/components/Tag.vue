@@ -25,10 +25,10 @@ const props = defineProps({
   }
 })
 const _color = computed(() => {
-  return props.isActive ? props.color : '#8a919f'
+  return props.isActive ? props.color : ''
 })
 const _backgroundColor = computed(() => {
-  return props.isActive ? props.backgroundColor : '#f2f3f5'
+  return props.isActive ? props.backgroundColor : ''
 })
 
 </script>
@@ -61,10 +61,13 @@ const _backgroundColor = computed(() => {
   margin-left: 15px;
   cursor: pointer;
   user-select: none;
+  color: #8a919f;
+  background-color: #f2f3f5;
 
   svg {
     position: absolute;
     left: -20px;
+    fill: #f2f3f5;
   }
 
   .num {
@@ -75,6 +78,18 @@ const _backgroundColor = computed(() => {
     line-height: 14px;
     text-align: center;
     padding: 0 3px;
+  }
+}
+.dark{
+  .tag{
+    color: #ffffff;
+    background-color: #737373;
+  }
+  svg{
+    fill: #737373;
+  }
+  .num{
+    background-color: #484747;
   }
 }
 </style>

@@ -31,3 +31,18 @@ interface Tag {
   color:string
   backgroundColor:string
 }
+interface ImportMetaEnv {
+  readonly SSR: string;
+}
+interface BingImg {
+  url: string
+  locales: {
+    zh: {
+      title: string
+      copyright: string
+      description: string
+      headline: string
+      quickFact: string
+    }
+  }
+}

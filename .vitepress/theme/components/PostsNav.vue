@@ -122,12 +122,12 @@ const mouseOver = (item: string) => {
       </el-icon>
       <span v-if="currentType.count" class="title-text">{{ currentType.count }}</span>{{currentType.measureWord}}{{ currentType.name }}
     </div>
-    <div class="posts-nav-content">
+    <el-scrollbar class="posts-nav-content" max-height="calc(100vh - 500px)">
       <div v-show="currentType.type === Types.all" class="hot-posts">
         <div class="hot-posts-title"><img :src="withBase('/images/hot.svg')" alt="" class="icon">热门文章</div>
         <div class="hot-post-wrapper">
           <div v-for="(item,index) in hotList" :key="index" class="hot-post">
-            <el-link :href="item.path" class="hot-post-title">
+            <el-link :href="item.path" class="hot-post-title" :underline="false">
               <span class="index">{{ index + 1 }}</span>
               <div :title="item.title" class="hot-post-title-text">{{ item.title }}</div>
             </el-link>
@@ -160,7 +160,7 @@ const mouseOver = (item: string) => {
       <div v-show="currentType.type === Types.time" class="time-line">
         <time-line></time-line>
       </div>
-    </div>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -168,6 +168,7 @@ const mouseOver = (item: string) => {
 .posts-nav {
   width: var(--aside-width);
   padding-top: 20px;
+  background-color: var(--card-bg);
 
   .types {
     display: flex;
@@ -180,7 +181,7 @@ const mouseOver = (item: string) => {
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: #eee;
+      background-color: var(--vp-c-bg-alt);
       cursor: pointer;
       transition: all .3s;
 
@@ -263,11 +264,16 @@ const mouseOver = (item: string) => {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            &:hover {
+              color: var(--vp-c-brand);
+            }
           }
         }
 
         &-time {
           font-size: 12px;
+          line-height: 1em;
+          margin-bottom: 5px;
           color: var(--el-text-color-secondary);
           padding-left: 25px;
         }

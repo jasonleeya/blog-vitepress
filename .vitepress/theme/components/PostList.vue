@@ -12,9 +12,9 @@ const globalAuthor = useData().theme.value.author
 const currentPage = ref(1)
 const pageSize = 10
 const currentPageChange = (page: number) => {
-  history.pushState('', '', location.pathname + '?page=' + page);
+  history.pushState('', '', window.location.pathname + '?page=' + page);
 }
-const currentPageFromQuery = location.search.match(/[?&]page=(\d+)/)
+const currentPageFromQuery = window.location.search.match(/[?&]page=(\d+)/)
 if (currentPageFromQuery) {
   currentPage.value = parseInt(currentPageFromQuery[1])
 }
@@ -106,6 +106,7 @@ const isMobile = useIsMobile()
   display: flex;
   gap: 15px;
   cursor: pointer;
+  background-color: var(--card-bg);
 
   .card-left {
     flex: 1;
@@ -120,7 +121,7 @@ const isMobile = useIsMobile()
     .description {
       color: var(--el-text-color-secondary);
       font-size: 15px;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
@@ -141,6 +142,11 @@ const isMobile = useIsMobile()
   .footer {
     display: flex;
     justify-content: space-between;
+
+    .category {
+      color: var(--el-text-color-regular);
+      font-weight: bold;
+    }
 
     &-left {
       display: flex;
@@ -225,8 +231,13 @@ const isMobile = useIsMobile()
       line-height: 20px;
     }
 
+    .category {
+      color: var(--el-text-color-regular);
+      font-weight: bold;
+    }
+
     .tags {
-      margin-left: 15px;
+      margin-left: 5px;
       display: flex;
       flex-wrap: wrap;
       gap: 5px;
@@ -260,7 +271,8 @@ const isMobile = useIsMobile()
 .pagination {
   margin-top: 20px;
 }
-.top{
+
+.top {
   display: inline-flex;
   font-size: 12px;
   align-items: center;

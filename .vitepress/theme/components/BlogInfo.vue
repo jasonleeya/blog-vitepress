@@ -61,8 +61,9 @@ const copyText = (text: string) => {
 <style scoped lang="scss">
 .blog-info {
   width: var(--aside-width);
-  color: #2c3e50;
+  color: var(--el-text-color-primary);
   text-align: center;
+  background-color: var(--card-bg);
 
   .avatar {
     width: 100px;

@@ -60,6 +60,7 @@ timeLineList.value.push(...Array.from(timeLineMap.entries()).map(item => {
     margin-left: 20px;
     padding-left: 20px;
     padding-bottom: 10px;
+    padding-right: 10px;
     border-left: 1px solid var(--vp-c-brand-4);
     position: relative;
 
@@ -69,10 +70,10 @@ timeLineList.value.push(...Array.from(timeLineMap.entries()).map(item => {
       position: absolute;
       width: 12px;
       height: 12px;
-      background-color: #fff;
+      background-color: var(--card-bg);
       border-radius: 50%;
       border: 2px solid var(--vp-c-brand);
-      outline: 4px solid #fff;
+      outline: 4px solid var(--card-bg);
       left: -6px;
       top: 30px;
     }
@@ -94,7 +95,7 @@ timeLineList.value.push(...Array.from(timeLineMap.entries()).map(item => {
       }
 
       &:before {
-        background-color: var(--vp-c-brand-8);
+        background-color: var(--el-color-primary);
       }
 
       .icon path {
@@ -119,10 +120,10 @@ timeLineList.value.push(...Array.from(timeLineMap.entries()).map(item => {
     &:before {
       width: 16px;
       height: 16px;
-      background-color: #fff;
+      background-color: var(--card-bg);
       border-radius: 50%;
       border: 3px solid var(--vp-c-brand);
-      outline: 4px solid #fff;
+      outline: 4px solid var(--card-bg);
       left: -8px;
       top: 24px;
     }

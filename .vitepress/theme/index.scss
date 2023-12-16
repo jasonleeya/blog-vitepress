@@ -1,3 +1,6 @@
+/*
+* https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css
+*/
 body {
   font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei, sans-serif;
 }
@@ -36,7 +39,34 @@ body {
   --vp-c-danger-soft: var(--vp-c-red-soft);
 
   --aside-width: 260px;
+  --card-bg: #fff;
+
+  .el-scrollbar {
+    --el-scrollbar-opacity: 0.4;
+    //--el-scrollbar-bg-color: var(--vp-c-brand-1);
+    --el-scrollbar-hover-opacity: 0.6;
+    //--el-scrollbar-hover-bg-color: var(--vp-c-brand-1);
+  }
+
+  .el-scrollbar__bar.is-vertical {
+    width: 7px;
+  }
+
+  .el-scrollbar__bar.is-horizontal {
+    height: 7px;
+  }
+
+  .el-scrollbar__bar {
+    z-index: 11; //比footer高1
+  }
+
+  &.dark {
+    --el-text-color-primary: #fff;
+    --prism-scheme: dark;
+    --card-bg: #202127;
+  }
 }
+
 
 /**
  * Component: Button
@@ -61,16 +91,16 @@ body {
 :root {
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: -webkit-linear-gradient(120deg,
-      #bd34fe 30%,
-      #41d1ff);
+          #bd34fe 30%,
+          #41d1ff);
 
   --vp-home-hero-image-background-image: linear-gradient(-45deg,
-      #bd34fe 50%,
-      #47caff 50%);
+          #bd34fe 50%,
+          #47caff 50%);
   --vp-home-hero-image-filter: blur(44px);
 }
 
-@media (min-width: 640px) {
+@media (min-width: 992px) {
   :root {
     --vp-home-hero-image-filter: blur(56px);
   }
@@ -102,30 +132,6 @@ body {
 }
 
 /*自定义滚动条*/
-* {
-  ::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--vp-c-brand-6);
-    border-radius: 5px;
-
-    &:hover {
-      background-color: var(--vp-c-brand-3);
-    }
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-
-  ::-webkit-scrollbar-corner {
-    background-color: transparent;
-  }
-}
-
 .VPNav {
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
   /*background-image: radial-gradient(transparent 1px, #fff 1px);*/
@@ -154,6 +160,9 @@ body {
     position: fixed;
     top: 0;
     background: rgba(255, 255, 255, 0.9);
+  }
+  .dark .is-home .VPNav {
+    background: rgba(0, 0, 0, 0.8);
   }
 }
 
