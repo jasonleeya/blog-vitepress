@@ -13,7 +13,7 @@ axios.defaults.baseURL = 'https://tcb.lsj97.com/api/blog'
 export default {
   extends: DefaultTheme,
   Layout,
-  enhanceApp({ app, router, siteData }) {
+  enhanceApp({ app, /*router, siteData*/ }) {
     app.use(ElementPlus)
   }
 } satisfies Theme
