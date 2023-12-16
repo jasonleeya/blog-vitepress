@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import PostList from "../components/PostList.vue";
-import BlogInfo from "../components/BlogInfo.vue";
-import PostsNav from "../components/PostsNav.vue";
-import Hero from "../components/Hero.vue";
-
-
+import PostList from "@components/PostList.vue";
+import BlogInfo from "@components/BlogInfo.vue";
+import PostsNav from "@components/PostsNav.vue";
+import Hero from "@components/Hero.vue";
 
 </script>
 

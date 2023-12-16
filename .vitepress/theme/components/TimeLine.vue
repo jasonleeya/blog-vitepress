@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {usePosts} from "../../hooks/usePosts.ts";
-import {formatDate} from "../../utils";
+import {usePosts} from "@/hooks/usePosts.mts";
+import {formatDate} from "@/utils";
 import {ref} from "vue";
-import CollapsibleBox from "./CollapsibleBox.vue";
+import CollapsibleBox from "@components/CollapsibleBox.vue";
 
 const {getPostsByCreateTime} = usePosts()
 
@@ -35,7 +35,7 @@ timeLineList.value.push(...Array.from(timeLineMap.entries()).map(item => {
     <div v-for="item in timeLineList">
       <div class="year" @click="item.isExpand = !item.isExpand" :class="{expand: item.isExpand}">
         <div class="title">{{ item.year }}</div>
-        <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24"
+        <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24"
              height="24">
           <path
               d="M512 725.33a73.39 73.387 0 0 1-56.747-27.31l-179.627-217.6a89.6 89.6 0 0 1-11.093-94.294A75.093 75.09 0 0 1 332.37 341.33h359.254a75.09 75.09 0 0 1 67.84 44.8 89.6 89.6 0 0 1-11.09 94.3l-179.63 217.6A73.39 73.39 0 0 1 512 725.33z"

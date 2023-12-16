@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import {usePosts} from "../../hooks/usePosts.ts";
+import {usePosts} from "@/hooks/usePosts.mts";
 import {Document, Menu, PriceTag, Clock} from "@element-plus/icons-vue";
 import {ref, shallowRef} from "vue";
-import {formatDate} from "../../utils";
+import {formatDate} from "@/utils";
 import {withBase} from "vitepress";
-import Tag from "./Tag.vue";
-import TimeLine from "./TimeLine.vue";
+import Tag from "@components/Tag.vue";
+import TimeLine from "@components/TimeLine.vue";
 
 enum Types {
   all = 'all',
@@ -329,9 +329,6 @@ const mouseOver = (item: string) => {
       .tag {
         margin-bottom: 10px;
       }
-    }
-
-    .time-line {
     }
   }
 }

@@ -5,7 +5,19 @@
     "sourceMap": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        ".vitepress/*"
+      ],
+      "@views*": [
+        ".vitepress/theme/views*"
+      ],
+      "@components*": [
+        ".vitepress/theme/components*"
+      ]
+    }
   },
   "exclude": [
     "node_modules"

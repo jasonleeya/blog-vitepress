@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useData, withBase} from "vitepress";
-import {Link,DocumentCopy} from "@element-plus/icons-vue";
+import {DocumentCopy} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus";
 const {avatar, author, introduce, medias}: {
   avatar: string,

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import CollapsibleBox from "./CollapsibleBox.vue";
+import CollapsibleBox from "@components/CollapsibleBox.vue";
 import {ArrowLeftBold, ArrowRightBold, Location} from "@element-plus/icons-vue";
 import {PropType, ref} from "vue";
-import {useIsMobile} from "../../hooks/useIsMobile.ts";
+import {useIsMobile} from "@/hooks/useIsMobile.mts";
 
 defineProps({
   info: {
@@ -71,6 +71,7 @@ const isMobile = useIsMobile()
     top: 5px;
     width: 30px;
     height: 30px;
+    cursor: pointer;
 
     &:before {
       content: '';

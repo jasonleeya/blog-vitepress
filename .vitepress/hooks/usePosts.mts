@@ -1,4 +1,4 @@
-import _postList from '../posts.json'
+import _postList from '@/posts.json'
 import {ref} from 'vue'
 import axios from "axios";
 import {useData} from "vitepress";

@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import {ref, onMounted, onUnmounted} from "vue";
 import {useData} from "vitepress";
-import ImgInfo from "./ImgInfo.vue";
+import ImgInfo from "@components/ImgInfo.vue";
 
 const bingImgList = ref<BingImg[]>([])
 const currentImgIndex = ref(0)
 
-const getBingImg = () => {
+const getImgListFromBing =async () => {
   return fetch("https://bing-wallpaper.vuejs.press/api/wallpaper").then((response) => response.json()).then(res => {
-    console.log('%c res ', 'color:white;background:red', res)
     return bingImgList.value = res
   })
 };
 const loadedImgSet = new Set<string>()
 
-getBingImg().then(() => {
+getImgListFromBing().then(() => {
   setLoadedImg()
 })
 const setLoadedImg = () => {

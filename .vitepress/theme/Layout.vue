@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
-import Read from "./components/Read.vue";
-import Home from "./views/Home.vue";
+import Read from "@components/Read.vue";
+import Home from "@views/Home.vue";
 
 const {Layout} = DefaultTheme
 

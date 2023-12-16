@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import {usePosts} from "../../hooks/usePosts.ts";
-import {useData, withBase} from "vitepress";
-import {formatDate} from "../../utils";
+import {usePosts} from "@/hooks/usePosts.mts";
+import {useData} from "vitepress";
+import {formatDate} from "@/utils";
 import {ref, watch, computed} from "vue";
-import Tag from "./Tag.vue";
-import {useIsMobile} from "../../hooks/useIsMobile.ts";
+import Tag from "@components/Tag.vue";
+import {useIsMobile} from "@/hooks/useIsMobile.mts";
 
 const {postList} = usePosts()
 const globalAuthor = useData().theme.value.author

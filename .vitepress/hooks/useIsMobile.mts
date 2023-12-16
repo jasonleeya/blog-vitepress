@@ -3,7 +3,6 @@ import {onMounted, onUnmounted, ref} from "vue";
 const MOBILE_WIDTH = 992 //移动端最大宽度，包含平板
 const isMobile = ref<Boolean>(false)
 const getClientWidth = () => {
-  //@ts-ignore
   if (!import.meta.env.SSR) {
     return document.documentElement.clientWidth || document.body.clientWidth
   } else {
