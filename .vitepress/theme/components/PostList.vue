@@ -23,7 +23,7 @@ if (currentPageFromQuery) {
 }
 
 const _postList = computed(() => postList.value.slice((currentPage.value - 1) * pageSize, currentPage.value * pageSize))
-watch(postList, (ls) => {
+watch(postList, () => {
   currentPage.value = 1
   currentPageChange(1)
 }, {deep: true})

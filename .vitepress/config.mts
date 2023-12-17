@@ -1,4 +1,4 @@
-import {DefaultTheme, defineConfig} from 'vitepress'
+import {defineConfig} from 'vitepress'
 import {fileURLToPath, URL} from 'node:url'
 import posts from './posts.json'
 const categoryMap = new Map<string, PostMeta[]>()
