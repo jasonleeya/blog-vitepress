@@ -3,11 +3,10 @@ import PostList from "@components/PostList.vue";
 import BlogInfo from "@components/BlogInfo.vue";
 import PostsNav from "@components/PostsNav.vue";
 import Hero from "@components/Hero.vue";
-
 </script>
 
 <template>
-    <hero class="hero"></hero>
+    <hero></hero>
     <div class="content">
       <div class="post-list">
         <post-list></post-list>

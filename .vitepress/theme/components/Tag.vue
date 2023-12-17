@@ -78,6 +78,8 @@ const _backgroundColor = computed(() => {
     line-height: 14px;
     text-align: center;
     padding: 0 3px;
+    background-color: #8a919f;
+    color: #f2f3f5;
   }
 }
 .dark{

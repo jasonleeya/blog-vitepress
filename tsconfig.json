@@ -16,15 +16,22 @@
       ],
       "@components*": [
         ".vitepress/theme/components*"
+      ],
+      "@icons*": [
+        ".vitepress/theme/components/icons*"
+      ],
+      "@vp-theme*": [
+        "node_modules/vitepress/dist/client/theme-default*"
       ]
     }
   },
   "exclude": [
-    "node_modules"
+//    "node_modules"
   ],
   "include": [
     ".vitepress/**/*.ts",
     ".vitepress/**/*.d.ts",
     ".vitepress/**/*.vue",
+    "node_modules/vitepress/dist/client/theme-default/**/*.vue",
   ]
 }

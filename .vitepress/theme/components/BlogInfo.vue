@@ -83,22 +83,6 @@ const copyText = (text: string) => {
     margin: 16px 0;
   }
 
-  .statistics {
-    display: flex;
-    justify-content: space-around;
-
-    .label {
-      font-size: 12px;
-      color: rgb(134, 144, 156);
-    }
-
-    .value {
-      font-size: 20px;
-      color: rgb(60, 60, 67);
-      font-weight: bold;
-    }
-  }
-
   .medias {
     display: flex;
     justify-content: center;

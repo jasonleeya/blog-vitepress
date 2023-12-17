@@ -2,11 +2,13 @@
 import {ref, onMounted, onUnmounted} from "vue";
 import {useData} from "vitepress";
 import ImgInfo from "@components/ImgInfo.vue";
+import {useIsMobile} from "@/hooks/useIsMobile.mjs";
+import Loading from "@components/Loading.vue";
 
 const bingImgList = ref<BingImg[]>([])
 const currentImgIndex = ref(0)
 
-const getImgListFromBing =async () => {
+const getImgListFromBing = async () => {
   return fetch("https://bing-wallpaper.vuejs.press/api/wallpaper").then((response) => response.json()).then(res => {
     return bingImgList.value = res
   })
@@ -16,6 +18,7 @@ const loadedImgSet = new Set<string>()
 getImgListFromBing().then(() => {
   setLoadedImg()
 })
+// 避免重复加载，缓存当前，前后三张
 const setLoadedImg = () => {
   if (loadedImgSet.size !== bingImgList.value.length) {
     loadedImgSet.add(bingImgList.value[currentImgIndex.value].url)
@@ -24,7 +27,6 @@ const setLoadedImg = () => {
   }
 }
 const changeImg = (direction: 1 | -1 | null, index?: number) => {
-  console.log('%c index ', 'color:white;background:red', index)
   if (direction !== null) {
     currentImgIndex.value = (currentImgIndex.value + direction + bingImgList.value.length) % bingImgList.value.length
   } else {
@@ -35,6 +37,7 @@ const changeImg = (direction: 1 | -1 | null, index?: number) => {
 const sentenceList = ref([])
 const author = ref("")
 
+let timeout = null
 const getSentence = () => fetch("https://v1.hitokoto.cn?c=d&c=h&c=i&c=k&c=j")
     .then((res) => res.json())
     .then(({from, hitokoto}) => {
@@ -49,7 +52,7 @@ const getSentence = () => fetch("https://v1.hitokoto.cn?c=d&c=h&c=i&c=k&c=j")
             renderText(text)
           }, 200);
         } else {
-          setTimeout(() => {
+          timeout = setTimeout(() => {
             getSentence()
           }, 5000)
         }
@@ -57,6 +60,9 @@ const getSentence = () => fetch("https://v1.hitokoto.cn?c=d&c=h&c=i&c=k&c=j")
       renderText(hitokoto)
     });
 getSentence()
+onUnmounted(() => {
+  clearTimeout(timeout)
+})
 
 // 手机端首页导航栏position设置为fixed
 onMounted(() => {
@@ -69,22 +75,40 @@ onUnmounted(() => {
 
 
 const scrollToContent = () => {
-  // document.documentElement.scrollTo({
-  //   top: window.innerHeight - 63,
-  //   behavior: 'smooth'
-  // })
-  document.querySelector('.page-scrollbar>.el-scrollbar__wrap').scrollTo({
-    top: window.innerHeight - 63,
-    behavior: 'smooth'
-  })
+
+  if (useIsMobile()) {
+    document.documentElement.scrollTo({
+      top: window.innerHeight - 63,
+      behavior: 'smooth'
+    })
+  } else {
+    document.querySelector('.page-scrollbar>.el-scrollbar__wrap').scrollTo({
+      top: window.innerHeight - 63,
+      behavior: 'smooth'
+    })
+  }
 }
+
+const isLoading = ref(true)
+let i = 0
+const imgsLoading = () => {
+  i++
+  if (i === 3) {
+    setTimeout(() => {
+      isLoading.value = false
+    }, 500)
+  }
+}
+setTimeout(()=>{
+  isLoading.value = false
+},10000)
 </script>
 
 <template>
   <div class="hero">
     <img class="img-bg" :class="{current:currentImgIndex === index}" :src="loadedImgSet.has(item.url)?item.url:''"
          alt=""
-         v-for="(item,index) in bingImgList" :key="item.url">
+         v-for="(item,index) in bingImgList" :key="item.url" @load="imgsLoading" v-show="!isLoading">
     <div class="indicators">
       <div class="indicator" v-for="(item,index) in bingImgList" :key="item.url"
            :class="{current:index === currentImgIndex}" @click="changeImg(null,index)"></div>
@@ -108,6 +132,7 @@ const scrollToContent = () => {
       </div>
     </div>
   </div>
+  <loading v-if="isLoading"></loading>
 </template>
 
 <style scoped lang="scss">
@@ -193,6 +218,7 @@ const scrollToContent = () => {
       top: 50%;
       transform: translateX(-50%);
       color: #fff;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
 
       .cursor {
         font-size: 1em;
@@ -220,12 +246,12 @@ const scrollToContent = () => {
         font-weight: bold;
         position: relative;
         word-break: break-all;
-        line-height: 1.2;
+        line-height: 1.4em;
+        font-family: monospace;
         margin-top: 50px;
 
         .character {
           animation: character-appear 0.5s;
-          background-color: rgba(0, 0, 0, 0.1);
         }
 
         @keyframes character-appear {
@@ -263,7 +289,7 @@ const scrollToContent = () => {
         position: absolute;
         right: 0;
         white-space: nowrap;
-        background-color: rgba(0, 0, 0, 0.1);
+        font-family: cursive;
       }
     }
 
@@ -292,8 +318,9 @@ const scrollToContent = () => {
     }
   }
 }
+
 @media screen and (max-width: 992px) {
-  .sentence{
+  .sentence {
     width: 80%;
   }
 }

@@ -25,3 +25,25 @@ export function formatDate(date: Date | string | number, fmt: string = "yyyy-MM-
   return fmt;
 }
 
+export function getQueryParams(url: string): { [key: string]: string } {
+  const parsedUrl = new URL(url);
+  const params = new URLSearchParams(parsedUrl.search);
+  const queryObj: { [key: string]: string } = {};
+
+  params.forEach((value, key) => {
+    queryObj[key] = value;
+  });
+
+  return queryObj;
+}
+export function buildQueryString(params: { [key: string]: string }): string {
+  const searchParams = new URLSearchParams();
+
+  for (const key in params) {
+    if (params.hasOwnProperty(key)) {
+      searchParams.append(key, params[key]);
+    }
+  }
+
+  return searchParams.toString();
+}

@@ -13,11 +13,12 @@ defineProps({
     required: true
   }
 })
-const isInfoShow = ref(!useIsMobile().value)
+const isMobile = useIsMobile()
+
+const isInfoShow = ref(!isMobile.value)
 const toggleInfoShow = () => {
   isInfoShow.value = !isInfoShow.value
 }
-const isMobile = useIsMobile()
 </script>
 
 <template>
@@ -166,8 +167,8 @@ const isMobile = useIsMobile()
     }
   }
 
-  &.mobile{
-    .wrapper{
+  &.mobile {
+    .wrapper {
       //得又确切的宽度
       width: calc(100vw - 56px);
     }

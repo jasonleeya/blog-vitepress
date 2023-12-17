@@ -3,9 +3,10 @@ import {usePosts} from "@/hooks/usePosts.mts";
 import {Document, Menu, PriceTag, Clock} from "@element-plus/icons-vue";
 import {ref, shallowRef} from "vue";
 import {formatDate} from "@/utils";
-import {withBase} from "vitepress";
 import Tag from "@components/Tag.vue";
 import TimeLine from "@components/TimeLine.vue";
+import {useIsMobile} from "@/hooks/useIsMobile.mjs";
+import IconHot from "@icons/IconHot.vue";
 
 enum Types {
   all = 'all',
@@ -75,6 +76,10 @@ getHotPostList().then(res => {
   hotList.value = res || []
 })
 
+const emits = defineEmits<{
+  (e: 'itemClick', value: { type: Types, value: string }): void
+}>()
+
 const currentCategory = ref<Category | undefined>()
 const changeCategory = (item: Category) => {
   if (currentCategory.value?.name === item.name) {
@@ -84,6 +89,7 @@ const changeCategory = (item: Category) => {
   }
 
   groupPostListByCategory(currentCategory.value?.name)
+  emits('itemClick', {type: Types.category, value: item.name})
 }
 
 const currentTag = ref<string | undefined>()
@@ -94,18 +100,22 @@ const changeTag = (tag: string) => {
     currentTag.value = tag
   }
   groupPostListByTag(currentTag.value)
+  emits('itemClick', {type: Types.tag, value: tag})
 }
 const mouseOverItem = ref('')
 const mouseOver = (item: string) => {
   mouseOverItem.value = item
 }
+
+const isMobile = useIsMobile()
 </script>
 
 <template>
   <div class="posts-nav card">
-    <div class="types">
+    <div class="types" v-if="!isMobile">
       <el-tooltip
           v-for="item in typeList"
+          :key="item.name"
           :content="item.name"
           effect="dark"
           placement="top">
@@ -116,15 +126,28 @@ const mouseOver = (item: string) => {
         </div>
       </el-tooltip>
     </div>
+    <div class="types-mobile" v-else>
+      <div v-for="item in typeList" :key="item.name" :class="{current: currentType.type === item.type}" class="type"
+           @click="currentTypeChange(item)">
+        <el-icon :class="item.icon.__name" class="icon">
+          <component :is="item.icon"/>
+        </el-icon>
+        <div class="name">{{ item.name }}</div>
+      </div>
+    </div>
     <div class="posts-nav-title">
       <el-icon :class="currentType.icon.__name" class="icon">
         <component :is="currentType.icon"/>
       </el-icon>
-      <span v-if="currentType.count" class="title-text">{{ currentType.count }}</span>{{currentType.measureWord}}{{ currentType.name }}
+      <span v-if="currentType.count" class="title-text">{{
+          currentType.count
+        }}</span>{{ currentType.measureWord }}{{ currentType.name }}
     </div>
-    <el-scrollbar class="posts-nav-content" max-height="calc(100vh - 500px)">
+    <el-scrollbar class="posts-nav-content" max-height="calc(100vh - 400px)">
       <div v-show="currentType.type === Types.all" class="hot-posts">
-        <div class="hot-posts-title"><img :src="withBase('/images/hot.svg')" alt="" class="icon">热门文章</div>
+        <div class="hot-posts-title">
+          <icon-hot class="icon"></icon-hot>
+          热门文章</div>
         <div class="hot-post-wrapper">
           <div v-for="(item,index) in hotList" :key="index" class="hot-post">
             <el-link :href="item.path" class="hot-post-title" :underline="false">
@@ -197,6 +220,46 @@ const mouseOver = (item: string) => {
     }
   }
 
+  .types-mobile {
+    display: flex;
+    justify-content: space-around;
+
+    .type {
+      transition: all .3s;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 5px;
+
+      .name {
+        color: var(--vp-c-text-1);
+      }
+
+      &.current {
+        .icon {
+          color: #fff;
+          background-color: var(--vp-c-brand);
+        }
+        .name{
+          color: var(--vp-c-brand);
+        }
+
+      }
+
+      .icon {
+        font-size: 20px;
+        font-weight: bold;
+        background-color: var(--vp-c-bg-alt);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
   &-title {
     font-size: 17px;
     display: flex;
@@ -209,7 +272,6 @@ const mouseOver = (item: string) => {
   }
 
   &-content {
-    max-height: calc(100vh - 500px);
     overflow-y: auto;
 
     .hot-posts {
@@ -264,6 +326,7 @@ const mouseOver = (item: string) => {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+
             &:hover {
               color: var(--vp-c-brand);
             }

@@ -1,7 +1,7 @@
-import {onMounted, onUnmounted, ref} from "vue";
+import {onUnmounted, ref} from "vue";
 
 const MOBILE_WIDTH = 992 //移动端最大宽度，包含平板
-const isMobile = ref<Boolean>(false)
+const isMobile = ref<boolean>(false)
 const getClientWidth = () => {
   if (!import.meta.env.SSR) {
     return document.documentElement.clientWidth || document.body.clientWidth
@@ -14,17 +14,14 @@ let clientWidth = getClientWidth()
 
 const fn = () => {
   clientWidth = getClientWidth()
-  isMobile.value = clientWidth < MOBILE_WIDTH || reg.test(navigator.userAgent)
+  isMobile.value = (clientWidth < MOBILE_WIDTH) || reg.test(navigator.userAgent)
 }
 
 export function useIsMobile() {
-  onMounted(() => {
-    window.addEventListener('resize', fn)
-    isMobile.value = clientWidth < MOBILE_WIDTH || reg.test(navigator.userAgent)
-  })
+  window.addEventListener('resize', fn)
+  isMobile.value = (clientWidth < MOBILE_WIDTH) || reg.test(navigator.userAgent)
   onUnmounted(() => {
     window.removeEventListener('resize', fn)
   })
-
   return isMobile
 }

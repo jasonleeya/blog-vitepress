@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {usePosts} from "@/hooks/usePosts.mts";
 import {useData} from "vitepress";
-import {formatDate} from "@/utils";
+import {buildQueryString, formatDate, getQueryParams} from "@/utils";
 import {ref, watch, computed} from "vue";
 import Tag from "@components/Tag.vue";
 import {useIsMobile} from "@/hooks/useIsMobile.mts";
@@ -11,16 +11,22 @@ const globalAuthor = useData().theme.value.author
 
 const currentPage = ref(1)
 const pageSize = 10
+
+const prevQuery = getQueryParams(window.location.href)
 const currentPageChange = (page: number) => {
-  history.pushState('', '', window.location.pathname + '?page=' + page);
+  prevQuery.page = String(page)
+  history.pushState('', '', window.location.pathname+'?'+buildQueryString(prevQuery));
 }
 const currentPageFromQuery = window.location.search.match(/[?&]page=(\d+)/)
 if (currentPageFromQuery) {
   currentPage.value = parseInt(currentPageFromQuery[1])
 }
+
 const _postList = computed(() => postList.value.slice((currentPage.value - 1) * pageSize, currentPage.value * pageSize))
-watch(postList.value, () => {
-}, {deep: true, immediate: true})
+watch(postList, (ls) => {
+  currentPage.value = 1
+  currentPageChange(1)
+}, {deep: true})
 const {getTagColorByName} = usePosts()
 
 const isMobile = useIsMobile()
