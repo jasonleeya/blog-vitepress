@@ -76,7 +76,7 @@ onUnmounted(() => {
 
 const scrollToContent = () => {
 
-  if (useIsMobile()) {
+  if (useIsMobile().value) {
     document.documentElement.scrollTo({
       top: window.innerHeight - 63,
       behavior: 'smooth'

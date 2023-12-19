@@ -53,6 +53,7 @@
           #60a5fa 30%
   );
   background-image: var(--stripes), var(--rainbow);
+  background-attachment: fixed;
   background-size: 300%, 200%;
   background-position: 50% 50%, 50% 50%;
   filter: blur(10px) invert(100%);

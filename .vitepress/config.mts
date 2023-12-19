@@ -39,7 +39,7 @@ export default defineConfig({
     nav: [
       {text: '首页', link: '/'},
       {text: '关于我', link: '/intro'},
-      {text: '测试', link: '/posts/category1/测试文章1'},
+      {text: '个人作品', link: '/pages/demos'},
     ],
     medias: [
       {icon: '/images/medias/github.svg', type: 'github', link: 'https://github.com/jasonleeya'},

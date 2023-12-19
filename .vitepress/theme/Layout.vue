@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
 import Read from "@components/Read.vue";
-import Home from "@views/Home.vue";
+import Home from "@views/home.vue";
 import {useIsMobile} from "@/hooks/useIsMobile.mjs";
 
 const {Layout} = DefaultTheme
@@ -14,9 +14,6 @@ const scrollbar = isMobile.value ? 'div' : 'el-scrollbar'
     <Layout>
       <template #doc-top>
         <read></read>
-      </template>
-      <template #home-features-before>
-        <home></home>
       </template>
     </Layout>
   </component>

@@ -55,3 +55,12 @@ interface SidebarItem {
   link: string
   items?: SidebarItem[]
 }
+
+interface Work {
+  id: number,
+  title: string,
+  date: string
+  img: string
+  // desc: string
+  // link: string
+}
