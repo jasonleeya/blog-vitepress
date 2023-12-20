@@ -75,14 +75,14 @@ onUnmounted(() => {
 
 
 const scrollToContent = () => {
-
-  if (useIsMobile().value) {
-    document.documentElement.scrollTo({
+  const elScrollBar = document.querySelector('.page-scrollbar>.el-scrollbar__wrap') as HTMLElement
+  if (elScrollBar) {
+    elScrollBar.scrollTo({
       top: window.innerHeight - 63,
       behavior: 'smooth'
     })
   } else {
-    document.querySelector('.page-scrollbar>.el-scrollbar__wrap').scrollTo({
+    document.documentElement.scrollTo({
       top: window.innerHeight - 63,
       behavior: 'smooth'
     })
@@ -99,9 +99,9 @@ const imgsLoading = () => {
     }, 500)
   }
 }
-setTimeout(()=>{
+setTimeout(() => {
   isLoading.value = false
-},10000)
+}, 10000)
 </script>
 
 <template>
