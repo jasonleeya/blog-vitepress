@@ -19,7 +19,7 @@ const isLocked = useScrollLock(inBrowser ? document.body : null)
 const router = useRouter()
 const getItem = ({type,value}) => {
   props.closeScreen();
-  router.go(`/pages/MobileFilterPosts?type=${type}&value=${value}`)
+  router.go(`/pages/mobileFilterPosts?type=${type}&value=${value}`)
 }
 </script>
 
