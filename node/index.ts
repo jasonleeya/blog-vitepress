@@ -55,7 +55,7 @@ function getPostFirstImgAsCover(content: string) {
 }
 
 function getPostDescription(content: string) {
-  return content.match(/(?:\n*# .*\n+)?(?:#+ .*\n+)?\n*(.*)/)?.[1] || ''
+  return content.replace(/\r\n/g,'\n').match(/(?:\n*# .*\n+)?(?:#+ .*\n+)?\n*(.*)/)?.[1] || ''
 }
 
 function getFileCreateTime(filePath: string) {

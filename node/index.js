@@ -57,7 +57,7 @@ function getPostFirstImgAsCover(content) {
 }
 function getPostDescription(content) {
     var _a;
-    return ((_a = content.match(/(?:\n*# .*\n+)?(?:#+ .*\n+)?\n*(.*)/)) === null || _a === void 0 ? void 0 : _a[1]) || '';
+    return ((_a = content.replace(/\r\n/g, '\n').match(/(?:\n*# .*\n+)?(?:#+ .*\n+)?\n*(.*)/)) === null || _a === void 0 ? void 0 : _a[1]) || '';
 }
 function getFileCreateTime(filePath) {
     var _a;

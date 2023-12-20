@@ -5,7 +5,7 @@ import Layout from "./Layout.vue";
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
-import './index.scss'
+import './styles/index.scss'
 import axios from "axios";
 
 axios.defaults.baseURL = 'https://tcb.lsj97.com/api/blog'

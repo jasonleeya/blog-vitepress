@@ -1,8 +1,35 @@
 import {defineConfig} from 'vitepress'
 import {fileURLToPath, URL} from 'node:url'
 import posts from './posts.json'
+
+const categoryInfo = [
+  {
+    type: 'article',
+    name: '文章',
+    icon: '/images/categories/article.svg',
+    description: ''
+  },
+  {
+    type: 'category2',
+    name: '笔记',
+    icon: '/images/categories/note.svg',
+    description: ''
+  },
+  {
+    type: 'category1',
+    name: '知识点',
+    icon: '/images/categories/knowledge.svg',
+    description: ''
+  },
+  {
+    type: 'category3',
+    name: '生活',
+    icon: '/images/categories/lift.svg',
+    description: ''
+  }
+]
 const categoryMap = new Map<string, PostMeta[]>()
-const sidebar:SidebarItem[] = []
+const sidebar: SidebarItem[] = []
 posts.forEach(post => {
   if (categoryMap.has(post.category)) {
     categoryMap.get(post.category)?.push(post)
@@ -12,7 +39,7 @@ posts.forEach(post => {
 })
 categoryMap.forEach((value, key) => {
   sidebar.push({
-    text: key,
+    text: categoryInfo.find(item => item.type === key)?.name,
     collapsed: true,
     items: value.map(post => ({
       text: post.title,
@@ -52,26 +79,7 @@ export default defineConfig({
       {icon: '/images/medias/zhihu.svg', type: 'zhihu', link: 'https://www.zhihu.com/people/jasonleeya'},
       {icon: '/images/medias/steam.svg', type: 'steam', link: 'https://steamcommunity.com/profiles/76561198961789123/'},
     ],
-    categoryInfo: [
-      {
-        folder: 'category1',
-        name: '知识点',
-        icon: '/images/categories/knowledge.svg',
-        description: ''
-      },
-      {
-        folder: 'category2',
-        name: '笔记',
-        icon: '/images/categories/note.svg',
-        description: ''
-      },
-      {
-        folder: 'category3',
-        name: '生活',
-        icon: '/images/categories/lift.svg',
-        description: ''
-      }
-    ],
+    categoryInfo,
     outline: {
       label: '当前页面',
     },

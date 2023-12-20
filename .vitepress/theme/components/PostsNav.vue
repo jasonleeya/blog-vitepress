@@ -82,14 +82,14 @@ const emits = defineEmits<{
 
 const currentCategory = ref<Category | undefined>()
 const changeCategory = (item: Category) => {
-  if (currentCategory.value?.name === item.name) {
+  if (currentCategory.value?.type === item.type) {
     currentCategory.value = undefined
   } else {
     currentCategory.value = item
   }
 
-  groupPostListByCategory(currentCategory.value?.name)
-  emits('itemClick', {type: Types.category, value: item.name})
+  groupPostListByCategory(currentCategory.value?.type)
+  emits('itemClick', {type: Types.category, value: item.type})
 }
 
 const currentTag = ref<string | undefined>()

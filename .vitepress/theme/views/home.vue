@@ -21,7 +21,7 @@ import Hero from "@components/Hero.vue";
 <style scoped lang="scss">
 .content {
   max-width: 1000px;
-  margin: 0 auto;
+  margin: 0 auto 128px;
   display: flex;
   gap: 20px;
   padding-top: 20px;

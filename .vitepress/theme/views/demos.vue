@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import PictureCard from "@components/PictureCard.vue";
+import {useIsMobile} from "@/hooks/useIsMobile.mjs";
 
 const workList = ref<Work[]>([
   {
@@ -70,30 +71,56 @@ const workList = ref<Work[]>([
     img: "https://images.unsplash.com/photo-1542272201-b1ca555f8505?ixlib=rb-4.0.3&q=100&w=jpg&crop=entropy&cs=srgb&w=500",
   },
 ])
+workList.value = [...workList.value, ...workList.value]
+
+const isMobile = useIsMobile()
+const countPerRow = Math.ceil(workList.value.length / 2)
+const cardsBoxWidth = ref(countPerRow * 200 + (countPerRow + 1) * 80)
 </script>
 
 <template>
-    <div class="cards-wrapper">
-      <picture-card :data="item" v-for="(item,index) in [...workList,...workList,...workList,...workList]" :key="index"></picture-card>
+  <el-scrollbar :height="`calc(100vh - var(--vp-nav-height))`" v-if="!isMobile">
+    <div class="cards">
+      <picture-card :data="item" v-for="(item,index) in workList"
+                    :key="index"></picture-card>
     </div>
+  </el-scrollbar>
+  <el-scrollbar v-else>
+    <div class="cards-mobile" :style="{width:cardsBoxWidth+'px'}">
+      <picture-card :data="item" v-for="(item,index) in workList" :key="index"></picture-card>
+    </div>
+  </el-scrollbar>
 </template>
 
 <style scoped lang="scss">
+@import "../styles/mixins.scss";
 
-
-.cards-wrapper {
-  padding: 80px 10%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-auto-rows: 240px;
-  gap: 80px;
-  align-items: center;
-  justify-items: center;
+.cards, .cards-mobile {
   background-image: url("/images/wall.png");
   background-size: 500px;
   background-position: 0 0;
   background-repeat: repeat;
   background-blend-mode: hard-light;
+  display: grid;
+  align-items: center;
+  justify-items: center;
 }
 
+.cards {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-auto-rows: 240px;
+  gap: 80px;
+  padding: 80px 10%;
+}
+
+.cards-mobile {
+  height: calc(100vh - var(--vp-nav-height));
+  //width: 8000px;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  overflow-y: hidden;
+  padding: 40px 80px;
+  column-gap: 80px;
+  grid-auto-flow: column;
+}
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {PropType, ref} from "vue";
 
-defineProps({
+const props = defineProps({
   data: {
     type: Object as PropType<Work>,
     required: true
@@ -9,44 +9,48 @@ defineProps({
 })
 let startX = 0
 let endX = 0
-let isRecording = false
 let isShaking = false
 const strength = ref(0)
 const direction = ref('')
 
-const handleMouseEnter = (e: MouseEvent) => {
+const handleMouseEnter = (e: MouseEvent | TouchEvent) => {
   if (isShaking) {
     return
   }
-  startX = e.x;
-  isRecording = true
+  if (e instanceof MouseEvent) {
+    startX = e.x;
+  } else {
+    startX = e.touches[0].clientX
+  }
   setTimeout(() => {
-    isRecording = false
     startShake()
   }, 100)
 }
-const handleMouseMove = (e: MouseEvent) => {
+const handleMouseMove = (e: MouseEvent | TouchEvent) => {
   if (isShaking) {
     return
   }
 
-  if (isRecording) {
-    endX = e.x
+  if (e instanceof MouseEvent) {
+    endX = e.x;
+  } else {
+    endX = e.touches[0].clientX
   }
 }
-const handleMouseLeave = (e: MouseEvent) => {
+const handleMouseLeave = (e: MouseEvent | TouchEvent) => {
   if (isShaking) {
     return
   }
-  if (isRecording) {
-    endX = e.x
-    startShake()
+  if (e instanceof MouseEvent) {
+    endX = e.x;
+  } else {
+    endX = e.touches[0].clientX
   }
 }
 const startShake = () => {
   const s = Math.ceil(Math.abs((endX - startX) / 10))
   strength.value = s > 30 ? 30 : s
-  direction.value = (endX - startX > 0)? 'l' : 'r'
+  direction.value = (endX - startX > 0) ? 'l' : 'r'
   isShaking = true
 
   setTimeout(() => {
@@ -61,8 +65,13 @@ const startShake = () => {
 </script>
 
 <template>
-  <div class="picture-card" :class="[`card-shake-${strength}-${direction}`]" @mouseenter="handleMouseEnter"
-       @mousemove="handleMouseMove" @mouseleave="handleMouseLeave">
+  <div class="picture-card" :class="[`card-shake-${strength}-${direction}`]"
+       @mouseenter="handleMouseEnter"
+       @mousemove="handleMouseMove"
+       @mouseleave="handleMouseLeave"
+       @touchstart="handleMouseEnter"
+       @touchmove="handleMouseMove"
+       @touchend="handleMouseLeave">
     <img
         :src="data.img"
         :alt="data.title" :title="data.title">
@@ -125,7 +134,7 @@ const startShake = () => {
   transform-origin: 50% 10px;
   box-shadow: 0 7px 8px rgba(0, 0, 0, 0.4);
   background-size: cover;
-  background: ghostwhite url("https://images.unsplash.com/photo-1629968417850-3505f5180761?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2OTMzMjQ3ODJ8&ixlib=rb-4.0.3&q=80&w=500") center;
+  background: ghostwhite url("/images/picture-card-bg.jpg") center;
   background-blend-mode: multiply;
   cursor: pointer;
 
