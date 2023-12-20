@@ -10,13 +10,15 @@ const scrollbar = isMobile.value ? 'div' : 'el-scrollbar'
 </script>
 
 <template>
-  <component :is="scrollbar" height="100vh" class="page-scrollbar">
-    <Layout>
-      <template #doc-top>
-        <read></read>
-      </template>
-    </Layout>
-  </component>
+  <ClientOnly>
+    <component :is="scrollbar" height="100vh" class="page-scrollbar">
+      <Layout>
+        <template #doc-top>
+          <read></read>
+        </template>
+      </Layout>
+    </component>
+  </ClientOnly>
 </template>
 
 <style scoped>

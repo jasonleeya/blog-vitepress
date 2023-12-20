@@ -18,10 +18,12 @@ const fn = () => {
 }
 
 export function useIsMobile() {
-  window.addEventListener('resize', fn)
-  isMobile.value = (clientWidth < MOBILE_WIDTH) || reg.test(navigator.userAgent)
-  onUnmounted(() => {
-    window.removeEventListener('resize', fn)
-  })
+  if (!import.meta.env.SSR) {
+    window.addEventListener('resize', fn)
+    isMobile.value = (clientWidth < MOBILE_WIDTH) || reg.test(navigator.userAgent)
+    onUnmounted(() => {
+      window.removeEventListener('resize', fn)
+    })
+  }
   return isMobile
 }
