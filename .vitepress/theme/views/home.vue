@@ -3,6 +3,10 @@ import PostList from "@components/PostList.vue";
 import BlogInfo from "@components/BlogInfo.vue";
 import PostsNav from "@components/PostsNav.vue";
 import Hero from "@components/Hero.vue";
+import {usePosts} from "@/hooks/usePosts.mjs";
+
+usePosts().resetPostList()
+
 </script>
 
 <template>

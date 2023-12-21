@@ -87,7 +87,10 @@ export function usePosts() {
     })
   }
 
+  const resetPostList = () => {
+    postList.value = JSON.parse(JSON.stringify(_postList))
+  }
   return {
-    postList, getAllPosts, postsTotal, tags, groupPostListByTag, categories, groupPostListByCategory, getHotPostList, getTagColorByName, getPostsByCreateTime
+    postList, getAllPosts, postsTotal, tags, groupPostListByTag, categories, groupPostListByCategory, getHotPostList, getTagColorByName, getPostsByCreateTime, resetPostList
   }
 }

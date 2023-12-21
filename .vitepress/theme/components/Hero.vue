@@ -77,7 +77,11 @@ onUnmounted(() => {
 
 
 const scrollToContent = () => {
-  document.documentElement.scrollTo({
+  // document.documentElement.scrollTo({
+  //   top: window.innerHeight - 63,
+  //   behavior: 'smooth'
+  // })
+  window.scrollTo({
     top: window.innerHeight - 63,
     behavior: 'smooth'
   })
@@ -134,6 +138,7 @@ const isMobile = useIsMobile()
 
 <style lang="scss" scoped>
 @import '../styles/mixins.scss';
+
 .hero {
   height: 100vh;
   width: 100%;
@@ -209,6 +214,7 @@ const isMobile = useIsMobile()
       top: 20%;
       transform: translateX(-50%);
     }
+
     @include mobile {
       .logo {
         width: 100px;
