@@ -2,6 +2,7 @@
 import {ref} from "vue";
 import PictureCard from "@components/PictureCard.vue";
 import {useIsMobile} from "@/hooks/useIsMobile.mjs";
+import {getRandomNumber} from "@/utils";
 
 const workList = ref<Work[]>([
   {
@@ -76,6 +77,58 @@ workList.value = [...workList.value, ...workList.value]
 const isMobile = useIsMobile()
 const countPerRow = Math.ceil(workList.value.length / 2)
 const cardsBoxWidth = ref(countPerRow * 200 + (countPerRow + 1) * 80)
+
+
+let startX = -1
+let endX = 0
+let isRecoding = false
+const strength = ref(0)
+let isShaking = false
+const handleTouchstart = (e: TouchEvent) => {
+  if (isShaking) {
+    return
+  }
+  isRecoding = true
+  setTimeout(() => {
+    isRecoding = false
+    isShaking = true
+    startShake()
+  }, 100)
+}
+
+const handleScroll = (e: { scrollLeft: number }) => {
+  if (isShaking) {
+    return
+  }
+  if (isRecoding) {
+    startX = startX == -1 ? e.scrollLeft : startX;
+    endX = e.scrollLeft;
+  }
+}
+
+const startShake = () => {
+  let s = Math.ceil(Math.abs((endX - startX) / 15))
+
+  strength.value = s > 20 ? 20 : s;
+
+  setTimeout(() => {
+    strength.value = 0
+    startX = -1
+    endX = 0
+    isShaking = false
+  }, 2000 + 200 * (strength.value + 3))
+}
+
+
+const setRandomShake = () => {
+  if (!strength.value) {
+    return ''
+  }
+  let _strength = strength.value + getRandomNumber(-3, 3);
+  _strength = Math.abs(_strength > 20 ? 20 : _strength)
+  const _direction = Math.random() > 0.5 ? 'l' : 'r'
+  return `card-shake-${_strength}-${_direction}`
+}
 </script>
 
 <template>
@@ -85,9 +138,11 @@ const cardsBoxWidth = ref(countPerRow * 200 + (countPerRow + 1) * 80)
                     :key="index"></picture-card>
     </div>
   </el-scrollbar>
-  <el-scrollbar v-else>
-    <div class="cards-mobile" :style="{width:cardsBoxWidth+'px'}">
-      <picture-card :data="item" v-for="(item,index) in workList" :key="index"></picture-card>
+  <el-scrollbar v-else @scroll="handleScroll">
+    <div class="cards-mobile" :style="{width:cardsBoxWidth+'px'}"
+         @touchstart="handleTouchstart">
+      <picture-card :data="item" :class="[setRandomShake()]"
+                    v-for="(item,index) in workList" :key="index" :auto-shake="false"></picture-card>
     </div>
   </el-scrollbar>
 </template>

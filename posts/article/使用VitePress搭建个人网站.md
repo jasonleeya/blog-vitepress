@@ -94,7 +94,8 @@ pnpm run docs:dev
 yarn docs:dev
 ```
 :::
-开发服务器应该在[http://localhost:5173]()上运行。在浏览器中访问 URL 以查看正在运行的新网站。
+
+开发服务器应该在[http://localhost:5173](http://localhost:5173)上运行。在浏览器中访问 URL 以查看正在运行的新网站。
 
 ## 总结
 

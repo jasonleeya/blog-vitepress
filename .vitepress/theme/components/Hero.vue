@@ -77,18 +77,10 @@ onUnmounted(() => {
 
 
 const scrollToContent = () => {
-  const elScrollBar = document.querySelector('.page-scrollbar>.el-scrollbar__wrap') as HTMLElement
-  if (elScrollBar) {
-    elScrollBar.scrollTo({
-      top: window.innerHeight - 63,
-      behavior: 'smooth'
-    })
-  } else {
-    document.documentElement.scrollTo({
-      top: window.innerHeight - 63,
-      behavior: 'smooth'
-    })
-  }
+  document.documentElement.scrollTo({
+    top: window.innerHeight - 63,
+    behavior: 'smooth'
+  })
 }
 
 const isLoading = ref(true)

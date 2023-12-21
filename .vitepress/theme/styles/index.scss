@@ -41,23 +41,13 @@ body {
   --aside-width: 260px;
   --card-bg: #fff;
 
-  .el-scrollbar {
-    --el-scrollbar-opacity: 0.4;
-    //--el-scrollbar-bg-color: var(--vp-c-brand-1);
-    --el-scrollbar-hover-opacity: 0.6;
-    //--el-scrollbar-hover-bg-color: var(--vp-c-brand-1);
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
   }
-
-  .el-scrollbar__bar.is-vertical {
-    width: 7px;
-  }
-
-  .el-scrollbar__bar.is-horizontal {
-    height: 7px;
-  }
-
-  .el-scrollbar__bar {
-    z-index: 9;
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
   }
 
   &.dark {
@@ -66,7 +56,9 @@ body {
     --card-bg: #202127;
   }
 }
-
+html{
+  scroll-behavior: smooth;
+}
 
 /**
  * Component: Button
@@ -131,7 +123,6 @@ body {
   --docsearch-primary-color: var(--vp-c-brand-1) !important;
 }
 
-/*自定义滚动条*/
 .VPNav {
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
   /*background-image: radial-gradient(transparent 1px, #fff 1px);*/

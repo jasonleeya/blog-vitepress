@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import {PropType, ref} from "vue";
+import {useIsMobile} from "@/hooks/useIsMobile.mjs";
 
 const props = defineProps({
   data: {
     type: Object as PropType<Work>,
     required: true
+  },
+  autoShake: {
+    type: Boolean as PropType<boolean>,
+    default: true
   }
 })
 let startX = 0
@@ -14,42 +19,47 @@ const strength = ref(0)
 const direction = ref('')
 
 const handleMouseEnter = (e: MouseEvent | TouchEvent) => {
-  if (isShaking) {
+  if (isShaking || !props.autoShake) {
     return
   }
   if (e instanceof MouseEvent) {
     startX = e.x;
   } else {
-    startX = e.touches[0].clientX
+    startX = e.touches[0]?.clientX
   }
   setTimeout(() => {
     startShake()
   }, 100)
 }
 const handleMouseMove = (e: MouseEvent | TouchEvent) => {
-  if (isShaking) {
+  if (isShaking || !props.autoShake) {
     return
   }
 
   if (e instanceof MouseEvent) {
     endX = e.x;
   } else {
-    endX = e.touches[0].clientX
+    endX = e.touches[0]?.clientX
   }
 }
 const handleMouseLeave = (e: MouseEvent | TouchEvent) => {
-  if (isShaking) {
+  if (isShaking || !props.autoShake) {
     return
   }
   if (e instanceof MouseEvent) {
     endX = e.x;
   } else {
-    endX = e.touches[0].clientX
+    endX = e.touches[0]?.clientX
   }
 }
+
+const isMobile = useIsMobile()
 const startShake = () => {
-  const s = Math.ceil(Math.abs((endX - startX) / 10))
-  strength.value = s > 30 ? 30 : s
+  let s = Math.ceil(Math.abs((endX - startX) / 10))
+  if (isMobile) {
+    s = s * 3
+  }
+  strength.value = s > 30 ? 30 : s;
   direction.value = (endX - startX > 0) ? 'l' : 'r'
   isShaking = true
 

@@ -36,6 +36,7 @@ export function getQueryParams(url: string): { [key: string]: string } {
 
   return queryObj;
 }
+
 export function buildQueryString(params: { [key: string]: string }): string {
   const searchParams = new URLSearchParams();
 
@@ -46,4 +47,8 @@ export function buildQueryString(params: { [key: string]: string }): string {
   }
 
   return searchParams.toString();
+}
+
+export function getRandomNumber(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min)) + min
 }

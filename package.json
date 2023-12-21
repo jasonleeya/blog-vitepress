@@ -9,7 +9,7 @@
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview",
     "node": "tsc node/index.ts && node node/index",
-    "deploy": "cloudbase framework deploy"
+    "deploy": "vitepress build && cloudbase framework deploy"
   },
   "author": "JasonLee",
   "license": "ISC",
