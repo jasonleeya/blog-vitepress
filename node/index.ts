@@ -21,6 +21,8 @@ function readAllPosts(parentPath = './posts') {
         posts.push({
           path:path.replace(/\.md$/i, '').replace(/^\./,''),
           ...fileData,
+          tags: fileData.tags ? fileData.tags : [],
+          category: fileData.category ? fileData.category : '',
           title: fileData.title ? fileData.title : getPostTitle(fileContent) || '',
           updateTime:formatDate(fileData.updateTime ? fileData.updateTime : getFileLastUpdateTimeFromGit(path)),
           cover: fileData.cover ? fileData.cover : getPostFirstImgAsCover(fileContent) || '',

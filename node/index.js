@@ -30,7 +30,7 @@ function readAllPosts(parentPath) {
                 var result = grayMatter(fs.readFileSync(path, 'utf-8'));
                 var fileData = result.data;
                 var fileContent = result.content;
-                posts.push(__assign(__assign({ path: path.replace(/\.md$/i, '').replace(/^\./, '') }, fileData), { title: fileData.title ? fileData.title : getPostTitle(fileContent) || '', updateTime: formatDate(fileData.updateTime ? fileData.updateTime : getFileLastUpdateTimeFromGit(path)), cover: fileData.cover ? fileData.cover : getPostFirstImgAsCover(fileContent) || '', sticky: fileData.sticky || 0, author: fileData.author || '', description: fileData.description || getPostDescription(fileContent) || '', createTime: formatDate(fileData.createTime ? fileData.createTime : getFileCreateTime(path)) }));
+                posts.push(__assign(__assign({ path: path.replace(/\.md$/i, '').replace(/^\./, '') }, fileData), { tags: fileData.tags ? fileData.tags : [], category: fileData.category ? fileData.category : '', title: fileData.title ? fileData.title : getPostTitle(fileContent) || '', updateTime: formatDate(fileData.updateTime ? fileData.updateTime : getFileLastUpdateTimeFromGit(path)), cover: fileData.cover ? fileData.cover : getPostFirstImgAsCover(fileContent) || '', sticky: fileData.sticky || 0, author: fileData.author || '', description: fileData.description || getPostDescription(fileContent) || '', createTime: formatDate(fileData.createTime ? fileData.createTime : getFileCreateTime(path)) }));
             }
         });
     }
