@@ -82,14 +82,14 @@ const emits = defineEmits<{
 
 const currentCategory = ref<Category | undefined>()
 const changeCategory = (item: Category) => {
-  if (currentCategory.value?.type === item.type) {
+  if (currentCategory.value?.name === item.name) {
     currentCategory.value = undefined
   } else {
     currentCategory.value = item
   }
 
-  groupPostListByCategory(currentCategory.value?.type)
-  emits('itemClick', {type: Types.category, value: item.type})
+  groupPostListByCategory(currentCategory.value?.name)
+  emits('itemClick', {type: Types.category, value: item.name})
 }
 
 const currentTag = ref<string | undefined>()
@@ -143,7 +143,7 @@ const isMobile = useIsMobile()
           currentType.count
         }}</span>{{ currentType.measureWord }}{{ currentType.name }}
     </div>
-    <el-scrollbar class="posts-nav-content" max-height="calc(100vh - 400px)">
+    <el-scrollbar class="posts-nav-content" max-height="calc(100vh - 420px)">
       <div v-show="currentType.type === Types.all" class="hot-posts">
         <div class="hot-posts-title">
           <icon-hot class="icon"></icon-hot>

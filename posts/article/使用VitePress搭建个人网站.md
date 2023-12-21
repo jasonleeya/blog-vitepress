@@ -1,5 +1,5 @@
 ---
-category: article
+category: 文章
 tags:
   - VitePress
   - 网站搭建

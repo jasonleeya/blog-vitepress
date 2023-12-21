@@ -1,6 +1,8 @@
 ---
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
+title: 我的技术分享
+titleTemplate: :title
 #
 #hero:
 #  name: "我的技术分享"

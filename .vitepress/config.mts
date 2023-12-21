@@ -50,7 +50,7 @@ categoryMap.forEach((value, key) => {
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "我的技术分享",
+  title: "JasonLee的技术分享",
   description: "欢迎来到我的技术分享小站",
   // 官方bug刷新就404了
   // rewrites: {

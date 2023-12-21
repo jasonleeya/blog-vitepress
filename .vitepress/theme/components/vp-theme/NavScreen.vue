@@ -116,6 +116,7 @@ const getItem = ({type,value}) => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 :deep(.menu) {
@@ -127,7 +128,7 @@ const getItem = ({type,value}) => {
   width: calc(100% + 40px);
   height: calc(100vh - 100px);
   margin: 0 -20px;
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
 }
 </style>

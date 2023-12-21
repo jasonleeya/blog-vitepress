@@ -2,6 +2,8 @@
 icon: circle-info
 cover: /assets/images/cover3.jpg
 footer: true
+title: 我的技术分享
+titleTemplate: :title
 ---
 # 介绍页
 

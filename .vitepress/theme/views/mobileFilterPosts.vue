@@ -61,8 +61,8 @@ if(type==='tag'){
     </div>
     <template v-if="type==='category'">
       <div class="filter categories">
-        <div class="category" v-for="item in categories" :key="item.name" @click="changeCategory(item.type)"
-             :class="{current:currentCategory===item.type}">
+        <div class="category" v-for="item in categories" :key="item.name" @click="changeCategory(item.name)"
+             :class="{current:currentCategory===item.name}">
           <img class="icon" :src="item.icon" alt="">
           <div class="name">{{ item.name }}</div>
           <div class="count">{{ item.count }}</div>

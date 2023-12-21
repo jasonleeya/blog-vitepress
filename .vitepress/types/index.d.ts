@@ -19,7 +19,6 @@ interface PostMeta {
 }
 
 interface Category {
-  type: string,
   name: string,
   icon: string,
   description: string,

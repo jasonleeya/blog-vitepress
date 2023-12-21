@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import CollapsibleBox from "@components/CollapsibleBox.vue";
 import {ArrowLeftBold, ArrowRightBold, Location} from "@element-plus/icons-vue";
 import {PropType, ref} from "vue";
@@ -22,9 +22,9 @@ const toggleInfoShow = () => {
 </script>
 
 <template>
-  <collapsible-box class="img-info" :class="{mobile:isMobile}" :open="isInfoShow" direction="both">
-    <div class="switch" :class="{close:!isInfoShow}" @click="toggleInfoShow"></div>
-    <div class="wrapper" v-if="info?.url">
+  <collapsible-box :class="{mobile:isMobile}" :open="isInfoShow" class="img-info" direction="both">
+    <div :class="{close:!isInfoShow}" class="switch" @click="toggleInfoShow"></div>
+    <div v-if="info?.url" class="wrapper">
       <div class="title">{{ info?.locales.zh?.headline }}</div>
       <div class="description">{{ info?.locales.zh?.description }}</div>
       <div class="copyright">{{ info?.locales.zh?.copyright }}</div>
@@ -34,7 +34,7 @@ const toggleInfoShow = () => {
         </el-icon>
         {{ info?.locales.zh?.title }}
       </div>
-      <div class="change-img" v-if="isInfoShow">
+      <div v-if="isInfoShow" class="change-img">
         <el-icon class="icon" color="#fff" @click="changeImg(-1)">
           <ArrowLeftBold/>
         </el-icon>
@@ -46,7 +46,7 @@ const toggleInfoShow = () => {
   </collapsible-box>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .img-info {
   margin: 20px;
   padding: 0.5rem;

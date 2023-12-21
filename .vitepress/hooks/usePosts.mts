@@ -39,7 +39,7 @@ export function usePosts() {
   const cList = Array.from(categoryMap)
   const categoryInfo = useData<{ categoryInfo: Category[] }>().theme.value.categoryInfo as Category[]
   cList.forEach(([key, value]) => {
-    const category = categoryInfo.find(item => item.type === key)
+    const category = categoryInfo.find(item => item.name === key)
     if (category) {
       categories.push({
         ...category, count: value
@@ -49,11 +49,10 @@ export function usePosts() {
 
   const groupPostListByCategory = (category: string) => {
     const list: PostMeta[] = JSON.parse(JSON.stringify(_postList))
-    const type = categoryInfo.find(item => item.type === category)?.type
     if (!category) {
       postList.value = list
     } else {
-      postList.value = list.filter(post => post.category === type)
+      postList.value = list.filter(post => post.category === category)
     }
   }
 
