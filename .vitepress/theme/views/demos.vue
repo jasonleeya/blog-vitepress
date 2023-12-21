@@ -107,7 +107,7 @@ const handleScroll = (e: { scrollLeft: number }) => {
 }
 
 const startShake = () => {
-  let s = Math.ceil(Math.abs((endX - startX) / 15))
+  let s = Math.ceil(Math.abs((endX - startX) / 10))
 
   strength.value = s > 20 ? 20 : s;
 
