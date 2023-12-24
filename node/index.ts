@@ -25,7 +25,8 @@ function readAllPosts(parentPath = './posts') {
           category: fileData.category ? fileData.category : '',
           title: fileData.title ? fileData.title : getPostTitle(fileContent) || '',
           updateTime:formatDate(fileData.updateTime ? fileData.updateTime : getFileLastUpdateTimeFromGit(path)),
-          cover: fileData.cover ? fileData.cover : getPostFirstImgAsCover(fileContent) || '',
+          cover: fileData.cover||'',
+          imgs: getPostImgs(fileContent) || '',
           sticky: fileData.sticky || 0,
           author: fileData.author || '',
           description: fileData.description || getPostDescription(fileContent) || '',
@@ -52,8 +53,12 @@ function getPostTitle(content: string) {
   return content.match(/# (.*)/)?.[1]
 }
 
-function getPostFirstImgAsCover(content: string) {
-  return content.match(/!\[.*]\((.*)\)/)?.[1]
+function getPostImgs(content: string) {
+  const match = content.match(/!\[[^\]]*]\([^)]*\)/g)
+  if(!match) return []
+  return match.map(item=>{
+    return item.match(/!\[[^\]]*]\(([^)]*)\)/)?.[1]
+  })
 }
 
 function getPostDescription(content: string) {

@@ -30,7 +30,7 @@ function readAllPosts(parentPath) {
                 var result = grayMatter(fs.readFileSync(path, 'utf-8'));
                 var fileData = result.data;
                 var fileContent = result.content;
-                posts.push(__assign(__assign({ path: path.replace(/\.md$/i, '').replace(/^\./, '') }, fileData), { tags: fileData.tags ? fileData.tags : [], category: fileData.category ? fileData.category : '', title: fileData.title ? fileData.title : getPostTitle(fileContent) || '', updateTime: formatDate(fileData.updateTime ? fileData.updateTime : getFileLastUpdateTimeFromGit(path)), cover: fileData.cover ? fileData.cover : getPostFirstImgAsCover(fileContent) || '', sticky: fileData.sticky || 0, author: fileData.author || '', description: fileData.description || getPostDescription(fileContent) || '', createTime: formatDate(fileData.createTime ? fileData.createTime : getFileCreateTime(path)) }));
+                posts.push(__assign(__assign({ path: path.replace(/\.md$/i, '').replace(/^\./, '') }, fileData), { tags: fileData.tags ? fileData.tags : [], category: fileData.category ? fileData.category : '', title: fileData.title ? fileData.title : getPostTitle(fileContent) || '', updateTime: formatDate(fileData.updateTime ? fileData.updateTime : getFileLastUpdateTimeFromGit(path)), cover: fileData.cover || '', imgs: getPostImgs(fileContent) || '', sticky: fileData.sticky || 0, author: fileData.author || '', description: fileData.description || getPostDescription(fileContent) || '', createTime: formatDate(fileData.createTime ? fileData.createTime : getFileCreateTime(path)) }));
             }
         });
     }
@@ -51,9 +51,14 @@ function getPostTitle(content) {
     var _a;
     return (_a = content.match(/# (.*)/)) === null || _a === void 0 ? void 0 : _a[1];
 }
-function getPostFirstImgAsCover(content) {
-    var _a;
-    return (_a = content.match(/!\[.*]\((.*)\)/)) === null || _a === void 0 ? void 0 : _a[1];
+function getPostImgs(content) {
+    var match = content.match(/!\[[^\]]*]\([^)]*\)/g);
+    if (!match)
+        return [];
+    return match.map(function (item) {
+        var _a;
+        return (_a = item.match(/!\[[^\]]*]\(([^)]*)\)/)) === null || _a === void 0 ? void 0 : _a[1];
+    });
 }
 function getPostDescription(content) {
     var _a;

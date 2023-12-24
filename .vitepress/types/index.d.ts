@@ -15,6 +15,7 @@ interface PostMeta {
   sticky: number;
   author: string;
   cover: string;
+  imgs: string[];
   heat?: number;
 }
 
