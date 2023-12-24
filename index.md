@@ -27,4 +27,6 @@ titleTemplate: :title
 <script setup>
 import Home from '.vitepress/theme/views/home.vue'
 </script>
+<ClientOnly>
 <home/>
+</ClientOnly>
