@@ -55,7 +55,7 @@ const handleMouseLeave = (e: MouseEvent | TouchEvent) => {
 
 const isMobile = useIsMobile()
 const startShake = () => {
-  let s = Math.ceil(Math.abs((endX - startX) / 10))
+  let s = Math.ceil(Math.abs((endX - startX) / 30))
   if (isMobile) {
     s = s * 3
   }
@@ -154,6 +154,7 @@ const startShake = () => {
     border-radius: 5px;
     -webkit-user-drag: none;
     user-select: none;
+    object-fit: contain;
   }
 
   .title {
@@ -164,6 +165,7 @@ const startShake = () => {
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 5px 0 2px;
+    font-weight: bold;
   }
 
   .date {

@@ -57,7 +57,7 @@ export default defineConfig({
   //   'posts/:category/:post': '/:category/:post',
   // },
   lastUpdated: true,
-  ignoreDeadLinks:'localhostLinks',
+  ignoreDeadLinks: true,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: '/logo.svg',

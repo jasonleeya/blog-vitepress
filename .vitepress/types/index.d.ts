@@ -62,5 +62,5 @@ interface Work {
   date: string
   img: string
   // desc: string
-  // link: string
+  link: string
 }
