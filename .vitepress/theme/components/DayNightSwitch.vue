@@ -73,7 +73,7 @@ watch(() => props.modelValue, (value) => {
   overflow: hidden;
   padding: 5px;
   box-sizing: border-box;
-  box-shadow: 0 -1px 1px rgba(1, 13, 61, 0.42), 0 1px 1px #d2d2d2;
+  box-shadow: 0 -2px 2px rgba(1, 13, 61, 0.42), 0 2px 2px #d2d2d2;
 
   &:after {
     content: '';
@@ -84,7 +84,7 @@ watch(() => props.modelValue, (value) => {
     left: 0;
     top: 0;
     border-radius: 20px;
-    box-shadow: inset 0 1px 1px #010d3d, inset 0 -1px 1px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 2px 2px #010d3d, inset 0 -2px 2px rgba(0, 0, 0, 0.3);
   }
 
   .slider {
@@ -107,17 +107,17 @@ watch(() => props.modelValue, (value) => {
       top: 50%;
       transform: translate(-50%, -50%);
       z-index: 2;
-      box-shadow: inset 1px 1px 1px #fff, inset -1px -1px 1px #848688, 1px 1px 1px #535456;
+      box-shadow: inset 2px 2px 2px #fff, inset -2px -2px 2px #848688, 2px 2px 2px #535456;
       overflow: hidden;
 
       .sun {
         background: #F0C529;
-        box-shadow: inset 1px 1px 1px #fff, inset -1px -1px 1px #848688, 1px 1px 1px #535456;
+        box-shadow: inset 2px 2px 2px #fff, inset -2px -2px 2px #848688, 2px 2px 2px #535456;
       }
 
       .moon {
         background: #C2CBD2;
-        box-shadow: inset 1px 1px 1px #fff, inset -1px -1px 1px #9a9a9a;
+        box-shadow: inset 2px 2px 2px #fff, inset -2px -2px 2px #9a9a9a;
         position: absolute;
         top: 0;
         transform: translateX(30px);
@@ -130,7 +130,7 @@ watch(() => props.modelValue, (value) => {
           background: #939EB0;
           position: absolute;
           left: 5px;
-          box-shadow: inset 0 0 1px #59606b;
+          box-shadow: inset 0 0 2px #59606b;
           top: 12px;
 
           &:before {
@@ -142,7 +142,7 @@ watch(() => props.modelValue, (value) => {
             background: #939EB0;
             position: absolute;
             left: 8px;
-            box-shadow: inset 0 0 1px #59606b;
+            box-shadow: inset 0 0 2px #59606b;
             top: -6px;
           }
 
@@ -155,7 +155,7 @@ watch(() => props.modelValue, (value) => {
             background: #939EB0;
             position: absolute;
             left: 12px;
-            box-shadow: inset 0 0 1px #59606b;
+            box-shadow: inset 0 0 2px #59606b;
             top: 6px;
           }
         }
@@ -163,7 +163,7 @@ watch(() => props.modelValue, (value) => {
     }
 
     .light {
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.45);
       width: 50px;
       height: 50px;
       border-radius: 50%;
@@ -172,7 +172,7 @@ watch(() => props.modelValue, (value) => {
       top: 50%;
       transform: translate(-50%, -50%);
       z-index: 1;
-      box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.1), 0 0 0 20px rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.15), 0 0 0 20px rgba(255, 255, 255, 0.15);
     }
   }
 
@@ -196,10 +196,10 @@ watch(() => props.modelValue, (value) => {
 
   &.night {
     background: #1D212D;
-    box-shadow: 0 -1px 1px rgba(255, 255, 255, 0.5), 0 1px 1px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 -2px 2px rgba(255, 255, 255, 0.5), 0 2px 2px rgba(255, 255, 255, 0.5);
 
     &:after {
-      box-shadow: inset 0 1px 1px #000, inset 0 -1px 1px #000;
+      box-shadow: inset 0 2px 2px #000, inset 0 -2px 2px #000;
     }
 
     .slider {
