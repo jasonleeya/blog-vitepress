@@ -138,6 +138,12 @@ export default defineConfig({
               new URL('./theme/components/vp-theme/Nav.vue', import.meta.url)
           )
         },
+        {
+          find: /^.*\/VPSwitchAppearance\.vue$/,
+          replacement: fileURLToPath(
+              new URL('./theme/components/vp-theme/SwitchAppearance.vue', import.meta.url)
+          )
+        },
       ]
     }
   }

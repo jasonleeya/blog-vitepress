@@ -222,6 +222,7 @@ const isMobile = useIsMobile()
       width: 100px;
       height: 75px;
       border-radius: 4px;
+      object-fit: cover;
     }
   }
 

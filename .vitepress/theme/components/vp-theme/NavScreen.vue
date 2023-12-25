@@ -2,7 +2,7 @@
 import {useScrollLock} from '@vueuse/core'
 import {inBrowser, useRouter} from 'vitepress'
 import {ref} from 'vue'
-import VPSwitchAppearance from '@vp-theme/components/VPSwitchAppearance.vue'
+import SwitchAppearance from './SwitchAppearance.vue'
 import VPNavBarMenu from '@vp-theme/components/VPNavBarMenu.vue'
 import BlogInfoMobile from "@components/BlogInfoMobile.vue";
 import PostsNav from "@components/PostsNav.vue";
@@ -37,7 +37,7 @@ const getItem = ({type,value}) => {
       <rainbow-waves class="container">
         <div class="top-nav">
           <VPNavBarMenu class="menu"/>
-          <VPSwitchAppearance/>
+          <SwitchAppearance/>
         </div>
         <blog-info-mobile></blog-info-mobile>
         <posts-nav @item-click="getItem" class="posts-nav-mobile"></posts-nav>

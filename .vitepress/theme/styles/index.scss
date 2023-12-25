@@ -55,6 +55,10 @@ body {
     --prism-scheme: dark;
     --card-bg: #202127;
   }
+
+  img[alt="cover"] {
+    width: 100%;
+  }
 }
 html{
   scroll-behavior: smooth;
