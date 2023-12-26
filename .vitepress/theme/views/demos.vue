@@ -9,7 +9,7 @@ const workList = ref<Work[]>([
     id: 1,
     title: "昼夜切换按钮",
     date: "2023/12/18",
-    img: "https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2023年12月/20231224150408.png",
+    img: "https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2023_12/202312241504082.png",
     link:'https://demos.lsj97.com/#/dayNightSwitch'
   },
   // {
@@ -77,6 +77,7 @@ const workList = ref<Work[]>([
 const isMobile = useIsMobile()
 const countPerRow = Math.ceil(workList.value.length / 2)
 const cardsBoxWidth = ref(countPerRow * 200 + (countPerRow + 1) * 80)
+cardsBoxWidth.value =cardsBoxWidth.value<window.innerWidth?window.innerWidth:cardsBoxWidth.value
 
 
 let startX = -1

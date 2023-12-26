@@ -7,4 +7,6 @@ titleTemplate: :title
 <script setup>
 import Demos from '../.vitepress/theme/views/demos.vue'
 </script>
+<ClientOnly>
 <demos/>
+</ClientOnly>
