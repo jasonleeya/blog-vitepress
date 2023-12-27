@@ -13,13 +13,17 @@ defineProps({
   direction: {
     type: String as PropType<'horizontal' | 'vertical' | 'both'>,
     default: 'vertical'
+  },
+  transformOrigin: {
+    type: String as PropType<'left' | 'right' | 'top' | 'bottom'>,
+    default: 'right'
   }
 })
 
 </script>
 
 <template>
-  <div class="collapsible-box" :class="{expand:open,[direction]:true}" :style="{'--duration':duration + 'ms'}">
+  <div class="collapsible-box" :class="{expand:open,[direction]:true}" :style="{'--duration':duration + 'ms',justifyContent:transformOrigin}">
     <div class="collapsible-box-content">
       <slot></slot>
     </div>

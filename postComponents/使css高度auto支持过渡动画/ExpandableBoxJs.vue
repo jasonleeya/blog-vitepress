@@ -4,7 +4,7 @@ import {ref} from "vue";
 const boxRef = ref();
 const isExpand = ref(false);
 const duration = 200;
-const toggle = () => {
+const toggle = () => { // [!code focus:26]
   isExpand.value = !isExpand.value;
   if (isExpand.value) {
     boxRef.value.style.height = 'auto';
