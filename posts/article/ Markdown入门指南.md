@@ -176,6 +176,14 @@ ___
 点击查看效果：
 [跳转至表格](#anchor-id)
 
+## emoji表情
+一些Markdown应用程序允许您通过键入表情符号短代码来插入表情符号。这些以冒号开头和结尾，并包含表情符号的名称。
+```markdown
+:smile:
+```
+效果：:smile: <br>
+可以在此[表情符号简码列表](https://gist.github.com/rxaviers/7360908)查阅更多emoji表情，但值得注意的是，表情符号简码因应用程序而异。
+
 ## 内嵌HTML标签
 
 markdown支持直接在文件中嵌入HTML元素，而元素也是可以直接设置样式的，也可以使用`script`标签写js代码（可能是VitePress的markdown拓展内容，原生markdown可能并不支持js代码），需要注意的是，块级元素必须要在前后加上空行。
