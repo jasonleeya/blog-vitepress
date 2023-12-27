@@ -211,9 +211,5 @@ gird布局中有一个全新的单位`fr`，用于定义网格轨道大小的弹
 
 ### 总结
 
-到此，我便介绍完了三种使css高度auto支持过渡动画的方法，三种方法各有优劣，`max-height`/`max-widht`,简单实用但效果不佳，js配合实现可靠兼容性好但过程难懂，代码复杂`grid`的`fr`只用css实现但`grid`属性兼容性没那么好，如果不考虑兼容性问题的话，我推荐使用第三种方法，在vue中，也可以将其封装成一个组件，方便调用，这里可以参考我自己封装的一个组件：
-
-::: details 点击查看源码
-<<< ../../.vitepress/theme/components/CollapsibleBox.vue
-:::
+到此，我便介绍完了三种使css高度auto支持过渡动画的方法，三种方法各有优劣，`max-height`/`max-widht`,简单实用但效果不佳，js配合实现可靠兼容性好但过程难懂，代码复杂`grid`的`fr`只用css实现但`grid`属性兼容性没那么好，如果不考虑兼容性问题的话，我推荐使用第三种方法，在vue中，也可以将其封装成一个组件，方便调用，这里可以参考我自己封装的一个组件：[CollapsibleBox.vue](https://github.com/jasonleeya/blog-vitepress/blob/master/.vitepress/theme/components/CollapsibleBox.vue)
 
