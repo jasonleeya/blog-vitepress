@@ -6,8 +6,8 @@ tags:
 
 <script setup>
 import Read from "@components/Read.vue";
-import Box1 from "../../postComponents/使css高度auto支持过渡动画/ExpandableBoxMaxHeight.vue";
-import Box2 from "../../postComponents/使css高度auto支持过渡动画/ExpandableBoxJs.vue";
+import Box1 from "./ExpandableBoxMaxHeight.vue";
+import Box2 from "./ExpandableBoxJs.vue";
 import {ref} from 'vue';
 
 const isExpand = ref(false);
@@ -16,6 +16,7 @@ const isExpand3 = ref(false);
 const isExpand4 = ref(false);
 const isExpand5 = ref(false);
 </script>
+
 <read/>
 
 <style>
@@ -101,7 +102,7 @@ const isExpand5 = ref(false);
 <Box2/>
 
 ::: details 点击查看源码
-<<< ../../postComponents/使css高度auto支持过渡动画/ExpandableBoxJs.vue
+<<< ./ExpandableBoxJs.vue
 :::
 
 通过js配合`transition`成功的实现了元素不定高度的过渡动画，但是可以看到，整个实现过程是很复杂的，而且必须完全理解动画实现的每一个步骤才能实现。
