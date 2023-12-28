@@ -20,7 +20,7 @@ function readAllPosts(parentPath = './posts') {
           const fileContent = result.content
 
           posts.push({
-            path:path.replace(/\.md$/i, '').replace(/^\./,''),
+            path:path.replace(/index\.md$/i, '').replace(/^\./,''),
             ...fileData,
             tags: fileData.tags ? fileData.tags : [],
             category: fileData.category ? fileData.category : '',

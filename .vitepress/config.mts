@@ -81,9 +81,8 @@ export default defineConfig({
       {icon: '/images/medias/steam.svg', type: 'steam', link: 'https://steamcommunity.com/profiles/76561198961789123/'},
     ],
     categoryInfo,
-    outline: {
-      label: '当前页面',
-    },
+    outline: 'deep',
+    outlineTitle: '当前页面',
     returnToTopLabel: '回到顶部',
     sidebarMenuLabel: '相关文章',
     sidebar,
