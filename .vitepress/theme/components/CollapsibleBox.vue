@@ -14,7 +14,7 @@ defineProps({
     type: String as PropType<'horizontal' | 'vertical' | 'both'>,
     default: 'vertical'
   },
-  transformOrigin: {
+  justifyContent: {
     type: String as PropType<'left' | 'right' | 'top' | 'bottom'>,
     default: 'right'
   }
@@ -23,7 +23,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="collapsible-box" :class="{expand:open,[direction]:true}" :style="{'--duration':duration + 'ms',justifyContent:transformOrigin}">
+  <div class="collapsible-box" :class="{expand:open,[direction]:true}" :style="{'--duration':duration + 'ms',justifyContent}">
     <div class="collapsible-box-content">
       <slot></slot>
     </div>

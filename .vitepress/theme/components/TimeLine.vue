@@ -42,7 +42,7 @@ timeLineList.value.push(...Array.from(timeLineMap.entries()).map(item => {
               fill="#231F20"/>
         </svg>
       </div>
-      <collapsible-box :open="item.isExpand">
+      <collapsible-box :open="item.isExpand" justifyContent="left">
         <div class="item" v-for="post in item.list">
           <div class="time">{{ formatDate(post.createTime, 'MM/dd') }}</div>
           <div class="title"><a :href="post.path">{{ post.title }}</a></div>
