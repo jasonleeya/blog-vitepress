@@ -3,7 +3,7 @@ category: 笔记
 tags:
   - Vue
   - 组件
-  - svg
+  - SVG
   - 网站搭建
 ---
 <script setup>

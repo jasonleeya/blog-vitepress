@@ -1,7 +1,8 @@
 ---
 category: 文章
 tags:
-  - css
+  - CSS
+  - Javascript
 ---
 
 <script setup>

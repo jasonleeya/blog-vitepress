@@ -7,12 +7,22 @@ tags:
 <script setup>
 import Read from "@components/Read.vue";
 import CanvasSvgCompare from "./CanvasSvgCompare.vue";
+import {ref} from 'vue';
 
+const arcXr = ref(0);
+const arcMx = ref(160);
+const arcMy = ref(180);
+const arcX = ref(240);
+const arcY = ref(220);
+const arcRx = ref(100);
+const arcRy = ref(50);
+const arcLaf = ref(0);
+const arcSf = ref(0);
 </script>
 
 <read/>
 
-# SVG简单入门
+# SVG入门到入土
 
 相信绝大多数前端同学都不愿意自己手写SVG代码吧，这种事情还是直接交给UI省事的多，但是我学习了SVG的基础用法之后，发现SVG还是可以给平时开发带来很大便利的。在此我写下这篇文章，方便查阅，也希望能帮助到其他前端小伙伴入门svg。
 
@@ -65,7 +75,7 @@ canvas绘制出来的图形是位图，放大后可以明显的锯齿状，而SV
 ```
 
 ```vue
-<!-- /components/icons/IconTest.vue -->
+<!-- @/components/icons/IconTest.vue -->
 
 <template>
   <svg width="100" height="100">
@@ -73,9 +83,11 @@ canvas绘制出来的图形是位图，放大后可以明显的锯齿状，而SV
   </svg>
 </template>
 
-<!-- /test.vue -->
+<!-- @/views/test.vue -->
 
-<span><IconTest/>组件引入SVG</span>
+...
+<span><IconTest />组件引入SVG</span>
+...
 ```
 
 :::
@@ -260,10 +272,150 @@ SVG代码都放在 `<svg>` 标签之中，`widht` 和 `height`
 
 `path` 有5种画直线的命令：
 
-- `M` 起始点坐标，`Move to` 的意思。每个路径都必须以 `M` 开始。`M` 传入 `x` 和 `y` 坐标，用逗号或者空格隔开。下面是 `M` 的一个例子，但是单独一个 `M` 指令不会绘制任何图形，但是我将移动到的点标注出来了。
+#### `M`
+
+起始点坐标，`Move to` 的意思。每个路径都必须以 `M` 开始。`M` 传入 `x` 和 `y` 坐标，用逗号或者空格隔开。下面是 `M` 的一个例子，但是单独一个 `M` 指令不会绘制任何图形，但是我将移动到的点标注出来了。
 
 <el-card class="card">
-<svg width="50" height="50">
-  <circle cx="10" cy="10" r="1"></circle>
+<svg width="100" height="100">
+  <circle cx="10" cy="10" r="1" stroke="red"></circle>
 </svg>
 </el-card>
+<br>
+
+#### `L` 
+`Line to`的意思。`L` 需要两个参数，分别是一个点的 `x` 轴和 `y` 轴坐标，`L` 命令将会在当前位置和新位置（`L` 前面画笔所在的点）之间画一条线段。
+
+<el-card class="card">
+  <svg width="100" height="100">
+   <path d="M0 0,L50 30" stroke="red"></path>
+  </svg>
+</el-card>
+<br>
+
+#### `H`
+`Horizontal line to`的意思，由于是水平移动那目标位置，所以只需要一个参数，即目标点y轴。
+
+<el-card class="card">
+  <svg width="100" height="100">
+   <path d="M0 0,L50 30 H90" stroke="red" fill="none"></path>
+  </svg>
+</el-card>
+<br>
+
+#### `V`
+`Vertical line to`的意思，也是只需要一个参数，目标点x轴。
+
+<el-card class="card">
+  <svg width="100" height="100">
+   <path d="M0 0,L50 30 H90 V80" stroke="red" fill="none"></path>
+  </svg>
+</el-card>
+<br>
+
+#### `Z`
+关闭当前路径，`closepath` 的意思。它会绘制一条直线回到当前子路径的起点，不用区分大小写。
+
+<el-card class="card">
+  <svg width="100" height="100">
+   <path d="M0 0,L50 30 H90 V80Z " stroke="red" fill="none"></path>
+  </svg>
+</el-card>
+
+代码如下：
+
+```html
+<el-card class="card">
+  <svg width="100" height="100">
+   <path d="M0 0,L50 30 H90 V80Z " stroke="red" fill="none"></path>
+  </svg>
+</el-card>
+```
+
+### 曲线命令
+
+在 `SVG` 中绘制平滑曲线的命令有3个，其中一个可以绘制圆弧，另外两个用来绘制贝塞尔曲线。
+
+#### A
+`A` 为绘制圆弧的命令。 弧形可以视为圆形或椭圆形的一部分，假设，已知椭圆形的长轴半径和短轴半径，并且已知两个点（在椭圆上），根据半径和两点，可以画出两个椭圆，在每个椭圆上根据两点都可以画出两种弧形。所以，仅仅根据半径和两点，可以画出四种弧形。为了保证创建的弧形唯一，A 命令需要用到比较多的参数：
+```html
+A(rx, ry, xr, laf, sf, x, y)
+```
+- `rx` ：椭圆X轴半径
+- `ry` ：椭圆Y轴半径
+- `xr` ：椭圆旋转角度
+- `laf` ：是否选择弧长较长的那一段。0: 短边（小于180度）; 1: 长边（大于等于180度）
+- `sf` ：是否顺时针绘制。0: 逆时针; 1: 顺时针
+- `x` ：终点X轴坐标
+- `y` ：终点Y轴坐标
+
+上面的公式中并没有起点，起点其实是由 `M` 或者上一次绘制的终点决定的，我们通过两个点和椭圆的半径，可以绘制出两个椭圆,椭圆可以被切割出4个圆弧：
+
+```html
+  <svg width="400" height="200">
+    <line x1="2" y1="1" x2="400" y2="200" stroke="#999"></line>
+    <!--红--><!-- [!code focus:8]-->
+    <path d="M160 80 A100 50 0 1 1 240 120" stroke="red" fill="none"></path>
+    <!--蓝-->
+    <path d="M160 80 A100 50 0 0 0 240 120" stroke="blue" fill="none"></path>
+    <!--绿-->
+    <path d="M160 80 A100 50 0 1 0 240 120" stroke="green" fill="none"></path>
+    <!--黄-->
+    <path d="M160 80 A100 50 0 0 1 240 120" stroke="#efef00" fill="none"></path>
+    <circle cx="160" cy="80" r="3" fill="black"/>
+    <circle cx="240" cy="120" r="3" fill="black"/>
+  </svg>
+```
+
+<el-card class="card">
+  <svg width="400" height="200">
+    <line x1="2" y1="1" x2="400" y2="200" stroke="#999"></line>
+    <path d="M160 80 A100 50 0 1 1 240 120" stroke="red" fill="none"></path>
+    <path d="M160 80 A100 50 0 0 0 240 120" stroke="blue" fill="none"></path>
+    <path d="M160 80 A100 50 0 1 0 240 120" stroke="green" fill="none"></path>
+    <path d="M160 80 A100 50 0 0 1 240 120" stroke="#efef00" fill="none"></path>
+    <circle cx="160" cy="80" r="3" fill="black"/>
+    <circle cx="240" cy="120" r="3" fill="black"/>
+  </svg>
+</el-card>
+
+上面列子是固定旋转角度 `xr` 属性的，如果在加上旋转角度，则可以绘制出固定两点与椭圆半径的无数个弧线：
+
+<el-card class="card">
+  <svg width="400" height="400">
+    <text y="16">xr:{{arcXr}}</text>
+    <line :x1="arcMx" :y1="arcMy" :x2="arcX" :y2="arcY" stroke="#999"></line>
+    <path :d="`M${arcMx} ${arcMy} A${arcRx} ${arcRy} ${arcXr} 1 1 ${arcX} ${arcY}`" stroke="red" fill="none"></path>
+    <path :d="`M${arcMx} ${arcMy} A${arcRx} ${arcRy} ${arcXr} 0 0 ${arcX} ${arcY}`" stroke="blue" fill="none"></path>
+    <path :d="`M${arcMx} ${arcMy} A${arcRx} ${arcRy} ${arcXr} 1 0 ${arcX} ${arcY}`" stroke="green" fill="none"></path>
+    <path :d="`M${arcMx} ${arcMy} A${arcRx} ${arcRy} ${arcXr} 0 1 ${arcX} ${arcY}`" stroke="#efef00" fill="none"></path>
+    <circle :cx="arcMx" :cy="arcMy" r="3" fill="black"/>
+    <circle :cx="arcX" :cy="arcY" r="3" fill="black"/>
+  </svg>
+</el-card>
+
+滑动改变 `xr`值:
+
+<el-slider v-model="arcXr" :min="-180" :max="180" style="width:200px"/>
+
+我们不妨大胆点，再将其他元素值动态化：
+
+<div style="display: flex;gap:10px">
+起始点坐标：
+x ：<el-slider v-model="arcMx" :min="0" :max="400" style="width:200px"/>
+y ：<el-slider v-model="arcMy" :min="0" :max="400" style="width:200px"/>
+</div>
+
+<div style="display: flex;gap:10px">
+终点坐标：
+x ：<el-slider v-model="arcX" :min="0" :max="400" style="width:200px"/>
+y ：<el-slider v-model="arcY" :min="0" :max="400" style="width:200px"/>
+</div>
+
+<div style="display: flex;gap:10px">
+椭圆半径：
+x ：<el-slider v-model="arcRx" :min="0" :max="400" style="width:200px"/>
+y ：<el-slider v-model="arcRy" :min="0" :max="400" style="width:200px"/>
+</div>
+
+#### C
