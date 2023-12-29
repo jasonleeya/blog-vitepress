@@ -14,24 +14,26 @@ function readAllPosts(parentPath = './posts') {
       if (fs.statSync(path).isDirectory()) {
         readAllPosts(path)
       } else {
-        const result = grayMatter(fs.readFileSync(path, 'utf-8'))
-        const fileData = result.data
-        const fileContent = result.content
+        if (path.match(/\.md$/)) {
+          const result = grayMatter(fs.readFileSync(path, 'utf-8'));
+          const fileData = result.data
+          const fileContent = result.content
 
-        posts.push({
-          path:path.replace(/\.md$/i, '').replace(/^\./,''),
-          ...fileData,
-          tags: fileData.tags ? fileData.tags : [],
-          category: fileData.category ? fileData.category : '',
-          title: fileData.title ? fileData.title : getPostTitle(fileContent) || '',
-          updateTime:formatDate(fileData.updateTime ? fileData.updateTime : getFileLastUpdateTimeFromGit(path)),
-          cover: fileData.cover||'',
-          imgs: getPostImgs(fileContent) || '',
-          sticky: fileData.sticky || 0,
-          author: fileData.author || '',
-          description: fileData.description || getPostDescription(fileContent) || '',
-          createTime:formatDate(fileData.createTime ? fileData.createTime : getFileCreateTime(path)),
-        })
+          posts.push({
+            path:path.replace(/index\.md$/i, '').replace(/^\./,''),
+            ...fileData,
+            tags: fileData.tags ? fileData.tags : [],
+            category: fileData.category ? fileData.category : '',
+            title: fileData.title ? fileData.title : getPostTitle(fileContent) || '',
+            updateTime:formatDate(fileData.updateTime ? fileData.updateTime : getFileLastUpdateTimeFromGit(path)),
+            cover: fileData.cover||'',
+            imgs: getPostImgs(fileContent) || '',
+            sticky: fileData.sticky || 0,
+            author: fileData.author || '',
+            description: fileData.description || getPostDescription(fileContent) || '',
+            createTime:formatDate(fileData.createTime ? fileData.createTime : getFileCreateTime(path)),
+          })
+        }
       }
     })
   } catch (err) {

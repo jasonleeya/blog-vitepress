@@ -6,8 +6,8 @@ tags:
 
 <script setup>
 import Read from "@components/Read.vue";
-import Box1 from "../../postComponents/使css高度auto支持过渡动画/ExpandableBoxMaxHeight.vue";
-import Box2 from "../../postComponents/使css高度auto支持过渡动画/ExpandableBoxJs.vue";
+import Box1 from "./ExpandableBoxMaxHeight.vue";
+import Box2 from "./ExpandableBoxJs.vue";
 import {ref} from 'vue';
 
 const isExpand = ref(false);
@@ -16,6 +16,7 @@ const isExpand3 = ref(false);
 const isExpand4 = ref(false);
 const isExpand5 = ref(false);
 </script>
+
 <read/>
 
 <style>
@@ -101,7 +102,7 @@ const isExpand5 = ref(false);
 <Box2/>
 
 ::: details 点击查看源码
-<<< ../../postComponents/使css高度auto支持过渡动画/ExpandableBoxJs.vue
+<<< ./ExpandableBoxJs.vue
 :::
 
 通过js配合`transition`成功的实现了元素不定高度的过渡动画，但是可以看到，整个实现过程是很复杂的，而且必须完全理解动画实现的每一个步骤才能实现。
@@ -209,7 +210,7 @@ gird布局中有一个全新的单位`fr`，用于定义网格轨道大小的弹
 </div></div>
 </div>
 
-### 总结
+## 总结
 
 到此，我便介绍完了三种使css高度auto支持过渡动画的方法，三种方法各有优劣，`max-height`/`max-widht`,简单实用但效果不佳，js配合实现可靠兼容性好但过程难懂，代码复杂`grid`的`fr`只用css实现但`grid`属性兼容性没那么好，如果不考虑兼容性问题的话，我推荐使用第三种方法，在vue中，也可以将其封装成一个组件，方便调用，这里可以参考我自己封装的一个组件：[CollapsibleBox.vue](https://github.com/jasonleeya/blog-vitepress/blob/master/.vitepress/theme/components/CollapsibleBox.vue)
 
