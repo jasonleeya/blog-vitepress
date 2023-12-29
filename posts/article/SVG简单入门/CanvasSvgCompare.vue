@@ -8,7 +8,6 @@ onMounted(() => {
   canvas.height = 100;
   const ctx = canvas.getContext('2d');
   ctx.beginPath();
-  ctx.strokeWidth = 1;
   ctx.arc(50, 50, 10, 0, 2 * Math.PI);
   ctx.stroke();
 })
