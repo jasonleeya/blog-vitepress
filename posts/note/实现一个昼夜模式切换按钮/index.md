@@ -11,7 +11,11 @@ import Read from "@components/Read.vue";
 import DayNightSwitch from "@components/vp-theme/SwitchAppearance.vue";
 
 </script>
-<read/>
+
+<ClientOnly>
+  <read></read>
+</ClientOnly>
+
 ![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2023_12/20231224150408.png)
 
 # 实现一个昼夜模式切换按钮
@@ -20,7 +24,11 @@ import DayNightSwitch from "@components/vp-theme/SwitchAppearance.vue";
 ，但经过一晚上的折腾，我还是将其实现出来了，先将实现过程简单记录如下：
 
 :::info 点击查看效果
-<DayNightSwitch></DayNightSwitch>
+
+<ClientOnly>
+  <DayNightSwitch></DayNightSwitch>
+</ClientOnly>
+
 :::
 
 :::info 查看放大效果

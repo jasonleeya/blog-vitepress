@@ -18,7 +18,9 @@ const isExpand4 = ref(false);
 const isExpand5 = ref(false);
 </script>
 
-<read/>
+<ClientOnly>
+  <read></read>
+</ClientOnly>
 
 <style>
 .grid {
@@ -91,7 +93,9 @@ const isExpand5 = ref(false);
 
 效果如下：
 
-<Box1/>
+<ClientOnly>
+  <Box1/>
+</ClientOnly>
 
 这样实现的过渡缺点是很明显的：由于过渡过程是按照最大高度过渡的，假如`max-height`
 为1000px，元素实际高度为300px并且过渡时长为1s时，元素在0.3s的时候就已经展开完成了，这就显得展开过程很快，而当收回的时候，点击按钮会等待0.7s元素才开始动画，有很明显的延迟。
@@ -100,7 +104,9 @@ const isExpand5 = ref(false);
 
 其二实现方式是配合js，在元素展开状态改变后元素还没来得及渲染时，获取元素高度，并设置给元素从而实现动画
 
-<Box2/>
+<ClientOnly>
+  <Box2/>
+</ClientOnly>
 
 ::: details 点击查看源码
 <<< ./ExpandableBoxJs.vue

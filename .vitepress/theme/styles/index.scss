@@ -229,3 +229,8 @@ html {
     }
   }
 }
+
+.custom-block.tip a, .custom-block.tip code {
+  color: var(--vp-code-color);
+  background-color: var(--vp-code-bg);
+}
