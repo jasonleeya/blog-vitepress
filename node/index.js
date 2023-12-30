@@ -27,7 +27,7 @@ function readAllPosts(parentPath) {
                 readAllPosts(path);
             }
             else {
-                if (path.match(/\.md$/)) {
+                if (path.match(/index\.md$/)) {
                     var result = grayMatter(fs.readFileSync(path, 'utf-8'));
                     var fileData = result.data;
                     var fileContent = result.content;
