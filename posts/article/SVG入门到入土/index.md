@@ -1184,13 +1184,17 @@ SVG中使用 `<text>` 标签添加文本。
 </svg>
 ```
 
-<svg xmlns="http://www.w3.org/2000/svg" width="200" height="80">
-  <text x="10" y="30" fill="red">
-    <tspan>SVG从入门到入土</tspan>
-    <tspan font-size="12" baseline-shift="super">2</tspan>
-    <tspan x="10" y="50" rotate="30">SVG从入门到入土</tspan>
-  </text>
-</svg>
+<ClientOnly>
+  <el-card class="card">
+    <svg xmlns="http://www.w3.org/2000/svg" width="180" height="80">
+      <text x="10" y="30" fill="red">
+        <tspan>SVG从入门到入土</tspan>
+        <tspan font-size="12" baseline-shift="super">2</tspan>
+        <tspan x="10" y="50" rotate="30">SVG从入门到入土</tspan>
+      </text>
+    </svg>
+  </el-card>
+</ClientOnly>
 
 ### textPath
 `<textPath>`元素可使文本沿着某条路径排列。
@@ -1206,16 +1210,21 @@ SVG中使用 `<text>` 标签添加文本。
   </text>
 </svg>
 ```
-<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150">
-  <defs>
-    <path id="path" d="M 10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80"></path>
-  </defs>
-  <text>
-    <textPath fill="red" xlink:href="#path" startOffset="50%" text-anchor="middle">
-      SVG从入门到入土SVG从入门到入土SVG从入门到入土SVG从入门到入土SVG从入门到入土
-    </textPath>
-  </text>
-</svg>
+<ClientOnly>
+  <el-card class="card">
+    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="150">
+      <defs>
+        <path id="path" d="M 10 80 C 40 10, 65 10, 95 80 S 150 150, 180 80"></path>
+      </defs>
+      <text>
+        <textPath fill="red" xlink:href="#path" startOffset="50%" text-anchor="middle">
+          SVG从入门到入土SVG从入门到入土SVG从入门到入土SVG从入门到入土SVG从入门到入土
+        </textPath>
+      </text>
+    </svg>
+  </el-card>
+</ClientOnly>
 
 ## 基础变形
-## 滤镜效果
+
+<!--@include: ./filters.md-->

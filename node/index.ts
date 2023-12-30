@@ -14,7 +14,7 @@ function readAllPosts(parentPath = './posts') {
       if (fs.statSync(path).isDirectory()) {
         readAllPosts(path)
       } else {
-        if (path.match(/\.md$/)) {
+        if (path.match(/index\.md$/)) {
           const result = grayMatter(fs.readFileSync(path, 'utf-8'));
           const fileData = result.data
           const fileContent = result.content

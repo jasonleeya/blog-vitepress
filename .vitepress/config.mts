@@ -52,10 +52,6 @@ categoryMap.forEach((value, key) => {
 export default defineConfig({
   title: "JasonLee的技术分享",
   description: "欢迎来到我的技术分享小站",
-  // 官方bug刷新就404了
-  // rewrites: {
-  //   'posts/:category/:post': '/:category/:post',
-  // },
   lastUpdated: true,
   ignoreDeadLinks: true,
   themeConfig: {
