@@ -8,6 +8,7 @@ tags:
 import Read from "@components/Read.vue";
 import CanvasSvgCompare from "./CanvasSvgCompare.vue";
 import {ref} from 'vue';
+import {withBase} from 'vitepress';
 
 const arcXr = ref(0);
 const arcMx = ref(160);
@@ -30,6 +31,8 @@ const arcSf = ref(0);
               .stop2 { stop-color: black; stop-opacity: 0; }
               .stop3 { stop-color: blue; }
 </style>
+
+![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2023_12/svg.svg)
 
 # SVG入门到入土
 

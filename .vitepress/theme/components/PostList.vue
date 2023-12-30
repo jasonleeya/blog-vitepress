@@ -141,7 +141,7 @@ const isMobile = useIsMobile()
     flex-shrink: 0;
     width: 166px;
     height: 110px;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 4px;
   }
 
@@ -222,7 +222,7 @@ const isMobile = useIsMobile()
       width: 100px;
       height: 75px;
       border-radius: 4px;
-      object-fit: cover;
+      object-fit: contain;
     }
   }
 
