@@ -45,5 +45,5 @@ const arcSf = ref(0);
 <!--@include: ./gradient.md-->
 <!--@include: ./pattern.md-->
 <!--@include: ./text.md-->
-<!--@include: ./filter.md-->
 <!--@include: ./transform.md-->
+<!--@include: ./filter.md-->

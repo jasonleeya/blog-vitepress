@@ -34,6 +34,7 @@
 </ClientOnly>
 
 <br>
+
 #### `H`
 `Horizontal line to`的意思，由于是水平移动那目标位置，所以只需要一个参数，即目标点y轴。
 
@@ -78,6 +79,7 @@
 ```
 
 ### 曲线命令
+> 参考自[MDN](https://developer.mozilla.org/zh-CN/docs/Web/SVG/Tutorial/Paths#%E6%9B%B2%E7%BA%BF%E5%91%BD%E4%BB%A4)
 
 在 `SVG` 中绘制平滑曲线的命令有3个，其中一个可以绘制圆弧，另外两个用来绘制贝塞尔曲线。
 
@@ -169,10 +171,6 @@ y ：<ClientOnly><el-slider v-model="arcY" :min="0" :max="400" style="width:200p
 x ：<ClientOnly><el-slider v-model="arcRx" :min="0" :max="400" style="width:200px"></el-slider></ClientOnly>
 y ：<ClientOnly><el-slider v-model="arcRy" :min="0" :max="400" style="width:200px"></el-slider></ClientOnly>
 </div>
-
-:::warning 提示
-后面内容属于进阶部分，大部分内容引用自[MDN](https://developer.mozilla.org/zh-CN/docs/Web/SVG/Tutorial/Paths#%E6%9B%B2%E7%BA%BF%E5%91%BD%E4%BB%A4)，不过MDN中文文档属于机翻，我增加修改了一些内容，更加通俗易懂。
-:::
 
 #### C
 

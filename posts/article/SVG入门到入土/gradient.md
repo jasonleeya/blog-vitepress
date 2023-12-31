@@ -1,4 +1,6 @@
 ## 渐变
+> 参考自[MDN](https://developer.mozilla.org/zh-CN/docs/Web/SVG/Tutorial/Gradients)
+
 要在 `SVG` 中实现渐变，可就不像在 `SVG` 中定义 `SVG` 样式可以直接写 `CSS` 了，你必须在 `<defs>` 中定义渐变节点，再使用 `id` 引入它。
 
 ### 线性渐变

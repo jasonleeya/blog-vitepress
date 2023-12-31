@@ -18,9 +18,13 @@ SVG中使用 `<text>` 标签添加文本。
   <text x="10" y="15" fill="red" text-decoration="underline">SVG从入门到入土</text>
 </svg>
 ```
-<svg xmlns="http://www.w3.org/2000/svg" width="200" height="20">
-  <text x="10" y="15" fill="red" text-decoration="underline">SVG从入门到入土</text>
-</svg>
+<ClientOnly>
+  <el-card class="card">
+    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="20">
+      <text x="10" y="15" fill="red" text-decoration="underline">SVG从入门到入土</text>
+    </svg>
+  </el-card>
+</ClientOnly>
 
 ### tspan
 `<text>` 元素无法对文本进行换行，这时候就需要使用 `<tspan>` 元素,除了 `<text>` 元素的属性外，还有以下属性：

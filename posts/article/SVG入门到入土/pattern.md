@@ -1,4 +1,6 @@
 ## Pattern
+> 参考自：[SVG pattern 使用（patternUnits、patternContentUnits）](https://juejin.cn/post/7024418455512317966)
+
 `<pattern>` 是 `SVG` 的一个图案填充标签，在 `pattern` 中定义好图案，通过 `id` 引用来对图形进行填充
 `<pattern>` 的 `width` ,`height` 属性默认由根据所填充图形的百分比来确定。
 
@@ -36,5 +38,3 @@
     </defs>
     <rect x="0" y="0" width="300" height="200" fill="url(#p1)" stroke="blue" />
 </svg>
-
-> 参考：[SVG pattern 使用（patternUnits、patternContentUnits）](https://juejin.cn/post/7024418455512317966)

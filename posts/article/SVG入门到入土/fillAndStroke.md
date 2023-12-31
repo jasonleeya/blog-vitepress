@@ -1,4 +1,6 @@
 ## 填充和边框
+> 参考自[MDN](https://developer.mozilla.org/zh-CN/docs/Web/SVG/Tutorial/Fills_and_Strokes)
+
 ### 上色
 大多数基本的涂色可以通过在元素上设置两个属性来搞定：`fill` 属性和 `stroke` 属性。`fill` 属性设置对象内部的颜色，`stroke` 属性设置绘制对象的线条的颜色。你可以使用在 HTML 中的 CSS 颜色命名方案定义它们的颜色，比如说颜色名（像red这种）、rgb 值（像 rgb(255,0,0) 这种）、十六进制值、rgba 值，等等。
 

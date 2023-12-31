@@ -141,5 +141,8 @@ export default defineConfig({
         },
       ]
     }
-  }
+  },
+  markdown: {
+    lineNumbers: true
+  },
 })
