@@ -188,6 +188,7 @@ gird布局中有一个全新的单位`fr`，用于定义网格轨道大小的弹
 再将上下两个item去掉，将父元素`grid-template-rows`改为`1fr`并不设置高度，就实现了元素的展开与收起
 
 <el-button type="primary" class="button" @click="isExpand2 = !isExpand2">点击{{isExpand2?'收起':'展开'}}</el-button>
+
 <div class="grid grid-5" :style="{gridTemplateRows: isExpand2 ? '1fr' : '0fr'}">
   <div class="item">使css高度auto支持过渡动画</div>
 </div>
@@ -195,6 +196,7 @@ gird布局中有一个全新的单位`fr`，用于定义网格轨道大小的弹
 为什么不起作用呢？其实这是由grid的最小尺寸规则决定的，此时的最小高度是`min-content`，也就是由内部文本决定的，而父元素能撑开的高度也是文本高度，所以就没有出现收缩效果，这时我们可以将item的`overflow`设置为`hidden`,超出部分隐藏，使得最小高度为0，保险起见，父元素`overflow`也设置为`hidden`，这样就能使父元素收回到0。
 
 <el-button type="primary" class="button" @click="isExpand3 = !isExpand3">点击{{isExpand3?'收起':'展开'}}</el-button>
+
 <div class="grid grid-6" :style="{gridTemplateRows: isExpand3 ? '1fr' : '0fr'}">
   <div class="item">使css高度auto支持过渡动画</div>
 </div>
@@ -203,6 +205,7 @@ gird布局中有一个全新的单位`fr`，用于定义网格轨道大小的弹
 
 
 <el-button type="primary" class="button" @click="isExpand4 = !isExpand4">点击{{isExpand4?'收起':'展开'}}</el-button>
+
 <div class="grid grid-7" :style="{gridTemplateColumns: isExpand4 ? '1fr' : '0fr'}">
   <div class="item">使css高度auto支持过渡动画</div>
 </div>
@@ -210,6 +213,7 @@ gird布局中有一个全新的单位`fr`，用于定义网格轨道大小的弹
 细心的同学可能会发现，上面的例子还是有些不足的：`border`在收起后并没有被收进去，宽度的过渡会使文字在过渡过程中不断重新换行，我的解决方案是，再将item包裹一层元素，`border`设置到item元素上，不设置到这层元素，文字包裹进一层文字层包裹层，文字包裹层设置固定宽度(好像这又回到最初的亚子，其实也可以宽度直接固定数值过渡，我在这里为方便便顺便实现了)，padding值也设置到文字包裹层，便可同时实现宽高的过渡动画。
 
 <el-button type="primary" class="button" @click="isExpand5 = !isExpand5">点击{{isExpand5?'收起':'展开'}}</el-button>
+
 <div class="grid grid-8" :style="{gridTemplateColumns: isExpand5 ? '1fr' : '0fr',gridTemplateRows:isExpand5 ? '1fr' : '0fr'}">
   <div class="item-wrapper">
 <div class="item">

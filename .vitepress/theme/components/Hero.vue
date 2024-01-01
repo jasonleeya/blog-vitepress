@@ -115,7 +115,7 @@ const isMobile = useIsMobile()
     </div>
     <div class="hero-content">
       <VPNavBarMenu v-if="isMobile" class="menu"/>
-      <img alt="" class="logo" src="/logo.png">
+      <img alt="" class="logo" src="/logo.svg">
       <div class="sentence">
         <div class="sentence-text"><span v-for="(item,index) in sentenceList" :key="index"
                                          class="character">{{ item }}</span><span class="cursor">|</span></div>

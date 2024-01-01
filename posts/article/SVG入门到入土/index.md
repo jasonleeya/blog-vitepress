@@ -19,6 +19,11 @@ const arcRx = ref(100);
 const arcRy = ref(50);
 const arcLaf = ref(0);
 const arcSf = ref(0);
+const blendModeList = ['normal','multiply','screen','overlay','darken','lighten'];
+const currentBlendMode = ref(blendModeList[0]);
+const feColorMatrixTypeList = ['saturate','hueRotate','luminanceToAlpha'];
+const currentFeColorMatrixType = ref('saturate');
+const feColorMatrixValue = ref(0)
 </script>
 
 <ClientOnly>
@@ -36,7 +41,7 @@ const arcSf = ref(0);
 
 # SVG入门到入土
 
-相信绝大多数前端同学都不愿意自己手写SVG代码吧，这种事情还是直接交给UI省事的多，但是我学习了SVG的基础用法之后，发现SVG还是可以给平时开发带来很大便利的。在此我写下这篇文章，方便日后查阅，也希望能帮助到其他前端小伙伴入门svg。
+相信绝大多数前端同学都不愿意自己手写SVG代码吧，图片上的事情都是直接交给UI省事的多，但是我学习了SVG的基础用法之后，发现SVG还是可以给平时开发带来很大便利的，至少可以简单的修改SVG属性以及使用SVG做出简单的效果。此篇文章是我学习SVG的全过程，我将查阅到的资料综合起来并加入一些我的个人见解和实现的例子，记录下来，方便日后查阅，得益于VitePress提供markdown拓展能力，可以在markdown中直接编写Vue代码,文章中所有例子我都没有使用效果截图，而实直接展示代码效果。文中部分内容参考自他人的文章，我已注明出处。我也希望此篇文章能帮助到其他前端小伙伴入门SVG，一起享受SVG带来的便利。
 
 
 <!--@include: ./base.md-->
@@ -45,5 +50,21 @@ const arcSf = ref(0);
 <!--@include: ./gradient.md-->
 <!--@include: ./pattern.md-->
 <!--@include: ./text.md-->
+
+## 图片
+SVG使用 `<image>` 标签引入图片，其有5个属性，分别是：`src`、`x`、`y`、`width`、`height`。
+```html
+<svg>
+  <image src="/logo.svg" x="0" y="0" width="100" height="100"></image>
+</svg>
+```
+
 <!--@include: ./transform.md-->
 <!--@include: ./filter.md-->
+
+## 参考
+### 元素
+[MDN/SVG/参考/元素](https://developer.mozilla.org/zh-CN/docs/Web/SVG/Element/a)
+
+### 属性
+[MDN/SVG/参考/属性](https://developer.mozilla.org/zh-CN/docs/Web/SVG/Attribute/accent-height)
