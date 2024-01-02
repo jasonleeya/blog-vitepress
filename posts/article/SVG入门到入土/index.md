@@ -23,7 +23,25 @@ const blendModeList = ['normal','multiply','screen','overlay','darken','lighten'
 const currentBlendMode = ref(blendModeList[0]);
 const feColorMatrixTypeList = ['saturate','hueRotate','luminanceToAlpha'];
 const currentFeColorMatrixType = ref('saturate');
-const feColorMatrixValue = ref(0)
+const feColorMatrixValue = ref(1);
+
+const surfaceScale = ref(10);
+const diffuseAndSpecularConstant = ref(1);
+const specularExponent = ref(0);
+const azimuth = ref(140);
+const elevation = ref(20);
+const x = ref(260);
+const y = ref(2);
+const z = ref(30);
+const pointsAtX = ref(290);
+const pointsAtY = ref(80);
+const pointsAtZ = ref(0);
+const limitingConeAngle = ref(0);
+const feTurbulenceBaseFrequency = ref(0);
+const feTurbulenceNumOctaves = ref(1);
+const feTurbulenceSeed = ref(0);
+const feTurbulenceType = ref('turbulence');
+const feTurbulenceStitchTiles = ref('noStitch');
 </script>
 
 <ClientOnly>

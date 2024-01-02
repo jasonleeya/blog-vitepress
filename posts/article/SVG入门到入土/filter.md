@@ -1,7 +1,5 @@
 ## 滤镜效果
 
-> 参考自：[有意思！强大的 SVG 滤镜](https://juejin.cn/post/6943032791122575390)
-
 在很多情况下，基本的SVG图形并不能满足我们的需求，形状api实现出来图形看起来只是色块的生硬拼接，常见的例如阴影渐变等效果是不能实现的，所以便有了SVG滤镜。
 
 SVG可以使用 `<filter>` 标签定义滤镜。SVG滤镜可以像PS处理照片那样为SVG添加滤镜效果，让SVG如虎添翼，能够实现出各种各样的效果。
@@ -93,7 +91,8 @@ in的取值
 | FillPaint       | 将其放置在无限平面上一样使用填充油漆                                                                                     |
 | StrokePaint     | 	将其放在无限平面上一样使用描边绘画                                                                                     |
 
-#### 滤镜的混合使用
+#### 滤镜的混合使用 {#滤镜的混合使用}
+> 参考自：[有意思！强大的 SVG 滤镜](https://juejin.cn/post/6943032791122575390)
 
 SVG是可以将多个滤镜效果混合使用的，我们先来看下面这个例子：
 
@@ -208,129 +207,4 @@ SVG是可以将多个滤镜效果混合使用的，我们先来看下面这个�
   </el-card>
 </ClientOnly>
 
-### 滤镜详解
-<br>
-
-#### feBlend
-
-`<feBlend>` 为混合模式滤镜，该滤镜接受两个输入源，然后通过一定方式将两个输入源叠加到一起，将结果输出。
-
-属性：
-
-- `in` 输入源
-- `in2` 输入源
-- `mode` 混合模式
-
-其中 `in`，`in2` 属性定义的是输入源，`mode` 属性定义了混合模式，混合模式可选值有5种：
-
-- `normal`：正常
-- `multiply`：正片叠底
-- `screen`：滤色
-- `darken`：变暗
-- `lighten`：变亮
-
-5种滤镜效果如下：
-
-```html
-<svg width="200" height="200">
-  <defs>
-    <filter id="lighten" x="0" y="0" width="200" height="200">
-      <feImage width="200" height="200" xlink:href="https://q.qlogo.cn/g?b=qq&nk=1615685977&s=100" result="img1" />
-      <feImage width="200" height="200" xlink:href="/logo.svg" result="img2" />
-      <feBlend mode="normal" in="img1" in2="img2"/>
-    </filter>
-  </defs>
-  <rect width="200" height="200" x="0" y="0" fill="none" filter="url(#lighten)" stroke="red"/>
-</svg>
-```
-
-<ClientOnly>
-  <el-card class="card" >
-    <svg width="200" height="200">
-        <defs>
-            <filter id="lighten" x="0" y="0" width="200" height="220">
-                <feImage width="200" height="200" xlink:href="https://q.qlogo.cn/g?b=qq&nk=1615685977&s=100" result="img1" />
-                <feImage width="200" height="200" xlink:href="/logo.svg" result="img2" />
-                <feBlend :mode="currentBlendMode" in="img1" in2="img2"/>
-            </filter>
-        </defs>
-        <rect width="200" height="200" x="0" y="0" fill="none" filter="url(#lighten)" stroke="red"/>
-    </svg>
-    <template #footer>
-      <el-select v-model="currentBlendMode" placeholder="请选择混合模式" size="small" style="width: 150px">
-       <el-option
-          v-for="item in blendModeList"
-          :key="item"
-          :label="item"
-          :value="item"/>
-      </el-select>
-    </template>
-  </el-card>
-</ClientOnly>
-
-<br>
-
-#### feColorMatrix
-`<feColorMatrix>` 滤镜基于转换矩阵对颜色进行变换。每一像素的颜色值 (一个表示为 [`红，绿，蓝，透明度`] 的矢量) 都经过 `矩阵乘法 (matrix multiplated)`  计算出的新颜色。
-
-`<feColorMatrix>`有2个特有属性 `type` 和 `values`,`type` 支持 4 种不同的类型：`saturate` | `hueRotate` | `luminanceToAlpha` | `matrix`，
-
-| `type` 类型        | 作用           | `value` 取值                                             |
-|------------------|--------------|--------------------------------------------------------|
-| saturate         | 转换图像饱和度      | 0.0 - 1.0                                              |
-| hueRotate        | 	转换图像色相      | 0.0 - 1.0                                              |
-| luminanceToAlpha | 阿尔法通道亮度      | 只有一个效果，使用亮度转 `Alpha` 效果将 `Alpha` 通道设置为图像的亮度并将颜色通道设置为 0 |
-| matrix           | 使用矩阵函数进行色彩变换 | 需要应用一个 4 x 5 的矩阵                                       |
-
-以下是前三种属性展示的效果：
-
-```html
- <svg width="200" height="200">
-      <defs>
-        <filter id="saturate">
-            <feColorMatrix id="saturate" type="saturate" :values="feColorMatrixValue"/>
-        </filter>
-        <filter id="hueRotate">
-            <feColorMatrix id="hueRotate" type="hueRotate" :values="feColorMatrixValue"/>
-        </filter>
-        <filter id="luminanceToAlpha">
-            <feColorMatrix type="luminanceToAlpha" />
-        </filter>
-      </defs>
-        <image filter="`url(#saturate)`" href="https://q.qlogo.cn/g?b=qq&nk=1615685977&s=100" x="25" y="20" height="150px" width="150px"/>
-    </svg>
-```
-
-<ClientOnly>
-  <el-card class="card" >
-    <svg width="200" height="200">
-      <defs>
-        <filter id="saturate">
-            <feColorMatrix id="saturate" type="saturate" :values="feColorMatrixValue"/>
-        </filter>
-        <filter id="hueRotate">
-            <feColorMatrix id="hueRotate" type="hueRotate" :values="feColorMatrixValue"/>
-        </filter>
-        <filter id="luminanceToAlpha">
-            <feColorMatrix type="luminanceToAlpha" />
-        </filter>
-      </defs>
-        <image :filter="`url(#${currentFeColorMatrixType})`" href="https://q.qlogo.cn/g?b=qq&nk=1615685977&s=100" x="25" y="20" height="150px" width="150px"/>
-    </svg>
-    <template #footer>
-      <el-select v-model="currentFeColorMatrixType" size="small" style="width: 150px">
-       <el-option
-          v-for="item in feColorMatrixTypeList"
-          :key="item"
-          :label="item"
-          :value="item"/>
-      </el-select>
-      <div style="display: flex;margin-top: 10px" v-if="currentFeColorMatrixType !== 'luminanceToAlpha'">
-      value：<el-slider v-model="feColorMatrixValue" style="width:100px" :min="0" :max="currentFeColorMatrixType==='saturate'?1:360" :step="0.01"></el-slider></div>
-    </template>
-  </el-card>
-</ClientOnly>
-
-当 `<feColorMatrix>` 的 type 为 `matrix`时，它的 values 需要传入一个 4x5 的矩阵。这里不作讲解，有兴趣的同学可以参考一下文章：
-- [MDN](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/feColorMatrix)
-- [详解feColorMatrix](https://www.w3cplus.com/svg/finessing-fecolormatrix.html)
+<!--@include: ./filterDetails.md-->

@@ -24,7 +24,7 @@ const isExpand5 = ref(false);
 
 <style>
 .grid {
-  margin: 0 auto;
+  margin: 20px auto 0;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   height: 300px;
@@ -213,7 +213,6 @@ gird布局中有一个全新的单位`fr`，用于定义网格轨道大小的弹
 细心的同学可能会发现，上面的例子还是有些不足的：`border`在收起后并没有被收进去，宽度的过渡会使文字在过渡过程中不断重新换行，我的解决方案是，再将item包裹一层元素，`border`设置到item元素上，不设置到这层元素，文字包裹进一层文字层包裹层，文字包裹层设置固定宽度(好像这又回到最初的亚子，其实也可以宽度直接固定数值过渡，我在这里为方便便顺便实现了)，padding值也设置到文字包裹层，便可同时实现宽高的过渡动画。
 
 <el-button type="primary" class="button" @click="isExpand5 = !isExpand5">点击{{isExpand5?'收起':'展开'}}</el-button>
-
 <div class="grid grid-8" :style="{gridTemplateColumns: isExpand5 ? '1fr' : '0fr',gridTemplateRows:isExpand5 ? '1fr' : '0fr'}">
   <div class="item-wrapper">
 <div class="item">
