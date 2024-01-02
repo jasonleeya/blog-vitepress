@@ -2,7 +2,7 @@
 category: 文章
 tags:
   - CSS
-  - Javascript
+  - JavaScript
 ---
 
 <script setup>

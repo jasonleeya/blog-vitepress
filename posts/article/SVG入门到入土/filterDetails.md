@@ -431,7 +431,7 @@
 :::
 
 <ClientOnly>
-    <el-card class="card">
+    <el-card class="card" style="width: 100%;overflow: auto">
       <svg height="130" width="120">
         <defs>
           <radialGradient id="gradient">
@@ -666,7 +666,7 @@ P'(x,y) ← P( x + scale * (XC(x,y) - 0.5), y + scale * (YC(x,y) - 0.5))
 ```
 <ClientOnly>
   <el-card class="card">
-    <svg width="0" height="0">
+    <svg width="0" height="0" style="width: 100%;overflow: auto">
         <filter id="dilate">
             <feMorphology in="SourceAlpha" result="DILATED" operator="dilate" radius="3"></feMorphology>
         </filter>
@@ -675,9 +675,9 @@ P'(x,y) ← P( x + scale * (XC(x,y) - 0.5), y + scale * (YC(x,y) - 0.5))
         </filter>
     </svg>
     <div>
-      <p style="font-size: 64px;margin-bottom: 1em">feMorphology</p>
-      <p class="dilate" style="filter:url(#dilate);font-size: 64px;margin-bottom: 1em">feMorphology</p>
-      <p class="erode" style="filter: url(#erode);font-size: 64px;margin-bottom: 1em">feMorphology</p>
+      <p style="font-size: 64px;margin-bottom: 1em">SVG滤镜</p>
+      <p class="dilate" style="filter:url(#dilate);font-size: 64px;margin-bottom: 1em">SVG滤镜</p>
+      <p class="erode" style="filter: url(#erode);font-size: 64px;margin-bottom: 1em">SVG滤镜</p>
     </div>
   </el-card>
 </ClientOnly>
