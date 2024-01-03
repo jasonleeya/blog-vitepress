@@ -24,7 +24,7 @@ requestAnimationFrame(() => {
 </script>
 
 <template>
-  <div id="container">
+  <div id="wave-container">
     <div id="water"></div>
   </div>
   <svg xmlns="http://www.w3.org/2000/svg">
@@ -37,7 +37,7 @@ requestAnimationFrame(() => {
 </template>
 
 <style lang="scss" scoped>
-#container,
+#wave-container,
 #water {
   background-image: url("https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2024_01/lake.jpg");
   background-position: center bottom;
@@ -45,7 +45,7 @@ requestAnimationFrame(() => {
   background-size: cover;
 }
 
-#container {
+#wave-container {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -56,7 +56,7 @@ requestAnimationFrame(() => {
   box-shadow: 0 4px 20px #4f4f4f;
 }
 
-#container #water {
+#wave-container #water {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -64,7 +64,7 @@ requestAnimationFrame(() => {
   filter: url("#turbulence");
 }
 @media (min-width: 960px) {
-  #container{
+  #wave-container{
     height: 412px;
     width: 550px;
     aspect-ratio: unset;
