@@ -114,19 +114,19 @@ document.body.appendChild(renderer.domElement);
 
 - 紧接着我们实例化了一个 `camera` 相机，它是一个**PerspectiveCamera（透视摄像机）**，它的参数包括：视野角度，宽高比，近截面距离，远截面距离，这里设置为 75，宽高比为窗口宽高比，近截面距离为 0.1，远截面距离为 1000。另外，除了透视摄像机之外，还有 **OrthographicCamera（正交摄像机）**，它和透视摄像机的区别是它的投影方式是正交投影，下面是两种相机的视野区别：
 
-![PerspectiveCamera（透视摄像机）](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2024_01/perspectiveCamera_view.webp?sign=00a54dac1d9e1fa4bdb28502baf3438e&t=1704270273)
+![PerspectiveCamera（透视摄像机）](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2024_01/perspectiveCamera_view.webp)
 ***PerspectiveCamera（透视摄像机）***
 
-![PerspectiveCamera（透视摄像机）](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2024_01/orthographicCamera_view.webp?sign=0b252d857d0c628c67239d28689b953c&t=1704270518)
+![PerspectiveCamera（透视摄像机）](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2024_01/orthographicCamera_view.webp)
 ***OrthographicCamera（正交摄像机）***
 
 正投照相机所呈现的图形，远近大小都一样，而透视照相机，远小近大，更接近于人眼观察物体的感觉。
 
-- 最后我们实例化了一个 `renderer` 渲染器，我们将渲染器的dom元素`renderer.domElement`添加到我们的 HTML 文档中。这就是渲染器用来显示场景给我们看的 `<canvas>` 元素。
+- 最后我们实例化了一个 `renderer` 渲染器，将渲染器的dom元素`renderer.domElement`添加到我们的 HTML 文档中，这里的 `renderer.domElement` 就是渲染器用来显示场景给我们看的 `<canvas>` 元素。
 
 ## 添加物体
 
-我前面说了，现在页面上还是一片黑，是因为我们还没有添加任何物体到场景中，接下来我们来添加一个物体。
+现在，场景中除了摄像机没有任何物体，接下来我们添加一个正方体到场景中。
 
 ```javascript
 const geometry = new THREE.BoxGeometry( 1, 1, 1 );
@@ -136,4 +136,39 @@ scene.add( cube );
 
 camera.position.z = 5;
 ```
-上面的代码我们添加了一个物体到场景中，它是一个正方体，正如正方体有6个顶点和8个面，
+上面的代码中，我们使用了 `THREE.BoxGeometry` 实例化了一个立方体的几何体形状，然后使用 `THREE.MeshBasicMaterial` 材质实例化了一个纯色的材质，接着我们实例化了一个 `THREE.Mesh` 网格，网格传入了几何体和材质并将它添加到场景中。默认情况下，当我们调用 `scene.add()` 的时候，物体将会被添加到 (0,0,0) 坐标。但将使得摄像机和立方体彼此在一起。为了防止这种情况的发生，我们只需要将摄像机稍微向外移动一些即可。
+
+## 渲染场景
+如果此时再次查看页面，页面上还是一片黑，这是因为我们还没有对它进行真正的渲染。为此，我们需要使用一个被叫做 **“渲染循环”（render loop）** 或者 **“动画循环”（animate loop）** 的东西。
+
+```js
+function animate() {
+	requestAnimationFrame( animate );
+	renderer.render( scene, camera );
+}
+animate();
+```
+在这里我们利用 `requestAnimationFrame` 方法来实现动画循环，每一帧都会调用一次 `animate` 方法，这里不推荐使用 `setInterval` ，因为它在执行大量代码时会导致浏览器卡顿，而且使用 `requestAnimationFrame` 当用户切换到其它的标签页时，它会暂停，因此不会浪费用户内存资源。此时我们可以看到页面上已经有了一个绿色的正方形：
+
+<iframe src="https://demos.lsj97.com/#/threeJsDemos?id=1" style="width:100%;height:500px"></iframe>
+
+## 使立方体动起来
+有细心的小伙伴会问，我们不是添加了一个正方体到场景中吗，为什么看到的只是一个正方形？这个问题的答案也很简单，因为正方体没有动，他的我们只能看到它投影的一个面，接下来我们让“正方形”动起来，让它变成立方体。
+
+我们只需要添加这两行代码：
+
+```js
+function animate() {
+    cube.rotation.x += 0.01; // [!code ++]
+    cube.rotation.y += 0.01; // [!code ++]
+	requestAnimationFrame( animate );
+	renderer.render( scene, camera );
+}
+animate();
+```
+
+<iframe src="https://demos.lsj97.com/#/threeJsDemos?id=2" style="width:100%;height:500px"></iframe>
+
+这两行代码会在每次屏幕刷新时将立方体的 `x`,`y`旋转 0.01 弧度，旋转速度取决于你的屏幕刷新率。
+
+到此，你便成功完成了你的第一个 `three.js` 应用程序。虽然它很简单，但现在你已经有了一个入门的起点。

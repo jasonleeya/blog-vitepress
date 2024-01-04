@@ -7,6 +7,7 @@ tags:
 <script setup>
 import Read from "@components/Read.vue";
 import CanvasSvgCompare from "./CanvasSvgCompare.vue";
+import SvgWave from "./SvgWave.vue";
 import {ref} from 'vue';
 import {withBase} from 'vitepress';
 

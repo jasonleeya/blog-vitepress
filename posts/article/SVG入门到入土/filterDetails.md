@@ -701,7 +701,7 @@ P'(x,y) ← P( x + scale * (XC(x,y) - 0.5), y + scale * (YC(x,y) - 0.5))
 - `type`： 实现的滤镜的类型，可选 `fractalNoise` 分形噪声，或者是 `turbulence` 湍流噪声。
   - `fractalNoise`：分形噪声更加的平滑，它产生的噪声质感更接近云雾
   - `turbulence`：湍流噪声
-- `baseFrequency`： 表示噪声函数的基本频率的参数，频率越小，产生的图形越大，频率越大，产生的噪声越复杂其图形也越小越精细，通常的取值范围在 0.02 ~ 0.2
+- `baseFrequency`： 表示噪声函数的基本频率的参数，频率越小，产生的图形越大，频率越大，产生的噪声越复杂其图形也越小越精细，如果提供两个数字，则第一数字代表X方向上的基频，第二数值代表Y方向上的基频。如果只提供了一个数字，那么X和Y都使用该值。
 - `numOctaves`：表示噪声函数的精细度，数值越高，产生的噪声更详细。 默认值为1
 - `seed`：表示feTurbulence滤镜效果中伪随机数生成的起始值
 - `stitchTiles`：定义了Perlin噪声在边框处的行为表现。
@@ -740,5 +740,17 @@ P'(x,y) ← P( x + scale * (XC(x,y) - 0.5), y + scale * (YC(x,y) - 0.5))
        <el-option label="stitch" value="stitch"/>
       </el-select>
      </div>
+  </el-card>
+</ClientOnly>
+
+下面是我结合 `<feTurbulence>` 和 `<feDisplacementMap>` 实现的SVG波浪效果：
+
+:::details 点击查看源码
+<<< ./SvgWave.vue
+:::
+
+<ClientOnly>
+  <el-card class="card">
+    <SvgWave/>
   </el-card>
 </ClientOnly>
