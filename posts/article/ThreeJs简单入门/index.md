@@ -11,7 +11,7 @@ tags:
 
 ![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2024_01/threejs.png?sign=0edef579d07efe758efbc8b5cabd031a&t=1704267419)
 
-# Three.js简单入门
+# ThreeJs简单入门
 
 随着前端技术的不断更迭，人们已经不在满足页面只有2D的内容，所以将前端带入了3D世界，而前端在3D世界占主导地位的技术便是今天的主角：`Three.js`
 。今天我们将简单介绍一下`Three.js`的基本用法，希望能帮助您对它有个初步了解。
