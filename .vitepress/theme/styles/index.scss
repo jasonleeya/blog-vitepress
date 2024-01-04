@@ -240,3 +240,6 @@ html {
 .VPDocAside .content{
   padding-bottom: 100px;
 }
+.vp-doc :not(pre) > code{
+  font-weight: normal!important;
+}

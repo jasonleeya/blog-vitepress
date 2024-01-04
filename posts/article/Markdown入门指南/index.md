@@ -1,7 +1,7 @@
 ---
 category: 文章
 tags:
-  - markdown
+  - Markdown
 ---
 <script setup>import Read from "@components/Read.vue";</script>
 
@@ -11,7 +11,7 @@ tags:
 
 # Markdown入门指南
 
-Markdown是一种轻量级标记语言，排版语法简洁，让人们更多地关注内容本身而非排版。它使用易读易写的纯文本格式编写文档，可与HTML混编，可导出 HTML、PDF 以及本身的 .md 格式的文件。因简洁、高效、易读、易写，Markdown被大量使用，如Github、简书,知乎等，而在这里，介绍markdown主要是因为VitePress引擎是通过将.md文件编译成Vue组件并最终编译成网页，也可以说markdown是VitePress,VuePress,Hexo等引擎的灵魂所在，VitePress对传统markdown语法进行了拓展，本文仅介绍markdown的基本语法。
+Markdown是一种轻量级标记语言，排版语法简洁，让人们更多地关注内容本身而非排版。它使用易读易写的纯文本格式编写文档，可与HTML混编，可导出 HTML、PDF 以及本身的 `.md` 格式的文件。因简洁、高效、易读、易写，Markdown被大量使用，如Github、简书,知乎等，而在这里，介绍 Markdown 主要是因为 VitePress 引擎是通过将 `.md` 文件编译成 Vue 组件并最终编译成网页，也可以说 Markdown 是 VitePress,VuePress,Hexo 等引擎的灵魂所在，VitePress对传统markdown语法进行了拓展，本文仅介绍markdown的基本语法。
 
 
 ## 标题

@@ -117,7 +117,7 @@ if(type==='tag'){
         }
 
         &.current {
-          background-color: var(--vp-c-brand-9);
+          background-color: var(--vp-c-brand-soft);
           color: var(--vp-c-brand-1);
 
           .icon {

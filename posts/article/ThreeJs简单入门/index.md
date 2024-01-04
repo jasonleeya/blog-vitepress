@@ -53,13 +53,13 @@ three.js-文件包
 
 开发环境中：
 
-```shell
+```javascript
 import * as THREE from 'three';
 ```
 
 除了three.js核心库以外，在three.js文件包中 `examples/jsm` 目录下，还有很多扩展库，在我们使用的地方直接引入即可，例如：
 
-```shell
+```javascript
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
