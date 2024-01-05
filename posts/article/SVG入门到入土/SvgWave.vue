@@ -1,10 +1,11 @@
 <script setup>
-import {ref} from "vue";
+import {onUnmounted, ref} from "vue";
 
 let process = 0.005
 let sign = 1
 const baseFrequency = ref('0.005 0.005')
 
+let raf
 function animate() {
   process += 0.0005 * sign
   if (sign === 1 && process > 1) {
@@ -14,11 +15,15 @@ function animate() {
     sign = 1
   }
   baseFrequency.value = `${process * 0.005 + 0.015} ${process * 0.05 + 0.1}`
-  requestAnimationFrame(animate)
+  raf = requestAnimationFrame(animate)
+  console.log('%c process ','color:white;background:red',process)
 }
 
 requestAnimationFrame(() => {
   animate()
+})
+onUnmounted(() => {
+  cancelAnimationFrame(raf)
 })
 </script>
 
