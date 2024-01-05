@@ -13,7 +13,6 @@ function animate() {
   if (sign === -1 && process < 0) {
     sign = 1
   }
-  console.log('%c process ', 'color:white;background:red', process)
   baseFrequency.value = `${process * 0.005 + 0.015} ${process * 0.05 + 0.1}`
   requestAnimationFrame(animate)
 }

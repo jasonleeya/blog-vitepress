@@ -240,7 +240,10 @@ SVG代码都放在 `<svg>` 标签之中，`widht` 和 `height`
 <ClientOnly>
   <el-card class="card">
     <svg width="100" height="100">
-      <polygon points="10 10, 50 50, 10 90"/>
+    <defs>
+    <polygon id="aa" points="10 10, 50 50, 10 90"/>
+  </defs>
+  <use href="#aa" width="100" height="100"></use>
     </svg>
   </el-card>
 </ClientOnly>
