@@ -150,7 +150,7 @@ animate();
 ```
 在这里我们利用 `requestAnimationFrame` 方法来实现动画循环，每一帧都会调用一次 `animate` 方法，这里不推荐使用 `setInterval` ，因为它在执行大量代码时会导致浏览器卡顿，而且使用 `requestAnimationFrame` 当用户切换到其它的标签页时，它会暂停，因此不会浪费用户内存资源。此时我们可以看到页面上已经有了一个绿色的正方形：
 
-<iframe src="https://demos.lsj97.com/#/threeJsDemos?id=1" style="width:100%;height:500px"></iframe>
+<iframe src="https://demos.lsj97.com/#/threeJsDemos?step=1" style="width:100%;height:500px"></iframe>
 
 ## 使立方体动起来
 有细心的小伙伴会问，我们不是添加了一个正方体到场景中吗，为什么看到的只是一个正方形？这个问题的答案也很简单，因为正方体没有动，他的我们只能看到它投影的一个面，接下来我们让“正方形”动起来，让它变成立方体。
@@ -167,7 +167,7 @@ function animate() {
 animate();
 ```
 
-<iframe src="https://demos.lsj97.com/#/threeJsDemos?id=2" style="width:100%;height:500px"></iframe>
+<iframe src="https://demos.lsj97.com/#/threeJsDemos?step=2" style="width:100%;height:500px"></iframe>
 
 这两行代码会在每次屏幕刷新时将立方体的 `x`,`y`旋转 0.01 弧度，旋转速度取决于你的屏幕刷新率。
 
