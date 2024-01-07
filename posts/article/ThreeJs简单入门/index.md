@@ -5,9 +5,15 @@ tags:
   - Three.js
 ---
 
-<script setup>import Read from "@components/Read.vue";</script>
+<script setup>
+import Read from "@components/Read.vue";
+import LazyLoader from "@components/LazyLoader.vue";
 
-<read/>
+</script>
+
+<ClientOnly>
+  <read/>
+</ClientOnly>
 
 ![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2024_01/threejs.png?sign=0edef579d07efe758efbc8b5cabd031a&t=1704267419)
 
@@ -129,14 +135,17 @@ document.body.appendChild(renderer.domElement);
 现在，场景中除了摄像机没有任何物体，接下来我们添加一个正方体到场景中。
 
 ```javascript
-const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+const geometry = new THREE.BoxGeometry( 10, 10, 10 );
 const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 const cube = new THREE.Mesh( geometry, material );
 scene.add( cube );
 
-camera.position.z = 5;
+camera.position.x = 30;
+camera.position.y = 30;
+camera.position.z = 30;
+camera.lookAt(0, 0, 0)
 ```
-上面的代码中，我们使用了 `THREE.BoxGeometry` 实例化了一个立方体的几何体形状，然后使用 `THREE.MeshBasicMaterial` 材质实例化了一个纯色的材质，接着我们实例化了一个 `THREE.Mesh` 网格，网格传入了几何体和材质并将它添加到场景中。默认情况下，当我们调用 `scene.add()` 的时候，物体将会被添加到 (0,0,0) 坐标。但将使得摄像机和立方体彼此在一起。为了防止这种情况的发生，我们只需要将摄像机稍微向外移动一些即可。
+上面的代码中，我们使用了 `THREE.BoxGeometry` 实例化了一个10×10×10的立方体的几何体形状，然后使用 `THREE.MeshBasicMaterial` 材质实例化了一个纯色的材质，接着我们实例化了一个 `THREE.Mesh` 网格，网格传入了几何体和材质并将它添加到场景中。默认情况下，当我们调用 `scene.add()` 的时候，物体将会被添加到 (0,0,0) 坐标。但将使得摄像机和立方体彼此在一起。为了防止这种情况的发生，我们只需要调整一下摄像机的位置，将摄像机的 `x,y,z`设置到30的位置，并使用 `camera.lookAt(0, 0, 0)` 方法将摄像机看向原点。
 
 ## 渲染场景
 如果此时再次查看页面，页面上还是一片黑，这是因为我们还没有对它进行真正的渲染。为此，我们需要使用一个被叫做 **“渲染循环”（render loop）** 或者 **“动画循环”（animate loop）** 的东西。
@@ -148,12 +157,16 @@ function animate() {
 }
 animate();
 ```
-在这里我们利用 `requestAnimationFrame` 方法来实现动画循环，每一帧都会调用一次 `animate` 方法，这里不推荐使用 `setInterval` ，因为它在执行大量代码时会导致浏览器卡顿，而且使用 `requestAnimationFrame` 当用户切换到其它的标签页时，它会暂停，因此不会浪费用户内存资源。此时我们可以看到页面上已经有了一个绿色的正方形：
+在这里我们利用 `requestAnimationFrame` 方法来实现动画循环，每一帧都会调用一次 `animate` 方法，这里不推荐使用 `setInterval` ，因为它在执行大量代码时会导致浏览器卡顿，而且使用 `requestAnimationFrame` 当用户切换到其它的标签页时，它会暂停，因此不会浪费用户内存资源。此时我们可以看到页面上已经有了一个绿色的正方体：
 
-<iframe src="https://demos.lsj97.com/#/threeJsDemos?step=1" style="width:100%;height:500px"></iframe>
+<LazyLoader> 
+   <ClientOnly>
+    <iframe src="https://demos.lsj97.com/#/threeJsDemos?step=1" style="width:100%;height:500px"></iframe>
+   </ClientOnly>
+</LazyLoader>
 
 ## 使立方体动起来
-有细心的小伙伴会问，我们不是添加了一个正方体到场景中吗，为什么看到的只是一个正方形？这个问题的答案也很简单，因为正方体没有动，他的我们只能看到它投影的一个面，接下来我们让“正方形”动起来，让它变成立方体。
+现在看到的只是一个静态的六边形，接下来我们让“六边形”动起来，让它变成立方体。
 
 我们只需要添加这两行代码：
 
@@ -166,9 +179,14 @@ function animate() {
 }
 animate();
 ```
-
-<iframe src="https://demos.lsj97.com/#/threeJsDemos?step=2" style="width:100%;height:500px"></iframe>
+<LazyLoader>
+  <ClientOnly>
+    <iframe src="https://demos.lsj97.com/#/threeJsDemos?step=2" style="width:100%;height:500px"></iframe>
+  </ClientOnly>
+</LazyLoader>
 
 这两行代码会在每次屏幕刷新时将立方体的 `x`,`y`旋转 0.01 弧度，旋转速度取决于你的屏幕刷新率。
 
 到此，你便成功完成了你的第一个 `three.js` 应用程序。虽然它很简单，但现在你已经有了一个入门的起点。
+
+

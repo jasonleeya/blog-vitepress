@@ -5,7 +5,9 @@ tags:
 ---
 <script setup>import Read from "@components/Read.vue";</script>
 
-<read/>
+<ClientOnly>
+  <read/>
+</ClientOnly>
 
 ![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2023_12/markdown.svg)
 

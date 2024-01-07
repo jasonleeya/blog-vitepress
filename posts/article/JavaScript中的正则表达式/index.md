@@ -6,7 +6,9 @@ tags:
 ---
 <script setup>import Read from "@components/Read.vue";</script>
 
-<read/>
+<ClientOnly>
+  <read/>
+</ClientOnly>
 
 # JavaScript中的正则表达式
 
