@@ -75,7 +75,7 @@ const showAnswer = () => {
 
 <style scoped lang="scss">
 .card {
-  width: 100%;
+  width: 100% !important;
 
   .content {
     .description {
