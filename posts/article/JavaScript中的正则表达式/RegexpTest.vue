@@ -14,8 +14,10 @@ const inputWidth = ref(INPUT_MIN_WIDTH)
 const inputRef = ref()
 const hiddenTextRef = ref()
 const handleInput = () => {
-  inputWidth.value = getHiddenTextWidth()
   match()
+  nextTick(()=>{
+    inputWidth.value = getHiddenTextWidth()
+  })
 }
 
 const match = () => {
