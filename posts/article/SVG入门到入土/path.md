@@ -36,7 +36,7 @@
 <br>
 
 #### `H`
-`Horizontal line to`的意思，由于是水平移动那目标位置，所以只需要一个参数，即目标点y轴。
+`Horizontal line to`的意思，由于是水平移动那目标位置，所以只需要一个参数，即目标点x轴。
 
 <ClientOnly>
   <el-card class="card">
@@ -48,7 +48,7 @@
 <br>
 
 #### `V`
-`Vertical line to`的意思，也是只需要一个参数，目标点x轴。
+`Vertical line to`的意思，也是只需要一个参数，目标点y轴。
 
 <ClientOnly>
   <el-card class="card">

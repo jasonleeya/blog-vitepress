@@ -10,6 +10,7 @@ import CanvasSvgCompare from "./CanvasSvgCompare.vue";
 import SvgWave from "./SvgWave.vue";
 import {ref} from 'vue';
 import {withBase} from 'vitepress';
+import LazyLoader from "@components/LazyLoader.vue";
 
 const arcXr = ref(0);
 const arcMx = ref(160);

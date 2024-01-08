@@ -16,7 +16,6 @@ function animate() {
   }
   baseFrequency.value = `${process * 0.005 + 0.015} ${process * 0.05 + 0.1}`
   raf = requestAnimationFrame(animate)
-  console.log('%c process ','color:white;background:red',process)
 }
 
 requestAnimationFrame(() => {
@@ -67,7 +66,7 @@ onUnmounted(() => {
   height: 66%;
   filter: url("#turbulence");
 }
-@media (min-width: 960px) {
+@media (min-width: 992px) {
   #wave-container{
     height: 412px;
     width: 550px;

@@ -160,6 +160,7 @@
 `<feComposite>` SVG 滤波器基元使用 `Porter-Duff` 合成操作之一在图像空间中按像素执行两个输入图像的组合： `over` 、 `in` 、 `atop` 、 `out` 、 `xor` 、 `lighter` 或 `arithmetic` 。
 
 <ClientOnly>
+ <LazyLoader>
   <el-card class="card" >
   <svg width="330" height="195" viewBox="0 0 1100 650" version="1.1"
      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -328,6 +329,7 @@
   </g>
 </svg>
   </el-card>
+ </LazyLoader>
 </ClientOnly>
 
 可参考文章：
@@ -431,6 +433,7 @@
 :::
 
 <ClientOnly>
+  <LazyLoader>
     <el-card class="card" style="width: 100%;overflow: auto">
       <svg height="130" width="120">
         <defs>
@@ -564,7 +567,8 @@
         </div>
       </div>
     </el-card>
-  </ClientOnly>
+ </LazyLoader>
+</ClientOnly>
 
 属性：
 
@@ -707,6 +711,7 @@ P'(x,y) ← P( x + scale * (XC(x,y) - 0.5), y + scale * (YC(x,y) - 0.5))
 - `stitchTiles`：定义了Perlin噪声在边框处的行为表现。
 
 <ClientOnly>
+ <LazyLoader>
   <el-card class="card">
     <svg viewBox="0 0 300 200" width="300" height="200" xmlns="http://www.w3.org/2000/svg">
       <filter id="noise" x="0" y="0" width="100%" height="100%">
@@ -741,6 +746,7 @@ P'(x,y) ← P( x + scale * (XC(x,y) - 0.5), y + scale * (YC(x,y) - 0.5))
       </el-select>
      </div>
   </el-card>
+ </LazyLoader>
 </ClientOnly>
 
 下面是我结合 `<feTurbulence>` 和 `<feDisplacementMap>` 实现的SVG波浪效果：
@@ -749,8 +755,12 @@ P'(x,y) ← P( x + scale * (XC(x,y) - 0.5), y + scale * (YC(x,y) - 0.5))
 <<< ./SvgWave.vue
 :::
 
+
 <ClientOnly>
-  <el-card class="card">
-    <SvgWave/>
-  </el-card>
+  <LazyLoader>
+    <el-card class="card">
+      <SvgWave/>
+    </el-card>
+  </LazyLoader>
 </ClientOnly>
+
