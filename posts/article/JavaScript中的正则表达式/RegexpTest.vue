@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {nextTick, ref} from "vue";
 import {useIsMobile} from "../../../.vitepress/hooks/useIsMobile.mjs";
 
 const text = ref('hello regexp')
 const result = ref(text.value)
 const regexp = ref('')
+const answer = ref('regexp')
 
 const isMobile = useIsMobile()
 const INPUT_MIN_WIDTH = 90
@@ -38,6 +39,13 @@ const getHiddenTextWidth = () => {
   return width
 }
 
+const showAnswer = () => {
+  regexp.value = answer.value
+  match()
+  nextTick(()=>{
+    inputWidth.value = getHiddenTextWidth()
+  })
+}
 </script>
 
 <template>
@@ -49,11 +57,21 @@ const getHiddenTextWidth = () => {
     </div>
     <div class="bottom" @click="inputRef.focus()">
       <div class="hidden-text" ref="hiddenTextRef">{{ regexp }}</div>
-      /<input type="text" ref="inputRef" class="input" placeholder="正则表达式" v-model="regexp" @input="handleInput"
-              :style="{width: inputWidth + 'px'}" spellcheck="false">/g
+      <span>/</span><input type="text" ref="inputRef" class="input" placeholder="正则表达式" v-model="regexp"
+                           @input="handleInput"
+                           :style="{width: inputWidth + 'px'}" spellcheck="false"><span>/g</span>
+      <span class="show-answer">?</span>
+
+      <el-tooltip
+          effect="dark"
+          content="显示答案"
+          placement="top">
+        <span class="show-answer" @click="showAnswer">?</span>
+      </el-tooltip>
     </div>
   </div>
 </template>
+
 
 <style scoped lang="scss">
 .card {
@@ -102,6 +120,21 @@ const getHiddenTextWidth = () => {
       left: 0;
       top: 0;
       opacity: 0;
+    }
+    .show-answer {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      text-align: center;
+      line-height: 20px;
+      font-size: 14px;
+      color: var(--vp-c-brand);
+      background: var(--vp-c-brand-soft);
+      font-weight: bold;
     }
   }
 }
