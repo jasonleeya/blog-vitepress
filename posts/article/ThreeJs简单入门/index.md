@@ -161,7 +161,7 @@ animate();
 
 <LazyLoader> 
    <ClientOnly>
-    <iframe src="https://demos.lsj97.com/#/threeJsDemos?step=1" style="width:100%;height:500px"></iframe>
+    <iframe src="https://demos.lsj97.com/#/learnThreeJsDemos?step=1" style="width:100%;height:500px"></iframe>
    </ClientOnly>
 </LazyLoader>
 
@@ -181,7 +181,7 @@ animate();
 ```
 <LazyLoader>
   <ClientOnly>
-    <iframe src="https://demos.lsj97.com/#/threeJsDemos?step=2" style="width:100%;height:500px"></iframe>
+    <iframe src="https://demos.lsj97.com/#/learnThreeJsDemos?step=2" style="width:100%;height:500px"></iframe>
   </ClientOnly>
 </LazyLoader>
 

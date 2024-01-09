@@ -1,11 +1,28 @@
-<script setup lang="ts">
-import {nextTick, ref} from "vue";
+<script lang="ts" setup>
+import {nextTick, PropType, ref} from "vue";
 import {useIsMobile} from "../../../.vitepress/hooks/useIsMobile.mjs";
 
-const text = ref('hello regexp')
-const result = ref(text.value)
+const props = defineProps({
+  text: {
+    type: Array as PropType<string[]>,
+    default: () => ['hello regexp']
+  },
+  answer: {
+    type: [String, Array] as PropType<string | string[]>,
+    default: 'regexp'
+  },
+  description: {
+    type: String as PropType<string>,
+    default: `在下面输入框输入<b>regexp</b>，匹配下面文本中的<b>regexp</b>。`
+  },
+  flags: {
+    type: String as PropType<string>,
+    default: 'g'
+  }
+})
+
+const result = ref(props.text)
 const regexp = ref('')
-const answer = ref('regexp')
 
 const isMobile = useIsMobile()
 const INPUT_MIN_WIDTH = 90
@@ -15,17 +32,26 @@ const inputRef = ref()
 const hiddenTextRef = ref()
 const handleInput = () => {
   match()
-  nextTick(()=>{
+  nextTick(() => {
     inputWidth.value = getHiddenTextWidth()
   })
 }
 
 const match = () => {
   if (!regexp.value) {
-    return result.value = text.value
+    return result.value = props.text
   }
-  const reg = new RegExp(regexp.value, 'g')
-  result.value = text.value.replace(reg, '<span class="highlight">$&</span>')
+  const reg = new RegExp(regexp.value, props.flags)
+
+  let isCorrect: boolean
+  if (Array.isArray(props.answer)) {
+    isCorrect = props.answer.includes(regexp.value)
+  } else {
+    isCorrect = regexp.value === props.answer
+  }
+  result.value = props.text.map((item) => {
+    return item.replace(reg, `<span class="highlight ${isCorrect ? 'correct' : 'error'}">$&</span>`)
+  })
 }
 const getHiddenTextWidth = () => {
   if (!hiddenTextRef.value) {
@@ -42,31 +68,34 @@ const getHiddenTextWidth = () => {
 }
 
 const showAnswer = () => {
-  regexp.value = answer.value
+  regexp.value = Array.isArray(props.answer) ? props.answer[0] : props.answer
   match()
-  nextTick(()=>{
+  nextTick(() => {
     inputWidth.value = getHiddenTextWidth()
   })
 }
 </script>
 
 <template>
-
   <div class="card">
+    <div class="title">练习</div>
     <div class="content">
-      <div class="description">在下面输入框输入'/regexp/'，匹配下面文本中的 "regexp"。</div>
-      <div class="text" v-html="result"></div>
+      <div class="description" v-html="description"></div>
+      <div v-for="(item,index) in result" :key="index" class="text" v-html="item"></div>
     </div>
     <div class="bottom" @click="inputRef.focus()">
-      <div class="hidden-text" ref="hiddenTextRef">{{ regexp }}</div>
-      <span>/</span><input type="text" ref="inputRef" class="input" placeholder="正则表达式" v-model="regexp"
-                           @input="handleInput"
-                           :style="{width: inputWidth + 'px'}" spellcheck="false"><span>/g</span>
+      <div ref="hiddenTextRef" class="hidden-text">{{ regexp }}</div>
+      <span class="before">/</span>
+      <input ref="inputRef" v-model="regexp" :style="{width: inputWidth + 'px'}" class="input"
+             placeholder="正则表达式"
+             spellcheck="false"
+             type="text" @input="handleInput">
+      <span class="after">/{{ flags }}</span>
       <span class="show-answer">?</span>
 
       <el-tooltip
-          effect="dark"
           content="显示答案"
+          effect="dark"
           placement="top">
         <span class="show-answer" @click="showAnswer">?</span>
       </el-tooltip>
@@ -75,22 +104,41 @@ const showAnswer = () => {
 </template>
 
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .card {
   width: 100% !important;
+  margin-bottom: 16px;
+
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: rgb(48, 49, 51);
+  }
 
   .content {
     .description {
       color: #666;
+
+      :deep(b) {
+        color: var(--vp-code-color);
+      }
     }
 
     .text {
       font-size: 18px;
       font-weight: bold;
       margin: 15px 0;
+      color: var(--vp-c-text-2);
 
       :deep(.highlight) {
-        color: var(--vp-c-brand);
+        &.correct {
+          color: var(--vp-c-brand);
+        }
+
+        &.error {
+          color: var(--vp-c-red-3);
+        }
       }
 
     }
@@ -111,10 +159,12 @@ const showAnswer = () => {
     position: relative;
     user-select: none;
 
-    .input {
+    .input,.before, .after {
       font-size: 18px;
-      margin: 0 10px;
+      margin: 0 1px;
       color: var(--vp-code-color);
+      font-family: "Courier New", monospace;
+      font-weight: bold;
     }
 
     .hidden-text {
@@ -122,7 +172,10 @@ const showAnswer = () => {
       left: 0;
       top: 0;
       opacity: 0;
+      font-size: 18px;
+      font-family: "Courier New", monospace;
     }
+
     .show-answer {
       position: absolute;
       right: 8px;
