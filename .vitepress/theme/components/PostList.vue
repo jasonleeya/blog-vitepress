@@ -59,7 +59,7 @@ const isMobile = useIsMobile()
           </div>
         </div>
       </div>
-      <img v-if="item.cover" :src="item.cover" alt="" class="cover">
+      <img v-if="item.cover||item.imgs.length" :src="item.cover?item.cover:item.imgs[0]" alt="" class="cover">
     </a>
 
     <a v-for="item in _postList" v-else :href="item.path" class="post-mobile">
@@ -74,7 +74,7 @@ const isMobile = useIsMobile()
           </div>
           <div class="description">{{ item.description }}</div>
         </div>
-        <img v-if="item.cover"  :src="item.cover" alt="" class="cover">
+        <img v-if="item.cover||item.imgs.length"  :src="item.cover?item.cover:item.imgs[0]" alt="" class="cover">
       </div>
       <div class="footer">
         <div class="time split">{{ formatDate(item.updateTime, 'yyyy-MM-dd') }}</div>

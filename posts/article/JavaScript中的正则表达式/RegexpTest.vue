@@ -25,7 +25,7 @@ const result = ref(props.text)
 const regexp = ref('')
 
 const isMobile = useIsMobile()
-const INPUT_MIN_WIDTH = 90
+const INPUT_MIN_WIDTH = 80
 const INPUT_MAX_WIDTH = isMobile.value ? 300 : 500
 const inputWidth = ref(INPUT_MIN_WIDTH)
 const inputRef = ref()
