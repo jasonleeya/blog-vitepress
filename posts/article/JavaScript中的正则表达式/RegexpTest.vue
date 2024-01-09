@@ -160,20 +160,20 @@ const showAnswer = () => {
     user-select: none;
 
     .input,.before, .after {
-      font-size: 18px;
-      margin: 0 1px;
+      font-size: 16px;
+      margin: 0 2px;
       color: var(--vp-code-color);
-      font-family: "Courier New", monospace;
       font-weight: bold;
     }
-
+    .before, .after{
+      opacity: 0.6;
+    }
     .hidden-text {
       position: absolute;
       left: 0;
       top: 0;
       opacity: 0;
-      font-size: 18px;
-      font-family: "Courier New", monospace;
+      font-size: 16px;
     }
 
     .show-answer {
