@@ -2,7 +2,6 @@
 category: 笔记
 tags:
   - Vue
-  - 组件
   - SVG
   - 网站搭建
 ---
