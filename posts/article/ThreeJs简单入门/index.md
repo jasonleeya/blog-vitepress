@@ -12,7 +12,7 @@ import LazyLoader from "@components/LazyLoader.vue";
 </script>
 
 <ClientOnly>
-  <read/>
+  <read></read>
 </ClientOnly>
 
 ![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2024_01/threejs.png?sign=0edef579d07efe758efbc8b5cabd031a&t=1704267419)

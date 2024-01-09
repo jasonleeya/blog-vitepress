@@ -4,16 +4,20 @@ import {useIsMobile} from "../../../.vitepress/hooks/useIsMobile.mjs";
 
 const props = defineProps({
   text: {
-    type: Array as PropType<string[]>,
-    default: () => ['hello regexp']
+    type: [Array,String] as PropType<string[]|string>,
+    default: () => []
   },
   answer: {
     type: [String, Array] as PropType<string | string[]>,
-    default: 'regexp'
+    default: ''
+  },
+  answerType: {
+    type: Number as PropType<1|2>, //1精准答案，2开放题
+    default: 1
   },
   description: {
     type: String as PropType<string>,
-    default: `在下面输入框输入<b>regexp</b>，匹配下面文本中的<b>regexp</b>。`
+    default: ``
   },
   flags: {
     type: String as PropType<string>,
@@ -41,17 +45,34 @@ const match = () => {
   if (!regexp.value) {
     return result.value = props.text
   }
-  const reg = new RegExp(regexp.value, props.flags)
+  let reg = new RegExp(regexp.value, props.flags)
 
   let isCorrect: boolean
-  if (Array.isArray(props.answer)) {
-    isCorrect = props.answer.includes(regexp.value)
-  } else {
-    isCorrect = regexp.value === props.answer
+
+  if (props.answerType === 1) {
+    if (Array.isArray(props.answer)) {
+      isCorrect = props.answer.includes(regexp.value)
+    } else {
+      isCorrect = regexp.value === props.answer
+    }
+    if (Array.isArray(props.text)) {
+      result.value = props.text.map((item) => {
+        return item.replace(reg, `<span class="highlight ${isCorrect ? 'correct' : 'error'}">$&</span>`)
+      });
+    }else {
+      result.value = props.text.replace(reg, `<span class="highlight ${isCorrect ? 'correct' : 'error'}">$&</span>`);
+    }
+  }else {
+    if (Array.isArray(props.text)) {
+      result.value = props.text.map((item) => {
+        let match = item.match(reg)
+        if(match&&match[0]===item){
+          return `<span class="highlight correct">${item}</span>`
+        }
+        return item.replace(reg, `<span class="highlight error">$&</span>`)
+      })
+    }
   }
-  result.value = props.text.map((item) => {
-    return item.replace(reg, `<span class="highlight ${isCorrect ? 'correct' : 'error'}">$&</span>`)
-  })
 }
 const getHiddenTextWidth = () => {
   if (!hiddenTextRef.value) {
@@ -78,10 +99,14 @@ const showAnswer = () => {
 
 <template>
   <div class="card">
-    <div class="title">练习</div>
     <div class="content">
       <div class="description" v-html="description"></div>
-      <div v-for="(item,index) in result" :key="index" class="text" v-html="item"></div>
+      <template v-if="Array.isArray(text)">
+        <div v-for="(item,index) in result" :key="index" class="text" v-html="item"></div>
+      </template>
+      <template v-else>
+        <div class="text" v-html="result"></div>
+      </template>
     </div>
     <div class="bottom" @click="inputRef.focus()">
       <div ref="hiddenTextRef" class="hidden-text">{{ regexp }}</div>
@@ -107,7 +132,7 @@ const showAnswer = () => {
 <style lang="scss" scoped>
 .card {
   width: 100% !important;
-  margin-bottom: 16px;
+  margin: 16px 0;
 
   .title {
     font-size: 18px;
@@ -166,7 +191,7 @@ const showAnswer = () => {
       font-weight: bold;
     }
     .before, .after{
-      opacity: 0.6;
+      opacity: 0.5;
     }
     .hidden-text {
       position: absolute;

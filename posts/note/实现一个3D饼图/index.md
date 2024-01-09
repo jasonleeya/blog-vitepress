@@ -12,7 +12,7 @@ import LazyLoader from "@components/LazyLoader.vue";
 </script>
 
 <ClientOnly>
-  <read/>
+  <read></read>
   <iframe src="https://demos.lsj97.com/#/pieChart3d"></iframe>
 </ClientOnly>
 

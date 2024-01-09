@@ -11,8 +11,10 @@ import RegexpTest from "./RegexpTest.vue";
 </script>
 
 <ClientOnly>
-  <read/>
+  <read></read>
 </ClientOnly>
+
+![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2024_01/regexp.jpg)
 
 # JavaScript中的正则表达式
 
@@ -30,7 +32,7 @@ Regex或者Regexp）是一种有用于匹配和操作文本的强大工具，它
 正如正则表达式的作用，它可以匹配字符，当我们想匹配 `hello regexp` 中的 `regexp` 时，表达式为：`/regexp/`。
 
 <ClientOnly>
-  <RegexpTest :text="['hello regexp']" answer="regexp" description="在下面输入框输入<b>regexp</b>，匹配下面文本中的<b>regexp</b>。"/>
+  <RegexpTest text="hello regexp" answer="regexp" description="在下面输入框输入<b>regexp</b>，匹配下面文本中的<b>regexp</b>。"></RegexpTest>
 </ClientOnly>
 
 :::info 提示
@@ -103,5 +105,84 @@ Regex或者Regexp）是一种有用于匹配和操作文本的强大工具，它
 | \s | [ \t\v\n\r\f]       | 空白字符，包括空格、水平制表符、垂直制表符、换行符、回车符、换页符，`s` 是 `space` 的简称 |
 | \S | [^ \t\v\n\r\f]      | 非空白字符 |
 
+#### 量词
+
+量词也称限定符，它们的作用是限定匹配的次数，量词一共有 6 种，分别是 `*`、`+`、`?`、`{n}`、`{n,}` 和 `{n,m}`。
+
+- `*` 表示 0 个或多个。
+
+<ClientOnly>
+  <RegexpTest :text="['br','ber','beer']" answer="be*r" description="使用<b>*</b>匹配下面三个单词"></RegexpTest>
+</ClientOnly>
+
+- `+` 表示 1 个或多个
+
+<ClientOnly>
+  <RegexpTest :text="['br','ber','beer']" answer="be+r" description="使用<b>+</b>匹配<b>ber</b>和<b>beer</b>"></RegexpTest>
+</ClientOnly>
+
+- `?` 表示 0 个或 1 个
+
+<ClientOnly>
+  <RegexpTest :text="['br','ber','beer']" answer="be?r" description="使用<b>?</b>匹配<b>br</b>和<b>ber</b>"></RegexpTest>
+</ClientOnly>
+
+- `{n}` 表示 n 个
+
+<ClientOnly>
+  <RegexpTest :text="['br','ber','beer']" answer="be{2}r" description="使用<b>{n}</b>匹配<b>beer</b>"></RegexpTest>
+</ClientOnly>
+
+- `{n,}` 表示 n 个或多个
+
+<ClientOnly>
+  <RegexpTest :text="['br','ber','beer','beeer']" answer="be{2,}r" description="使用<b>{n,}</b>匹配<b>beer</b>和<b>beeer</b>"></RegexpTest>
+</ClientOnly>
+
+- `{n,m}` 表示 n 到 m 个
+
+<ClientOnly>
+  <RegexpTest :text="['br','ber','beer','beeer']" answer="be{1,2}r" description="使用<b>{n,m}</b>匹配<b>ber</b>和<b>beer</b>"></RegexpTest>
+</ClientOnly>
+
+以上的量词默认都是贪婪匹配模式，即匹配尽可能多的字符，请看下面的例子：
+
+```js
+const text = '量词有"贪婪匹配"和"惰性匹配"两种模式'
+const reg = /".+"/g
+
+console.log(text.match(reg)) // ['"贪婪匹配"和"惰性匹配"']
+```
+我们期望正则能将 **贪婪匹配** 和 **惰性匹配**匹配出来，但是事与愿违，造成这种情况是因为当正则匹配到第二个 `"` 时没有结束，它是贪婪的，能匹配到的 `"` 多多益善，直到匹配到最后一个 `"` 返回了结果。要想达到惰性匹配，需要在量词后面加上 `?`：
+
+```js
+const text = '量词有"贪婪匹配"和"惰性匹配"两种模式'
+const reg = /".+?"/g
+
+console.log(text.match(reg)) // ['"贪婪匹配"', '"惰性匹配"']
+```
+
+以可看到，在惰性匹配的模式下，正则一旦匹配到满足的内容，就会返回。
+
+<ClientOnly>
+  <RegexpTest text="<-span>正则表达式<-/span>" description="使用<b>惰性匹配</b>匹配出<b><-span></b>和<b><-/span></b>。<br>由于尖括号会被转义，所以添加了横杠<b>-</b>，请在答案里一并写出。" :answer="['<.+?>','<.*?>','<-.+?>','<-.*?>']"></RegexpTest>
+</ClientOnly>
+
+#### 分支
+
+类似字符集合可以表示单个字符的多种可能，正则的分支可以用来表示字符串或者表达式的多种可能，比如 `(ab|cd|ef)` 表示 `ab` 或者 `cb`或者 `ef`；`(ab{2,3}c|a[^b]c)` 表示可以是 `ab{2,3}c`模式也可以是 `a[^b]c`模式
+
+<ClientOnly>
+<RegexpTest :text="['黄焖鸡','猪脚饭']" description="<b>今天中午吃什么？</b>作为一个选择困难症患者，我表示都可以。请用<b>分支</b>匹配所有食物。" :answer="['(黄焖鸡|猪脚饭)','(猪脚饭|黄焖鸡)','黄焖鸡|猪脚饭','猪脚饭|黄焖鸡']"></RegexpTest>
+</ClientOnly>
+
+---
 
 
+::: info 下面我们针对来前面部分所学内容做一些练习
+
+<ClientOnly>
+<RegexpTest :text="['#fff','#FFF','#000','#ffffff','#FFFFFF','#000000','#FF0000','#ff0000']" description="请匹配下面<b>所有颜色格式</b>（开放题）" :answer="['#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})']" :answerType="2"></RegexpTest>
+</ClientOnly>
+
+:::
