@@ -65,7 +65,7 @@ import RegexpTest from "./RegexpTest.vue";
 
 纵向模糊匹配指的是，当正则匹配到具某一位具体字符时，它可以匹配多个字符。
 
-例如要匹配 `test text teat tect`中的每个单词，需要用到字符集合的匹配方式，正则为`\te[sxac]t\`。
+例如要匹配 `test text teat tect`中的每个单词，需要用到字符集合的匹配方式，正则为`/te[sxac]t/`。
 
 ![img_1](./imgs/img_2.svg)
 
@@ -103,6 +103,10 @@ import RegexpTest from "./RegexpTest.vue";
 | \W | [0-9a-Z_]           | 非单词字符 |
 | \s | [ \t\v\n\r\f]       | 空白字符，包括空格、水平制表符、垂直制表符、换行符、回车符、换页符，`s` 是 `space` 的简称 |
 | \S | [^ \t\v\n\r\f]      | 非空白字符 |
+
+:::tip 提示
+当我们想匹配字符 `.` 需要写成 `\.` 进行转义。包括后面会学到的一些元字符，我们要匹配它们本身的时候，都需要在前面加上 `\` 进行转义。 
+:::
 
 #### 量词
 
@@ -187,10 +191,68 @@ console.log(text.match(reg)) // ['"贪婪匹配"', '"惰性匹配"']
 </ClientOnly>
 
 <ClientOnly>
-<RegexpTest text="1949-10-01" description="请匹配下面<b>日期</b>（开放题）" answer="\d{1,4}-(0\d|1[0-2])-(0\d|[12]\d|3[01])" :answerType="2"></RegexpTest>
+<RegexpTest text="1949-10-01" description="请匹配下面<b>日期</b>（开放题）" answer="\d{1,4}-(0\d|1[0-2])-(0\d|[12]\d|3[01])" :answerType="2" :excludedAnswers="['1949-10-01','.+','.*']"></RegexpTest>
 </ClientOnly>
 
 <ClientOnly>
-<RegexpTest :text="['#fff','#FFF','#000','#ffffff','#FFFFFF','#000000','#FF0000','#ff0000']" description="请匹配下面<b>所有颜色格式</b>（开放题）" :answer="['#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})']" :answerType="2"></RegexpTest>
+<RegexpTest :text="['#fff','#FFF','#000','#ffffff','#FFFFFF','#000000','#FF0000','#ff0000']" description="请匹配下面<b>所有颜色格式</b>（开放题）" :answer="['#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})']" :answerType="2" :excludedAnswers="['.+','.*']"></RegexpTest>
 </ClientOnly>
 :::
+
+### 位置匹配
+
+前面我们学习了正则表达式的字符匹配，现在我们来介绍介绍位置匹配。
+
+那么什么是位置匹配呢？让我们来看看下面几个例子：
+    
+ > 金额 `￥1988888` 转化为千分法： 转化为千分法 `￥1,988,888`。
+
+ > 将手机号码 `18888888888` 转化为速记法： `188-8888-8888`。
+
+上面的例子可以看到，在某些数字中间添加了逗号和横杠，这些符号正是正则表达式通过“位置匹匹配”匹配到了这些“位置”从而添加的。
+
+这些“位置”我们可以理解为**相邻字符之间的位置**。你可能将其与空格混淆，空格通常作为单词间的分隔，位置是字符间的分隔，确切说是字符的边界，并且空格之间也是存在位置的，例如，我们将 `hello world`的全部位置用 `-` 标注出来为：
+
+```javascript
+const text = 'hello world'
+console.log(text.replaceAll('','-'))  //-h-e-l-l-o- -w-o-r-l-d-
+```
+
+正则表达式中如何进行位置匹配呢？ 正则中用来表示位置的符号有：`^`、`$`、`\b`、`\B`、`(?=p)`、`(?!p)`、`(?<=p)`、`(?<!p)`,我逐个介绍一下。
+
+#### ^和$
+
+`^`表示匹配输入字符串的开始位置。
+
+<ClientOnly>
+<RegexpTest :text="['1stPage.vue','page1.vue','page.vue']" description="文件名是不能以数字开头的，请使用<b>^</b>匹配出以<b>数字开头的</b>文件名" answer="^\d+[0-9a-zA-Z]+\.vue" :answerType="2" :excludedAnswers="['1stPage.vue','page1.vue','page.vue','.+','.*']"></RegexpTest>
+</ClientOnly>
+
+
+`$`表示匹配输入字符串的结束位置。
+
+<ClientOnly>
+<RegexpTest :text="['index.vue','img.png','index.js','img.jpg']" description="请用<b>$</b>匹配下面文件中的<b>图片格式</b>的文件" answer=".+\.(png|jpg)$" :answerType="2" :excludedAnswers="['img.png','img.jpg','.+','.*']"></RegexpTest>
+</ClientOnly>
+
+#### \b和\B
+
+- `\b`表示匹配一个单词的边界，具体将有一下三点原则：
+
+1. `\w` 和 `\W` 之间的位置，也就是单词与非单词之间的位置，例如：`hello world` 中用 `-` 表示该位置就是 `hello- -world`
+
+2. `^` 与 `\w` 之间的位置，表示着这个单词位于文本开头，这个位置就在这个开头位置，例如：`hello world` 中用 `-` 表示该位置就是 `-hello world`
+
+3. `\w` 与 `$` 之间的位置，表示着这个单词位于文本结尾，这个位置就在这个结尾位置，例如：`hello world` 中用 `-` 表示该位置就是 `hello world-`
+
+<ClientOnly>
+<RegexpTest :text="['never','verb']" description="请用<b>\b</b>匹配单词<b>nerver</b>中的<b>er</b>" answer="er\b"></RegexpTest>
+</ClientOnly>
+
+- `\B`则和`\b`相反，表示匹配一个非单词的边界，意味着这个位置不能时单词边界。
+
+<ClientOnly>
+<RegexpTest :text="['never','verb']" description="请用<b>\B</b>匹配单词<b>verb</b>中的<b>er</b>" answer="er\B"></RegexpTest>
+</ClientOnly>
+
+#### 断言

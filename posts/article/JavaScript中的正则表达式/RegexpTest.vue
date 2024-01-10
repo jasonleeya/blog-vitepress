@@ -15,6 +15,11 @@ const props = defineProps({
     type: Number as PropType<1 | 2>, //1精准答案，2开放题
     default: 1
   },
+  //当答案模式为2时，排除一些比如“.+”,“.*”或者直接使用题目文本的答案
+  excludedAnswers: {
+    type: Array as PropType<string[]>,
+    default: () => []
+  },
   description: {
     type: String as PropType<string>,
     default: ``
@@ -67,7 +72,10 @@ const match = () => {
       result.value = props.text.map((item) => {
         let match = item.match(reg)
         let answerMatch = item.match(new RegExp(Array.isArray(props.answer) ? props.answer[0] : props.answer, props.flags))
-        if ((match && match[0]) === (answerMatch && answerMatch[0])) {
+        if(props.excludedAnswers.includes(regexp.value)){
+          return item.replace(reg, `<span class="highlight error">$&</span>`)
+        }
+        if (match && match[0] === (answerMatch && answerMatch[0])) {
           return item.replace(answerMatch[0], `<span class="highlight correct">$&</span>`)
         }
         return item.replace(reg, `<span class="highlight error">$&</span>`)
@@ -75,7 +83,12 @@ const match = () => {
     }else {
       let match = props.text.match(reg)
       let answerMatch = props.text.match(new RegExp(Array.isArray(props.answer) ? props.answer[0] : props.answer, props.flags))
-      if ((match && match[0]) === (answerMatch && answerMatch[0])) {
+
+      if(props.excludedAnswers.includes(regexp.value)){
+        result.value = props.text.replace(reg, `<span class="highlight error">$&</span>`)
+        return
+      }
+      if (match && match[0] === (answerMatch && answerMatch[0])) {
         result.value = props.text.replace(answerMatch[0], `<span class="highlight correct">$&</span>`)
       } else {
         result.value = props.text.replace(reg, `<span class="highlight error">$&</span>`)
