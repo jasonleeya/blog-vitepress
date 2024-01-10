@@ -4,7 +4,7 @@ import {useIsMobile} from "../../../.vitepress/hooks/useIsMobile.mjs";
 
 const props = defineProps({
   text: {
-    type: [Array,String] as PropType<string[]|string>,
+    type: [Array, String] as PropType<string[] | string>,
     default: () => []
   },
   answer: {
@@ -12,7 +12,7 @@ const props = defineProps({
     default: ''
   },
   answerType: {
-    type: Number as PropType<1|2>, //1精准答案，2开放题
+    type: Number as PropType<1 | 2>, //1精准答案，2开放题
     default: 1
   },
   description: {
@@ -59,18 +59,27 @@ const match = () => {
       result.value = props.text.map((item) => {
         return item.replace(reg, `<span class="highlight ${isCorrect ? 'correct' : 'error'}">$&</span>`)
       });
-    }else {
+    } else {
       result.value = props.text.replace(reg, `<span class="highlight ${isCorrect ? 'correct' : 'error'}">$&</span>`);
     }
-  }else {
+  } else {
     if (Array.isArray(props.text)) {
       result.value = props.text.map((item) => {
         let match = item.match(reg)
-        if(match&&match[0]===item){
-          return `<span class="highlight correct">${item}</span>`
+        let answerMatch = item.match(new RegExp(Array.isArray(props.answer) ? props.answer[0] : props.answer, props.flags))
+        if ((match && match[0]) === (answerMatch && answerMatch[0])) {
+          return item.replace(answerMatch[0], `<span class="highlight correct">$&</span>`)
         }
         return item.replace(reg, `<span class="highlight error">$&</span>`)
       })
+    }else {
+      let match = props.text.match(reg)
+      let answerMatch = props.text.match(new RegExp(Array.isArray(props.answer) ? props.answer[0] : props.answer, props.flags))
+      if ((match && match[0]) === (answerMatch && answerMatch[0])) {
+        result.value = props.text.replace(answerMatch[0], `<span class="highlight correct">$&</span>`)
+      } else {
+        result.value = props.text.replace(reg, `<span class="highlight error">$&</span>`)
+      }
     }
   }
 }
@@ -119,7 +128,7 @@ const showAnswer = () => {
       <span class="show-answer">?</span>
 
       <el-tooltip
-          content="显示答案"
+          :content="answerType === 1 ? '显示答案' : '参考答案'"
           effect="dark"
           placement="top">
         <span class="show-answer" @click="showAnswer">?</span>
@@ -184,15 +193,17 @@ const showAnswer = () => {
     position: relative;
     user-select: none;
 
-    .input,.before, .after {
+    .input, .before, .after {
       font-size: 16px;
       margin: 0 2px;
       color: var(--vp-code-color);
       font-weight: bold;
     }
-    .before, .after{
+
+    .before, .after {
       opacity: 0.5;
     }
+
     .hidden-text {
       position: absolute;
       left: 0;
