@@ -246,13 +246,13 @@ console.log(text.replaceAll('','-'))  //-h-e-l-l-o- -w-o-r-l-d-
 3. `\w` 与 `$` 之间的位置，表示着这个单词位于文本结尾，这个位置就在这个结尾位置，例如：`hello world` 中用 `-` 表示该位置就是 `hello world-`
 
 <ClientOnly>
-<RegexpTest :text="['never','verb']" description="请用<b>\b</b>匹配单词<b>nerver</b>中的<b>er</b>" answer="er\b"></RegexpTest>
+<RegexpTest :text="['never','verb','error']" description="请用<b>\b</b>匹配单词<b>nerver</b>中的<b>er</b>" answer="er\b" :answerType="2"></RegexpTest>
 </ClientOnly>
 
 - `\B`则和`\b`相反，表示匹配一个非单词的边界，意味着这个位置不能时单词边界。
 
 <ClientOnly>
-<RegexpTest :text="['never','verb']" description="请用<b>\B</b>匹配单词<b>verb</b>中的<b>er</b>" answer="er\B"></RegexpTest>
+<RegexpTest :text="['never','verb','error']" description="请用<b>\B</b>匹配单词<b>verb</b>中的<b>er</b>" answer="\Ber\B" :answerType="2"></RegexpTest>
 </ClientOnly>
 
 #### 断言
