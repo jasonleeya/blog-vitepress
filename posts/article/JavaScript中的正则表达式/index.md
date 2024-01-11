@@ -22,6 +22,8 @@ import RegexpTest from "./RegexpTest.vue";
 
 网上有很多正则表达式的教程，为什么还要多次一举写这篇文章呢？其实我也是读那些优秀的文章学会的，但是过程是非常枯燥的，而且往往是过来一段时间后又会忘记，不得不再次翻阅那些博客，所以我写下此篇文章一是为了巩固正则知识，二是想以一种全新的方式写一篇正则教程，希望帮助到大家。话不多说了，让我们开始吧。
 
+> 文章部分内容参考自书籍《[JavaScript正则表达式迷你书](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/docs/JavaScript%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%BF%B7%E4%BD%A0%E4%B9%A6.pdf)》，有兴趣的同学可以自行下载阅读。
+
 ## 正则两种匹配模式
 
 正则表达式有两种匹配模式，一是字符匹配，二是位置匹配。
@@ -170,7 +172,7 @@ console.log(text.match(reg)) // ['"贪婪匹配"', '"惰性匹配"']
 以可看到，在惰性匹配的模式下，正则一旦匹配到满足的内容，就会返回。
 
 <ClientOnly>
-  <RegexpTest text="<-span>正则表达式<-/span>" description="使用<b>惰性匹配</b>匹配出<b><-span></b>和<b><-/span></b>。<br>（由于尖括号会被转义，所以添加了横杠“<b>-</b>”）。" :answer="['<.+?>','<.*?>','<-.+?>','<-.*?>']"></RegexpTest>
+  <RegexpTest text="<&#8203;span>正则表达式<&#8203;/span>" description="使用<b>惰性匹配</b>匹配出<b><&#8203;span></b>和<b><&#8203;/span></b>。" :answer="['<.+?>','<.*?>']"></RegexpTest>
 </ClientOnly>
 
 #### 分支
@@ -187,7 +189,7 @@ console.log(text.match(reg)) // ['"贪婪匹配"', '"惰性匹配"']
 ::: info 下面我们针对来前面部分所学内容做一些练习
 
 <ClientOnly>
-<RegexpTest text='<-div id="container" class="main"><-/div>' description='请匹配下面HTML标签中的<b>id="container"</b>。<br>（由于尖括号会被转义，所以添加了横杠“<b>-</b>”）。' answer='id=".*?"' :questionType="2"></RegexpTest>
+<RegexpTest text='<&#8203;div id="container" class="main"><&#8203;/div>' description='请匹配下面HTML标签中的<b>id="container"</b>。' answer='id=".*?"' :questionType="2"></RegexpTest>
 </ClientOnly>
 
 <ClientOnly>
@@ -255,4 +257,57 @@ console.log(text.replaceAll('','-'))  //-h-e-l-l-o- -w-o-r-l-d-
 <RegexpTest :text="['never','verb','error']" description="请用<b>\B</b>匹配单词<b>verb</b>中的<b>er</b>" answer="\Ber\B" :questionType="2"></RegexpTest>
 </ClientOnly>
 
-#### 断言
+#### 零宽断言
+
+“零宽断言”又是一个让人摸不着头脑的名词。“零宽”意思就是宽度为零，不占据位置，这也和前面介绍的“位置”是一个意思，断言就是表示一种条件判断，所以正则表达式中“零宽断言”可以理解为匹配满足特定条件的位置的一种表达式。零宽断言表达式有四种，分别是：`(?=p)`、`(?!p)`、`(?<=p)`、`(?<!p)`。
+
+- `(?=p)` 为正向先行断言，我们不用去记它的名字，只需要明白，这个表达式的作用是匹配一个位置，紧接该位置之后的字符满足表达式p，也可以理解为：p前面的位置。
+  
+看下面这个例子：
+
+```js
+var string = 'I like singing, dancing, rapping, and playing basketball'
+console.log(string.replace(/(?=ing)/g,'-')) 'I like s-ing-ing, danc-ing, rapp-ing, and play-ing basketball'
+```
+我们可以看到，replace函数将`(?=ing)` 匹配到的位置替换成了横杠，这些位置他的后面都是 `ing`。
+
+<ClientOnly>
+<RegexpTest text="天才就是1%的灵感加上99%的汗水" description="用<b>(?=p)</b>匹配<b>百分比中的数字</b>" answer="\d+(?=%)"></RegexpTest>
+</ClientOnly>
+
+- `(?!p)` 为负向先行断言，这个表达式的作用是匹配一个位置，紧接该位置之后的字符序列不满足表达式p。
+
+和`(?=p)`相反的是，`(?<!p)` 匹配的位置后面不能是满表达式exp的。
+
+还是看个例子：
+
+```javascript
+const string = 'I`m singing while you`re dancing'
+console.log(string.replace(/(?!ing)/g,'-')) // -I-`-m- -si-n-gi-n-g- -w-h-i-l-e- -y-o-u-`-r-e- -d-a-n-ci-n-g-
+```
+可以看到，字符串中除了`ing`之外的位置都被替换成了横杠，这恰好和前面的 `(?=ing)` 的例子是相反的。
+
+<ClientOnly>
+<RegexpTest text="date: 4 Aug 3PM" description="用<b>(?!p)</b>匹配下列文本中<b>没有PM的数字</b>" answer="\d+(?!PM)"></RegexpTest>
+</ClientOnly>
+
+- `(?<=p)` 为正向后行断言，这个表达式的作用是匹配一个位置，紧接该位置之前的字符满足表达式p，
+
+<ClientOnly>
+<RegexpTest text="LoL heroes can be upgraded to lv18, and they will have ultimate skills at lv6" description="用<b>(?<=p)</b>匹配<b>等级</b>中的<b>数字</b>,例如<b>lv6</b>中的<b>6</b>" answer="(?<=lv)\d+"></RegexpTest>
+</ClientOnly>
+
+
+- `(?<!p)` 为负向后行断言，这个表达式的作用是匹配一个位置，紧接该位置之前的字符序列不满足表达式p。
+
+<ClientOnly>
+<RegexpTest text="Product Code: 1064, Price: $5" description="用<b>(?<&#8203;!p)</b>匹配下列文本中<b>前面没有 $ 的数字</b>" answer="(?<!\$)\d+"></RegexpTest>
+</ClientOnly>
+
+:::danger 警告
+部分浏览器不支持后行断言也就是 **(?<=p)** 和 **(?<!p)**，可以使用替代方案：[javascript regex - look behind alternative?](https://stackoverflow.com/questions/7376238/javascript-regex-look-behind-alternative)
+:::
+
+#### 位置匹配的特性
+
+-------------------------------------------未完待续-----------------------------------------------
