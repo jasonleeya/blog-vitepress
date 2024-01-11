@@ -96,11 +96,11 @@ import RegexpTest from "./RegexpTest.vue";
 除了一个范围内的字符集合可以缩写外，正则中还内置了很多字符集的简写：
 | 缩写 | 字符集合 | 含义 |
 |----|---------------------|-----------------------------------------------------|
-| . | [^\n\r\u2028\u2029] | 通配符，匹配除了换行符、回车符、行分隔符和段分隔符以外的任意一个字符 |
+| .  | [^\n\r\u2028\u2029] | 通配符，匹配除了换行符、回车符、行分隔符和段分隔符以外的任意一个字符 |
 | \d | [0-9]               | 数字，`d` 是 `digit` 的简称 |
 | \D | [^0-9]              | 除数字外的任意字符 |
-| \w | [0-9a-zA-Z_]        | 数字、大小写字母和下划线，也就是单词，`w` 是 `word` 的简称 |
-| \W | [0-9a-Z_]           | 非单词字符 |
+| \w | [0-9a-zA-Z_]        | 数字、大小写字母和下划线，`w` 是 `word` 的简称 |
+| \W | [^0-9a-zA-Z_]       | 非字母、数字、下划线 |
 | \s | [ \t\v\n\r\f]       | 空白字符，包括空格、水平制表符、垂直制表符、换行符、回车符、换页符，`s` 是 `space` 的简称 |
 | \S | [^ \t\v\n\r\f]      | 非空白字符 |
 
@@ -187,15 +187,15 @@ console.log(text.match(reg)) // ['"贪婪匹配"', '"惰性匹配"']
 ::: info 下面我们针对来前面部分所学内容做一些练习
 
 <ClientOnly>
-<RegexpTest text='<-div id="container" class="main"><-/div>' description='请匹配下面HTML标签中的<b>id="container"</b>。<br>（由于尖括号会被转义，所以添加了横杠“<b>-</b>”）。' answer='id=".*?"' :answerType="2"></RegexpTest>
+<RegexpTest text='<-div id="container" class="main"><-/div>' description='请匹配下面HTML标签中的<b>id="container"</b>。<br>（由于尖括号会被转义，所以添加了横杠“<b>-</b>”）。' answer='id=".*?"' :questionType="2"></RegexpTest>
 </ClientOnly>
 
 <ClientOnly>
-<RegexpTest text="1949-10-01" description="请匹配下面<b>日期</b>（开放题）" answer="\d{1,4}-(0\d|1[0-2])-(0\d|[12]\d|3[01])" :answerType="2" :excludedAnswers="['1949-10-01','.+','.*']"></RegexpTest>
+<RegexpTest text="1949-10-01" description="请匹配下面<b>日期</b>（开放题）" answer="\d{1,4}-(0\d|1[0-2])-(0\d|[12]\d|3[01])" :questionType="2" :excludedAnswers="['1949-10-01','.+','.*']"></RegexpTest>
 </ClientOnly>
 
 <ClientOnly>
-<RegexpTest :text="['#fff','#FFF','#000','#ffffff','#FFFFFF','#000000','#FF0000','#ff0000']" description="请匹配下面<b>所有颜色格式</b>（开放题）" :answer="['#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})']" :answerType="2" :excludedAnswers="['.+','.*']"></RegexpTest>
+<RegexpTest :text="['#fff','#FFF','#000','#ffffff','#FFFFFF','#000000','#FF0000','#ff0000']" description="请匹配下面<b>所有颜色格式</b>（开放题）" :answer="['#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})']" :questionType="2" :excludedAnswers="['.+','.*']"></RegexpTest>
 </ClientOnly>
 :::
 
@@ -225,14 +225,14 @@ console.log(text.replaceAll('','-'))  //-h-e-l-l-o- -w-o-r-l-d-
 `^`表示匹配输入字符串的开始位置。
 
 <ClientOnly>
-<RegexpTest :text="['1stPage.vue','page1.vue','page.vue']" description="文件名是不能以数字开头的，请使用<b>^</b>匹配出以<b>数字开头的</b>文件名" answer="^\d+[0-9a-zA-Z]+\.vue" :answerType="2" :excludedAnswers="['1stPage.vue','page1.vue','page.vue','.+','.*']"></RegexpTest>
+<RegexpTest :text="['1stPage.vue','page1.vue','page.vue']" description="文件名是不能以数字开头的，请使用<b>^</b>匹配出以<b>数字开头的</b>文件名" answer="^\d+\w+\.vue" :questionType="2" :excludedAnswers="['1stPage.vue','page1.vue','page.vue','.+','.*']"></RegexpTest>
 </ClientOnly>
 
 
 `$`表示匹配输入字符串的结束位置。
 
 <ClientOnly>
-<RegexpTest :text="['index.vue','img.png','index.js','img.jpg']" description="请用<b>$</b>匹配下面文件中的<b>图片格式</b>的文件" answer=".+\.(png|jpg)$" :answerType="2" :excludedAnswers="['img.png','img.jpg','.+','.*']"></RegexpTest>
+<RegexpTest :text="['index.vue','img.png','index.js','img.jpg']" description="请用<b>$</b>匹配下面文件中的<b>图片格式</b>的文件" answer=".+\.(png|jpg)$" :questionType="2" :excludedAnswers="['img.png','img.jpg','.+','.*']"></RegexpTest>
 </ClientOnly>
 
 #### \b和\B
@@ -246,13 +246,13 @@ console.log(text.replaceAll('','-'))  //-h-e-l-l-o- -w-o-r-l-d-
 3. `\w` 与 `$` 之间的位置，表示着这个单词位于文本结尾，这个位置就在这个结尾位置，例如：`hello world` 中用 `-` 表示该位置就是 `hello world-`
 
 <ClientOnly>
-<RegexpTest :text="['never','verb','error']" description="请用<b>\b</b>匹配单词<b>nerver</b>中的<b>er</b>" answer="er\b" :answerType="2"></RegexpTest>
+<RegexpTest :text="['never','verb','error']" description="请用<b>\b</b>匹配单词<b>nerver</b>中的<b>er</b>" answer="er\b" :questionType="2"></RegexpTest>
 </ClientOnly>
 
 - `\B`则和`\b`相反，表示匹配一个非单词的边界，意味着这个位置不能时单词边界。
 
 <ClientOnly>
-<RegexpTest :text="['never','verb','error']" description="请用<b>\B</b>匹配单词<b>verb</b>中的<b>er</b>" answer="\Ber\B" :answerType="2"></RegexpTest>
+<RegexpTest :text="['never','verb','error']" description="请用<b>\B</b>匹配单词<b>verb</b>中的<b>er</b>" answer="\Ber\B" :questionType="2"></RegexpTest>
 </ClientOnly>
 
 #### 断言

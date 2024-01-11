@@ -11,7 +11,7 @@ const props = defineProps({
     type: [String, Array] as PropType<string | string[]>,
     default: ''
   },
-  answerType: {
+  questionType: {
     type: Number as PropType<1 | 2>, //1精准答案，2开放题
     default: 1
   },
@@ -31,91 +31,72 @@ const props = defineProps({
 })
 
 const result = ref(props.text)
-const regexp = ref('')
-
+const userAnswer = ref('')
 const isMobile = useIsMobile()
 const INPUT_MIN_WIDTH = 80
 const INPUT_MAX_WIDTH = isMobile.value ? 300 : 500
 const inputWidth = ref(INPUT_MIN_WIDTH)
 const inputRef = ref()
-const hiddenTextRef = ref()
+const hiddenTextRef = ref() // 隐藏文本用于计算input宽度
 const handleInput = () => {
   match()
-  nextTick(() => {
-    inputWidth.value = getHiddenTextWidth()
-  })
+  setInputWidth()
 }
 
 const match = () => {
-  if (!regexp.value) {
+  if (!userAnswer.value) {
     return result.value = props.text
   }
-  let reg = new RegExp(regexp.value, props.flags)
+  let regexp = new RegExp(userAnswer.value, props.flags)
 
   let isCorrect: boolean
 
-  if (props.answerType === 1) {
-    if (Array.isArray(props.answer)) {
-      isCorrect = props.answer.includes(regexp.value)
-    } else {
-      isCorrect = regexp.value === props.answer
-    }
-    if (Array.isArray(props.text)) {
-      result.value = props.text.map((item) => {
-        return item.replace(reg, `<span class="highlight ${isCorrect ? 'correct' : 'error'}">$&</span>`)
-      });
-    } else {
-      result.value = props.text.replace(reg, `<span class="highlight ${isCorrect ? 'correct' : 'error'}">$&</span>`);
-    }
-  } else {
-    if (Array.isArray(props.text)) {
-      result.value = props.text.map((item) => {
-        let match = item.match(reg)
-        let answerMatch = item.match(new RegExp(Array.isArray(props.answer) ? props.answer[0] : props.answer, props.flags))
-        if(props.excludedAnswers.includes(regexp.value)){
-          return item.replace(reg, `<span class="highlight error">$&</span>`)
-        }
-        if (match && match[0] === (answerMatch && answerMatch[0])) {
-          return item.replace(answerMatch[0], `<span class="highlight correct">$&</span>`)
-        }
-        return item.replace(reg, `<span class="highlight error">$&</span>`)
-      })
-    }else {
-      let match = props.text.match(reg)
-      let answerMatch = props.text.match(new RegExp(Array.isArray(props.answer) ? props.answer[0] : props.answer, props.flags))
+  const textList = Array.isArray(props.text) ? props.text : [props.text]
 
-      if(props.excludedAnswers.includes(regexp.value)){
-        result.value = props.text.replace(reg, `<span class="highlight error">$&</span>`)
-        return
+  if (props.questionType === 1) {
+    if (Array.isArray(props.answer)) {
+      isCorrect = props.answer.includes(userAnswer.value)
+    } else {
+      isCorrect = userAnswer.value === props.answer
+    }
+    result.value = textList.map((item) => {
+      return item.replace(regexp, `<span class="highlight ${isCorrect ? 'correct' : 'error'}">$&</span>`)
+    });
+  } else if (props.questionType === 2) {
+    result.value = textList.map((item) => {
+      let match = item.match(regexp)
+      let answerMatch = item.match(new RegExp(Array.isArray(props.answer) ? props.answer[0] : props.answer, props.flags))
+      if (props.excludedAnswers.includes(userAnswer.value)) {
+        return item.replace(regexp, `<span class="highlight error">$&</span>`)
       }
       if (match && match[0] === (answerMatch && answerMatch[0])) {
-        result.value = props.text.replace(answerMatch[0], `<span class="highlight correct">$&</span>`)
-      } else {
-        result.value = props.text.replace(reg, `<span class="highlight error">$&</span>`)
+        return item.replace(answerMatch[0], `<span class="highlight correct">$&</span>`)
       }
-    }
+      return item.replace(regexp, `<span class="highlight error">$&</span>`)
+    })
   }
 }
-const getHiddenTextWidth = () => {
-  if (!hiddenTextRef.value) {
-    return INPUT_MIN_WIDTH
-  }
-  const width = hiddenTextRef.value.clientWidth
-  if (width > INPUT_MAX_WIDTH) {
-    return INPUT_MAX_WIDTH
-  }
-  if (width < INPUT_MIN_WIDTH && !regexp.value) {
-    return INPUT_MIN_WIDTH
-  }
-  return width
+const setInputWidth = () => {
+  nextTick(() => {
+    if (!hiddenTextRef.value) {
+      inputWidth.value = INPUT_MIN_WIDTH
+      return
+    }
+    let width = hiddenTextRef.value.clientWidth
+    if (width > INPUT_MAX_WIDTH) {
+      width = INPUT_MAX_WIDTH
+    }
+    if (width < INPUT_MIN_WIDTH && !userAnswer.value) {
+      width = INPUT_MIN_WIDTH
+    }
+    inputWidth.value = width
+  });
 }
 
-const showAnswer = () => {
-  regexp.value = Array.isArray(props.answer) ? props.answer[0] : props.answer
-  match()
-  nextTick(() => {
-    inputWidth.value = getHiddenTextWidth()
-  })
+const showAnswer = (e: MouseEvent) => {
+  e.stopPropagation()
+  userAnswer.value = Array.isArray(props.answer) ? props.answer[0] : props.answer
+  handleInput()
 }
 </script>
 
@@ -131,17 +112,22 @@ const showAnswer = () => {
       </template>
     </div>
     <div class="bottom" @click="inputRef.focus()">
-      <div ref="hiddenTextRef" class="hidden-text">{{ regexp }}</div>
+      <div ref="hiddenTextRef" class="hidden-text">{{ userAnswer }}</div>
       <span class="before">/</span>
-      <input ref="inputRef" v-model="regexp" :style="{width: inputWidth + 'px'}" class="input"
+      <input ref="inputRef"
+             v-model="userAnswer"
+             :style="{width: inputWidth + 'px'}"
+             class="input"
              placeholder="正则表达式"
              spellcheck="false"
-             type="text" @input="handleInput">
+             type="text"
+             enterkeyhint="done"
+             @input="handleInput">
       <span class="after">/{{ flags }}</span>
       <span class="show-answer">?</span>
 
       <el-tooltip
-          :content="answerType === 1 ? '显示答案' : '参考答案'"
+          :content="questionType === 1 ? '显示答案' : '参考答案'"
           effect="dark"
           placement="top">
         <span class="show-answer" @click="showAnswer">?</span>
@@ -187,7 +173,6 @@ const showAnswer = () => {
           color: var(--vp-c-red-3);
         }
       }
-
     }
   }
 
@@ -223,6 +208,8 @@ const showAnswer = () => {
       top: 0;
       opacity: 0;
       font-size: 16px;
+      user-select: none;
+      pointer-events: none;
     }
 
     .show-answer {

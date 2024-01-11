@@ -1,11 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="154.04684448242188" height="152">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="154" height="152">
     <defs>
-        <style type="text/css">svg {
-            background-color: #fff; }
-
+        <style type="text/css">
+            svg {
+            background-color: #fff;
+            }
             .root text,
             .root tspan {
-            font: 12px Arial; }
+            font: 12px Arial;
+            }
 
             .root path {
             fill-opacity: 0;
@@ -58,41 +60,41 @@
     </defs>
     <g transform="matrix(1,0,0,1,15,10)" class="root">
         <g transform="matrix(1,0,0,1,10,0)" class="regexp match">
-            <path d="M28.015625,71.5H38.0156M72.7031,71.5H82.7031"></path>
+            <path d="M28.015625,71.5H38.0156M72.7031,71.5H82.7031"/>
             <g transform="matrix(1,0,0,1,0,59.5)" class="match-fragment literal">
                 <g class="label">
-                    <rect width="28.015625" height="24" rx="3" ry="3"></rect>
+                    <rect width="28.015625" height="24" rx="3" ry="3"/>
                     <text x="0" y="0" transform="matrix(1,0,0,1,5,17)">“te”</text>
                 </g>
             </g>
             <g transform="matrix(1,0,0,1,38.0156,0)" class="match-fragment charset">
                 <rect rx="3" ry="3" class="charset-box" transform="matrix(1,0,0,1,0,11)" width="34.6875"
-                      height="121"></rect>
+                      height="121"/>
                 <text x="0" y="0" transform="matrix(1,0,0,1,-4,8)" class="charset-label">
                     <tspan>其中之一:</tspan>
                 </text>
                 <g transform="matrix(1,0,0,1,5,16)">
                     <g transform="matrix(1,0,0,1,0.3438,0)" class="literal">
                         <g class="label">
-                            <rect width="24" height="24" rx="3" ry="3"></rect>
+                            <rect width="24" height="24" rx="3" ry="3"/>
                             <text x="0" y="0" transform="matrix(1,0,0,1,5,17)">“s”</text>
                         </g>
                     </g>
                     <g transform="matrix(1,0,0,1,0.3438,29)" class="literal">
                         <g class="label">
-                            <rect width="24" height="24" rx="3" ry="3"></rect>
+                            <rect width="24" height="24" rx="3" ry="3"/>
                             <text x="0" y="0" transform="matrix(1,0,0,1,5,17)">“x”</text>
                         </g>
                     </g>
                     <g transform="matrix(1,0,0,1,0,58)" class="literal">
                         <g class="label">
-                            <rect width="24" height="24" rx="3" ry="3"></rect>
+                            <rect width="24" height="24" rx="3" ry="3"/>
                             <text x="0" y="0" transform="matrix(1,0,0,1,5,17)">“a”</text>
                         </g>
                     </g>
                     <g transform="matrix(1,0,0,1,0,87)" class="literal">
                         <g class="label">
-                            <rect width="24" height="24" rx="3" ry="3"></rect>
+                            <rect width="24" height="24" rx="3" ry="3"/>
                             <text x="0" y="0" transform="matrix(1,0,0,1,5,17)">“c”</text>
                         </g>
                     </g>
@@ -100,13 +102,13 @@
             </g>
             <g transform="matrix(1,0,0,1,82.7031,59.5)" class="match-fragment literal">
                 <g class="label">
-                    <rect width="21.34375" height="24" rx="3" ry="3"></rect>
+                    <rect width="21.34375" height="24" rx="3" ry="3"/>
                     <text x="0" y="0" transform="matrix(1,0,0,1,5,17)">“t”</text>
                 </g>
             </g>
         </g>
-        <path d="M10,71.5H0M114.04685,71.5H124.0468521118164"></path>
-        <circle cx="0" cy="71.5" r="5" fill="blue"></circle>
-        <circle cx="124.0468521118164" cy="71.5" r="5" fill="green"></circle>
+        <path d="M10,71.5H0M114.04685,71.5H124.0468521118164"/>
+        <circle cx="0" cy="71.5" r="5" fill="blue"/>
+        <circle cx="124.0468521118164" cy="71.5" r="5" fill="green"/>
     </g>
 </svg>
