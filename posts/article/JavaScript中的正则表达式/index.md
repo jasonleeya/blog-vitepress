@@ -8,6 +8,7 @@ tags:
 <script setup>
 import Read from "@components/Read.vue";
 import RegexpTest from "./RegexpTest.vue";
+import RegexpTest2 from "./RegexpTest2.vue";
 </script>
 
 <ClientOnly>
@@ -155,8 +156,9 @@ import RegexpTest from "./RegexpTest.vue";
 ```js
 const text = '量词有"贪婪匹配"和"惰性匹配"两种模式'
 const reg = /".+"/g
+const result = text.match(reg)
 
-console.log(text.match(reg)) // ['"贪婪匹配"和"惰性匹配"']
+console.log(result) // ['"贪婪匹配"和"惰性匹配"']
 ```
 
 我们期望正则能将 **贪婪匹配** 和 **惰性匹配**匹配出来，但是事与愿违，造成这种情况是因为当正则匹配到第二个 `"`
@@ -165,8 +167,9 @@ console.log(text.match(reg)) // ['"贪婪匹配"和"惰性匹配"']
 ```js
 const text = '量词有"贪婪匹配"和"惰性匹配"两种模式'
 const reg = /".+?"/g
+const result = text.match(reg)
 
-console.log(text.match(reg)) // ['"贪婪匹配"', '"惰性匹配"']
+console.log(result) // ['"贪婪匹配"', '"惰性匹配"']
 ```
 
 以可看到，在惰性匹配的模式下，正则一旦匹配到满足的内容，就会返回。
@@ -175,7 +178,7 @@ console.log(text.match(reg)) // ['"贪婪匹配"', '"惰性匹配"']
   <RegexpTest text="<&#8203;span>正则表达式<&#8203;/span>" description="使用<b>惰性匹配</b>匹配出<b><&#8203;span></b>和<b><&#8203;/span></b>。" :answer="['<.+?>','<.*?>']"></RegexpTest>
 </ClientOnly>
 
-#### 分支
+#### 分支{#branch}
 
 类似字符集合可以表示单个字符的多种可能，正则的分支可以用来表示字符串或者表达式的多种可能，比如 `(ab|cd|ef)` 表示 `ab`
 或者 `cb`或者 `ef`；`(ab{2,3}c|a[^b]c)` 表示可以是 `ab{2,3}c`模式也可以是 `a[^b]c`模式
@@ -193,11 +196,15 @@ console.log(text.match(reg)) // ['"贪婪匹配"', '"惰性匹配"']
 </ClientOnly>
 
 <ClientOnly>
-<RegexpTest text="1949-10-01" description="请匹配下面<b>日期</b>（开放题）" answer="\d{1,4}-(0\d|1[0-2])-(0\d|[12]\d|3[01])" :questionType="2" :excludedAnswers="['1949-10-01','.+','.*']"></RegexpTest>
+<RegexpTest :text="['1949-10-01','2023-12-27']" description="请匹配下面<b>日期</b>" answer="\d{1,4}-(0\d|1[0-2])-(0\d|[12]\d|3[01])" :questionType="2" :excludedAnswers="['1949-10-01','.+','.*']"></RegexpTest>
 </ClientOnly>
 
 <ClientOnly>
-<RegexpTest :text="['#fff','#FFF','#000','#ffffff','#FFFFFF','#000000','#FF0000','#ff0000']" description="请匹配下面<b>所有颜色格式</b>（开放题）" :answer="['#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})']" :questionType="2" :excludedAnswers="['.+','.*']"></RegexpTest>
+<RegexpTest :text="['23:59','08:30']" description="请匹配下面<b>时间</b>" answer="([01][0-9]|[2][0-3]):[0-5][0-9]" :questionType="2" :excludedAnswers="['.+','.*']"></RegexpTest>
+</ClientOnly>
+
+<ClientOnly>
+<RegexpTest :text="['#fff','#FFF','#000','#ffffff','#FFFFFF','#000000','#FF0000','#ff0000']" description="请匹配下面<b>所有颜色格式</b>" :answer="['#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})']" :questionType="2" :excludedAnswers="['.+','.*']"></RegexpTest>
 </ClientOnly>
 :::
 
@@ -217,7 +224,9 @@ console.log(text.match(reg)) // ['"贪婪匹配"', '"惰性匹配"']
 
 ```javascript
 const text = 'hello world'
-console.log(text.replaceAll('','-'))  //-h-e-l-l-o- -w-o-r-l-d-
+const result = text.replaceAll('','-')
+
+console.log(result)  //-h-e-l-l-o- -w-o-r-l-d-
 ```
 
 正则表达式中如何进行位置匹配呢？ 正则中用来表示位置的符号有：`^`、`$`、`\b`、`\B`、`(?=p)`、`(?!p)`、`(?<=p)`、`(?<!p)`,我逐个介绍一下。
@@ -266,8 +275,10 @@ console.log(text.replaceAll('','-'))  //-h-e-l-l-o- -w-o-r-l-d-
 看下面这个例子：
 
 ```js
-var string = 'I like singing, dancing, rapping, and playing basketball'
-console.log(string.replace(/(?=ing)/g,'-')) 'I like s-ing-ing, danc-ing, rapp-ing, and play-ing basketball'
+const string = 'I like singing, dancing, rapping, and playing basketball'
+const result = string.replace(/(?=ing)/g,'-')
+
+console.log(result) // 'I like s-ing-ing, danc-ing, rapp-ing, and play-ing basketball'
 ```
 我们可以看到，replace函数将`(?=ing)` 匹配到的位置替换成了横杠，这些位置他的后面都是 `ing`。
 
@@ -283,7 +294,9 @@ console.log(string.replace(/(?=ing)/g,'-')) 'I like s-ing-ing, danc-ing, rapp-in
 
 ```javascript
 const string = 'I`m singing while you`re dancing'
-console.log(string.replace(/(?!ing)/g,'-')) // -I-`-m- -si-n-gi-n-g- -w-h-i-l-e- -y-o-u-`-r-e- -d-a-n-ci-n-g-
+const result = string.replace(/(?!ing)/g,'-')
+
+console.log(result) // -I-`-m- -si-n-gi-n-g- -w-h-i-l-e- -y-o-u-`-r-e- -d-a-n-ci-n-g-
 ```
 可以看到，字符串中除了`ing`之外的位置都被替换成了横杠，这恰好和前面的 `(?=ing)` 的例子是相反的。
 
@@ -308,6 +321,149 @@ console.log(string.replace(/(?!ing)/g,'-')) // -I-`-m- -si-n-gi-n-g- -w-h-i-l-e-
 部分浏览器不支持后行断言也就是 **(?<=p)** 和 **(?<!p)**，可以使用替代方案：[javascript regex - look behind alternative?](https://stackoverflow.com/questions/7376238/javascript-regex-look-behind-alternative)
 :::
 
-#### 位置匹配的特性
 
--------------------------------------------未完待续-----------------------------------------------
+#### 位置的特性
+我们也可以将位置理解为空字符 `""`，字符串 `hello` 的位置等价于如下的形式：
+
+```javascript
+"hello" == "" + "h" + "" + "e" + "" + "l" + "" + "l" + "o" + "";
+```
+也等价于：
+
+```javascript
+const "hello" == "" + "" + "hello"
+```
+同样的，在正则表达式中，一个位置也可以存在多个表达式，例如可以这样写： `/^^hello$/`，甚至这个样子的表达式也是没有问题的：`/(?=he)^^he(?=\w)llo$\b\b$/`。
+
+我们来分析以下案例：
+
+* 案例1： 还得我们在开头介绍的金额的千分表示法吗？例如把 `123456789` 转换成 `123,456,789`，它是如何实现的呢？
+
+简单分析可以得出，添加逗号的规则是：每三个数字为一组，可以表示为 `\d{3}` ，每组前面添加逗号，这个位置可以写为 `(?=(\d{3}))`，要有逗号，至少会有一组数字，也就是说分组至少出现一次，所以可以表示为 `(?=(\d{3}))+`，添加规则是从后往前的，也就是从结尾开始，所以我们最终的表达式还需要在末尾添加 `$`：`(?=(\d{3}))+$`，我们代入 `replace` 方法中试试：
+
+```javascript
+const num = '123456789'
+const result = num.replace(/(?=(\d{3})+$)/g, ',')
+
+console.log(result) // ,123,456,789
+```
+此时我们会发现，数字最前面的逗号是不需要的，换个说法就是，逗号不能存在在字符串的开始位置，我们知道，`^` 表示的是存在一个位置，在字符串开始的位置，所以逗号不能存在在开始位置就是 `^` 的负向断言，正则表示为 `(?!^)`，所以我们将正则改成下面的表达式：
+
+```javascript
+const num = '123456789'
+const result = num.replace(/(?!^)(?=(\d{3})+$)/g, ',')
+
+console.log(result) // 123,456,789
+```
+我们再做个拓展：如果需要替换的字符串是这样的呢？
+```text
+只要199988，XXXX带回家
+```
+这也是我们平时开发中较为多见的金额出现的形式，我们前面已经介绍了，`\w` 代表的是字符集和 `[0-9a-zA-Z_]`, 也就是说，数字和中文还有 中文逗号`，` 之间其实是存在单词边界 `\b` 的，此时我们需要修改正则，把里面的开头 `^` 和结尾 `$`，替换成 `\b`：
+
+```javascript
+const string = "只要199988，XXXX带回家",
+const reg = /(?!\b)(?=(\d{3})+\b)/g;
+
+const result = string.replace(reg, ',')
+console.log(result); 
+// 只要199,988，XXXX带回家
+```
+
+这里的 `(?!\b)` 表示非单词边界，其实就是 `\B`，所以我们得到了最终的结果：
+
+```text
+/\B(?=(\d{3})+\b)/g
+```
+* 案例2：验证密码问题。
+
+要求密码长度为6-12位，由数字、小写字符和大写字母组成，但必须至少包括2种字符。
+
+此题如果写成多个正则，配合js逻辑来判断，比较容易。但要写成一个正则验证就比较困难。
+
+那么，我们就来挑战一下。看看我们对位置的理解是否深刻。
+
+不考虑“必须至少包括2种字符”这一条件。我们可以容易写出：
+
+```text
+/^[0-9A-Za-z]{6,12}$/
+```
+
+那么，必须包含某2种字符该如何表示呢？
+
+我们知道，零宽断言表示的是某一位置满足某个条件，我们假定这个位置就在密码字符串的开头，位置后面的密码字符串必须满足一个条件，这就是我们的正向先行断言 `(?=p)`,所以，如果密码如果必须同时包含数字和小写字母可以表示为：
+
+```text
+/(?=.*[0-9])(?=.*[a-z])^[0-9A-Za-z]{6,12}$/
+```
+这里的 `(?=.*[0-9])` 表示有任何多个任意字符，后面再跟个数字，通俗讲就是，接下来的字符串中至少有一个数字。至少一个小写字母同理。如果是必须包含某2种字符那么就进行一个排列组合，则写成：
+
+```text
+/((?=.*[0-9])(?=.*[a-z])|(?=.*[0-9])(?=.*[A-Z])|(?=.*[a-z])(?=.*[A-Z]))^[0-9A-Za-z]{6,12}$/
+```
+你可能会说，要写这么长的一串正则表达式，我宁愿分开成几段配合js进行验证，别急，我们可以改进以下。
+
+“至少包含两种字符”的意思就是说，不能全部都是数字，也不能全部都是小写字母，也不能全部都是大写字母。
+
+这时我们可以让 `(?!p)` 出马，不能全部都是数字对应的正则时
+
+```text
+/(?!^[0-9]{6,12}$)^[0-9A-Za-z]{6,12}$/
+```
+由此我们最终的正则表达式如下：
+
+```text
+/(?!^[0-9]{6,12}$)(?!^[a-z]{6,12}$)(?!^[A-Z]{6,12}$)^[0-9A-Za-z]{6,12}$/
+```
+
+做个练习:
+
+<ClientOnly>
+<RegexpTest :text="['^123ABC&abc$','123456','123abc','12345','1234567890123']" description="密码长度为<b>6-12位</b>，必须包含<b>数字</b>，<b>大写字母</b>，<b>小写字母</b>，以及<b>特殊字符（!@#$%^&*）</b>" answer="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])^[0-9A-Za-z!@#$%^&*]{6,12}$" :questionType="2" :excludedAnswers="['.+','.*']"></RegexpTest>
+</ClientOnly>
+
+### 括号的作用
+
+我们前面已经遇到了括号 `()` 在分支中的使用场景，在正则表达式中，括号还有其他作用。
+
+#### 分组和分支结构
+
+前面的介绍中，量词指定的是一个字符，例如 `a{3}` 表示前面的字符 `a` 出现三次,但如果我们想要 `ab` 连续出现三次，就需要用括号将 `ab` 包裹起来：`(ab){3}`，这也就是括号的功能之一——分组。
+
+[分支](#branch)结构 `(p1|p2)` 在前面已经介绍了，这里的括号提供了子表达式的所有可能。
+
+<ClientOnly>
+<RegexpTest :text="['ababab','cdcdcd','abcdabcdab']" description="使用<b>分组和分支</b>匹配下面字符串" answer="(ab|cd)+" answerType="2" excludedAnswers="['.+','.*']"></RegexpTest>
+</ClientOnly>
+
+####  引用分组
+
+引用分组是括号的一个重要作用，它配合 JavaScript 可以实现更强大的提取数据，替换操作。
+
+如果我们想要提取日期 `1949-10-01` 中的年，月，日，那么我们可以这样做：
+
+```javascript
+const text = '1949-10-01'
+const regexp = /(\d{4})-(\d{2})-(\d{2})/
+const result = text.match(regexp)
+console.log(result) // ['1949-10-01', '1949', '10', '01', index: 0, input: '1949-10-01']
+```
+`match` 会返回一个数组，第一个元素是整体匹配结果，然后是各个分组（括号里）匹配的内容，`index` 为匹配的起始位置（数组是一个特殊对象，所以是可以像数组中添加属性的），`input` 最后是输入的文本（注意：如果正则是否有修饰符 `g`，`match` 返回的数组格式是不一样的，只要使用了全局匹配模式，那么`match`将只返回“贪婪”的匹配结果，这里的“贪婪”指的是只有那个最长的能匹配上的字符串，分组项目会被忽略，并且，是没有 `input` 和 `index` 属性的）。
+
+所以，我们要取出匹配到的年，月，日，可以这样做：
+```javascript
+const year = result[1]
+const month = result[2]
+const day = result[3]
+```   
+同时，也可以：
+```javascript
+const year = RegExp.$1
+const month = RegExp.$2
+const day = RegExp.$3
+```
+一共有 `RegExp.$1` 至 `RegExp.$9` 9个属性存放匹配到的内容，如果超出9个，那还是得使用数组索引来取结果。
+
+<ClientOnly>
+<RegexpTest2 text="https://www.test.com?id=123&type=1" description="使用<b>引用分组</b>匹配下面字符串中的<b>id</b>和<b>type</b>" answer="(ab|cd)+"></RegexpTest2>
+</ClientOnly>
