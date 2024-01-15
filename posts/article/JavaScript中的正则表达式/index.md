@@ -456,6 +456,11 @@ const year = result[1]
 const month = result[2]
 const day = result[3]
 ```   
+
+<ClientOnly>
+  <RegexpTest2 text="https://www.test.com?id=123" description="使用<b>引用分组</b>匹配下面字符串中的<b>id</b>" answer="id=(\d+)"></RegexpTest2>
+</ClientOnly>
+
 同时，也可以：
 ```javascript
 const year = RegExp.$1
@@ -464,6 +469,3 @@ const day = RegExp.$3
 ```
 一共有 `RegExp.$1` 至 `RegExp.$9` 9个属性存放匹配到的内容，如果超出9个，那还是得使用数组索引来取结果。
 
-<ClientOnly>
-<RegexpTest2 text="https://www.test.com?id=123&type=1" description="使用<b>引用分组</b>匹配下面字符串中的<b>id</b>和<b>type</b>" answer="(ab|cd)+"></RegexpTest2>
-</ClientOnly>

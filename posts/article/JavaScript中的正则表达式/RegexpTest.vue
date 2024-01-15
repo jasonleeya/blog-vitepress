@@ -39,8 +39,8 @@ const inputWidth = ref(INPUT_MIN_WIDTH)
 const inputRef = ref()
 const hiddenTextRef = ref() // 隐藏文本用于计算input宽度
 const handleInput = () => {
-  match()
   setInputWidth()
+  match()
 }
 
 const match = () => {

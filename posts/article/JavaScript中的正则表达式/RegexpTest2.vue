@@ -17,7 +17,7 @@ const props = defineProps({
   },
   flags: {
     type: String as PropType<string>,
-    default: 'g'
+    default: ''
   }
 })
 
@@ -29,12 +29,21 @@ const inputWidth = ref(INPUT_MIN_WIDTH)
 const inputRef = ref()
 const hiddenTextRef = ref() // 隐藏文本用于计算input宽度
 const handleInput = () => {
-  match()
   setInputWidth()
+  match()
 }
 
+const result = ref<any>('')
 const match = () => {
-
+  if (!userAnswer.value) {
+    return result.value = ''
+  }
+  try {
+    const regexp = new RegExp(userAnswer.value, props.flags)
+    result.value = props.text.match(regexp)
+  } catch (e) {
+    result.value = ''
+  }
 }
 const setInputWidth = () => {
   nextTick(() => {
@@ -54,7 +63,8 @@ const setInputWidth = () => {
 }
 
 const showAnswer = (e: MouseEvent) => {
-
+  e.preventDefault()
+  userAnswer.value = Array.isArray(props.answer) ? props.answer[0] : props.answer
   handleInput()
 }
 </script>
@@ -64,13 +74,19 @@ const showAnswer = (e: MouseEvent) => {
     <div class="content">
       <div class="description" v-html="description"></div>
       <div class="code">
-        <span>const text =</span>
-        <span class="text" v-html="text"></span>
+        <span style="color: #0033B3">const&nbsp;</span>
+        <span style="color: #248F8F">text&nbsp;</span>
+        <span>= </span>
+        <span style="color: #067D17;">"</span>
+        <span class="text" v-html="text" style="color: #067D17;"></span>
+        <span style="color: #067D17;">"</span>
       </div>
     </div>
     <div class="answer" @click="inputRef.focus()">
       <div ref="hiddenTextRef" class="hidden-text">{{ userAnswer }}</div>
-      const regexp =
+      <span style="color: #0033B3">const&nbsp;</span>
+      <span style="color: #248F8F">regexp&nbsp;</span>
+      <span>= </span>
       <span class="before">/</span>
       <input ref="inputRef"
              v-model="userAnswer"
@@ -82,18 +98,36 @@ const showAnswer = (e: MouseEvent) => {
              enterkeyhint="done"
              @input="handleInput">
       <span class="after">/{{ flags }}</span>
-
+      <el-tooltip
+          content="显示答案"
+          effect="dark"
+          placement="top">
+        <span class="show-answer" @click="showAnswer">?</span>
+      </el-tooltip>
     </div>
     <div class="code">
-      const result = text.match(regexp)
+      <span style="color: #0033B3">const&nbsp;</span>
+      <span style="color: #248F8F">result&nbsp;</span>
+      <span>= </span>
+      <span style="color: #248F8F">text</span>
+      <span>.</span>
+      <span style="color: #a9a94e">match</span>
+      <span>(</span>
+      <span style="color: #248F8F">regexp</span>
+      <span>)</span>
     </div>
-
-    <el-tooltip
-        content="显示答案"
-        effect="dark"
-        placement="top">
-      <span class="show-answer" @click="showAnswer">?</span>
-    </el-tooltip>
+    <div class="code">
+      <span style="color: #830091">console.</span>
+      <span style="color: #a9a94e">log</span>
+      <span>(</span>
+      <span style="color: #248F8F">result</span>
+      <span>)</span>
+    </div>
+    <div class="console">
+      <span style="color: #56a4c4">></span><span v-if="result">
+      [<span class="item" v-for="(item,index) in result">'{{ item }}'
+      <span class="sign" style="color: #0033B3" v-if="index !== result.length - 1">,</span></span>]</span>
+    </div>
   </div>
 </template>
 
@@ -121,7 +155,6 @@ const showAnswer = (e: MouseEvent) => {
 
     .text {
       font-size: 18px;
-      font-weight: bold;
       margin: 15px 0;
       color: var(--vp-c-text-2);
 
@@ -137,22 +170,23 @@ const showAnswer = (e: MouseEvent) => {
     }
   }
 
-  .code{
-    padding: 10px 5px;
+  .code {
+    padding: 0 10px;
+    font-size: 18px;
   }
+
   .answer {
     min-height: 40px;
-    background: var(--vp-c-bg-soft);
+    background: var(--vp-c-bg-alt);
     border-radius: 5px;
     display: flex;
     align-items: center;
     box-sizing: border-box;
     font-size: 18px;
-    color: #999;
     line-height: 1em;
     position: relative;
     user-select: none;
-    padding: 10px 5px;
+    padding: 15px 10px;
 
     .input, .before, .after {
       font-size: 16px;
@@ -175,10 +209,11 @@ const showAnswer = (e: MouseEvent) => {
       pointer-events: none;
     }
   }
+
   .show-answer {
     position: absolute;
     right: 8px;
-    bottom: 8px;
+    top: 14px;
     cursor: pointer;
     width: 20px;
     height: 20px;
@@ -189,6 +224,19 @@ const showAnswer = (e: MouseEvent) => {
     color: var(--vp-c-brand);
     background: var(--vp-c-brand-soft);
     font-weight: bold;
+  }
+
+  .console {
+    margin: 10px 8px;
+    font-size: 16px;
+
+    .item {
+      color: #DC362E;
+      padding: 0 5px;
+      &:last-child{
+        padding-right: 1px;
+      }
+    }
   }
 }
 </style>
