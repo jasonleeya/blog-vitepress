@@ -11,6 +11,10 @@ const props = defineProps({
     type: [String, Array] as PropType<string | string[]>,
     default: ''
   },
+  replacerAnswer: {
+    type: String as PropType<string>,
+    default: ''
+  },
   description: {
     type: String as PropType<string>,
     default: ``
@@ -18,12 +22,21 @@ const props = defineProps({
   flags: {
     type: String as PropType<string>,
     default: ''
+  },
+  type: {
+    type: String as PropType<'match' | 'replace'>,
+    default: 'match'
   }
 })
 
 const userAnswer = ref('')
+const userAnswerReplacer = ref('')
 const handleInput = (e: Event) => {
   userAnswer.value = (e.target as HTMLInputElement).innerText
+  match()
+}
+const handleInput2 = (e: Event) => {
+  userAnswerReplacer.value = (e.target as HTMLInputElement).innerText
   match()
 }
 
@@ -34,7 +47,8 @@ const match = () => {
   }
   try {
     const regexp = new RegExp(userAnswer.value, props.flags)
-    result.value = props.text.match(regexp)
+    result.value = props.text.replace(regexp, userAnswerReplacer.value
+        .replace(/\$\{/g, '').replace(/}/g, '').replace(/RegExp\./g, ''))
   } catch (e) {
     result.value = ''
   }
@@ -43,13 +57,17 @@ const match = () => {
 const showAnswer = (e: MouseEvent) => {
   e.preventDefault()
   userAnswer.value = Array.isArray(props.answer) ? props.answer[0] : props.answer
-  fakeInput.value.innerText = userAnswer.value
+  fakeInput1.value.innerText = userAnswer.value
+
+  userAnswerReplacer.value = props.replacerAnswer
+  fakeInput2.value.innerText = userAnswerReplacer.value
   match()
 }
-
-const fakeInput = ref()
+const fakeInput1 = ref()
+const fakeInput2 = ref()
 onMounted(() => {
-  fakeInput.value!.contentEditable = true
+  fakeInput1.value!.contentEditable = true
+  fakeInput2.value!.contentEditable = true
 })
 </script>
 
@@ -66,19 +84,13 @@ onMounted(() => {
         <span style="color: #067D17;">"</span>
       </div>
     </div>
-    <div class="answer" @click="fakeInput.focus()">
+    <div class="answer" @click="fakeInput1.focus()">
       <span style="color: #0033B3">const&nbsp;</span>
       <span style="color: #248F8F">regexp&nbsp;</span>
       <span>= </span>
       <span class="before">/</span>
-      <div class="fake-input" ref="fakeInput" @input="handleInput" spellcheck="false"></div>
+      <div class="fake-input" ref="fakeInput1" @input="handleInput" spellcheck="false"></div>
       <span class="after">/{{ flags }}</span>
-      <el-tooltip
-          content="显示答案"
-          effect="dark"
-          placement="top">
-        <span class="show-answer" @click="showAnswer">?</span>
-      </el-tooltip>
     </div>
     <div class="code">
       <span style="color: #0033B3">const&nbsp;</span>
@@ -86,10 +98,20 @@ onMounted(() => {
       <span>= </span>
       <span style="color: #248F8F">text</span>
       <span>.</span>
-      <span style="color: #a9a94e">match</span>
+      <span style="color: #a9a94e">{{ type }}</span>
       <span>(</span>
       <span style="color: #248F8F">regexp</span>
-      <span>)</span>
+      <span>,&nbsp;(&nbsp;) => {</span>
+    </div>
+    <div class="answer" @click="fakeInput2.focus()">
+      <span style="color: #0033B3">&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span>
+      <span>`</span>
+      <div class="fake-input" ref="fakeInput2" style="--placeholder: '替换的内容'" @input="handleInput2"
+           spellcheck="false"></div>
+      <span>`</span>
+    </div>
+    <div class="code">
+      <span>&nbsp;&nbsp;})</span>
     </div>
     <div class="code">
       <span style="color: #830091">console.</span>
@@ -100,9 +122,15 @@ onMounted(() => {
     </div>
     <div class="console">
       <span style="color: #56a4c4">></span><span v-if="result">
-      [<span class="item" v-for="(item,index) in result">'{{ item }}'
-      <span class="sign" style="color: #0033B3" v-if="index !== result.length - 1">,</span></span>]</span>
+      <span class="item">"{{ result }}"</span>
+    </span>
     </div>
+    <el-tooltip
+        content="显示答案"
+        effect="dark"
+        placement="top">
+      <span class="show-answer" @click="showAnswer">?</span>
+    </el-tooltip>
   </div>
 </template>
 
@@ -174,8 +202,8 @@ onMounted(() => {
 
   .show-answer {
     position: absolute;
-    right: 8px;
-    top: 14px;
+    right: 10px;
+    bottom: 10px;
     cursor: pointer;
     width: 20px;
     height: 20px;

@@ -9,6 +9,7 @@ tags:
 import Read from "@components/Read.vue";
 import RegexpTest from "./RegexpTest.vue";
 import RegexpTest2 from "./RegexpTest2.vue";
+import RegexpTest3 from "./RegexpTest3.vue";
 </script>
 
 <ClientOnly>
@@ -458,7 +459,7 @@ const day = result[3]
 ```   
 
 <ClientOnly>
-  <RegexpTest2 text="https://www.test.com?id=123" description="使用<b>引用分组</b>匹配下面字符串中的<b>id</b>" answer="id=(\d+)"></RegexpTest2>
+  <RegexpTest2 text="http://www.test.com?id=123" description="使用<b>引用分组</b>匹配下面字符串中的<b>id</b>" answer="id=(\d+)"></RegexpTest2>
 </ClientOnly>
 
 同时，也可以：
@@ -469,3 +470,38 @@ const day = RegExp.$3
 ```
 一共有 `RegExp.$1` 至 `RegExp.$9` 9个属性存放匹配到的内容，如果超出9个，那还是得使用数组索引来取结果。
 
+如果我们想将 `yyyy-mm-dd` 格式替换成 `yyyy/mm/dd` 呢？
+
+```javascript
+const text = '1949-10-01'
+const regexp = /(\d{4})-(\d{2})-(\d{2})/
+const result = text.replace(regexp,"$1/$2/$3")
+
+console.log(result) // '1949/10/01'
+```
+其中 `replace` 的第二个参数里的 `$1`、`$2`、`$3` 指代相应的分组，第二个参数也可以是一个回调函数：
+
+```javascript
+const text = '1949-10-01'
+const regexp = /(\d{4})-(\d{2})-(\d{2})/
+const result = text.replace(regexp, (match, year, month, day) => {
+  return `${year}/${month}/${day}`
+})
+
+console.log(result) // '1949/10/01'
+```
+也等价于：
+
+```javascript
+const text = '1949-10-01'
+const regexp = /(\d{4})-(\d{2})-(\d{2})/
+const result = text.replace(regexp, () => {
+  return `${RegExp.$1}/${RegExp.$2}/${RegExp.$3}`
+})
+
+console.log(result) // '1949/10/01'
+```
+
+<ClientOnly>
+  <RegexpTest3 text="http://www.test.com?id=123" description="使用<b>引用分组</b>将下面链接中<b>http</b>替换成<b>https</b>" answer="^(http)" type="replace" replacerAnswer="$1s"></RegexpTest3>
+</ClientOnly>

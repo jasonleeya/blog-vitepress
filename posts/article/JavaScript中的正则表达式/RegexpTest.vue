@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {nextTick, PropType, ref} from "vue";
+import {nextTick, onMounted, PropType, ref} from "vue";
 import {useIsMobile} from "../../../.vitepress/hooks/useIsMobile.mjs";
 
 const props = defineProps({
@@ -32,17 +32,10 @@ const props = defineProps({
 
 const result = ref(props.text)
 const userAnswer = ref('')
-const isMobile = useIsMobile()
-const INPUT_MIN_WIDTH = 80
-const INPUT_MAX_WIDTH = isMobile.value ? 300 : 500
-const inputWidth = ref(INPUT_MIN_WIDTH)
-const inputRef = ref()
-const hiddenTextRef = ref() // 隐藏文本用于计算input宽度
-const handleInput = () => {
-  setInputWidth()
+const handleInput = (e: Event) => {
+  userAnswer.value = (e.target as HTMLInputElement).innerText
   match()
 }
-
 const match = () => {
   if (!userAnswer.value) {
     return result.value = props.text
@@ -76,28 +69,18 @@ const match = () => {
     })
   }
 }
-const setInputWidth = () => {
-  nextTick(() => {
-    if (!hiddenTextRef.value) {
-      inputWidth.value = INPUT_MIN_WIDTH
-      return
-    }
-    let width = hiddenTextRef.value.clientWidth
-    if (width > INPUT_MAX_WIDTH) {
-      width = INPUT_MAX_WIDTH
-    }
-    if (width < INPUT_MIN_WIDTH && !userAnswer.value) {
-      width = INPUT_MIN_WIDTH
-    }
-    inputWidth.value = width
-  });
-}
 
 const showAnswer = (e: MouseEvent) => {
-  e.stopPropagation()
+  e.preventDefault()
   userAnswer.value = Array.isArray(props.answer) ? props.answer[0] : props.answer
-  handleInput()
+  fakeInput.value.innerText = userAnswer.value
+  match()
 }
+
+const fakeInput = ref()
+onMounted(() => {
+  fakeInput.value!.contentEditable = true
+})
 </script>
 
 <template>
@@ -111,18 +94,9 @@ const showAnswer = (e: MouseEvent) => {
         <div class="text" v-html="result"></div>
       </template>
     </div>
-    <div class="bottom" @click="inputRef.focus()">
-      <div ref="hiddenTextRef" class="hidden-text">{{ userAnswer }}</div>
+    <div class="bottom" @click="fakeInput.focus()">
       <span class="before">/</span>
-      <input ref="inputRef"
-             v-model="userAnswer"
-             :style="{width: inputWidth + 'px'}"
-             class="input"
-             placeholder="正则表达式"
-             spellcheck="false"
-             type="text"
-             enterkeyhint="done"
-             @input="handleInput">
+      <div class="fake-input" ref="fakeInput" @input="handleInput" spellcheck="false"></div>
       <span class="after">/{{ flags }}</span>
       <span class="show-answer">?</span>
 
@@ -191,25 +165,12 @@ const showAnswer = (e: MouseEvent) => {
     position: relative;
     user-select: none;
 
-    .input, .before, .after {
+    .before, .after {
       font-size: 16px;
       margin: 0 2px;
       color: var(--vp-code-color);
       font-weight: bold;
-    }
-
-    .before, .after {
       opacity: 0.5;
-    }
-
-    .hidden-text {
-      position: absolute;
-      left: 0;
-      top: 0;
-      opacity: 0;
-      font-size: 16px;
-      user-select: none;
-      pointer-events: none;
     }
 
     .show-answer {
@@ -226,6 +187,23 @@ const showAnswer = (e: MouseEvent) => {
       color: var(--vp-c-brand);
       background: var(--vp-c-brand-soft);
       font-weight: bold;
+    }
+  }
+}
+
+.fake-input {
+  outline: none;
+  font-size: 16px;
+  margin: 0 2px;
+  color: var(--vp-code-color);
+  font-weight: bold;
+  --placeholder: '正则表达式';
+
+
+  &:empty {
+    &:before {
+      content: var(--placeholder);
+      color: #999;
     }
   }
 }
