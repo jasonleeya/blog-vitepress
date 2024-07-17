@@ -22,10 +22,6 @@ const props = defineProps({
   flags: {
     type: String as PropType<string>,
     default: ''
-  },
-  type: {
-    type: String as PropType<'match' | 'replace'>,
-    default: 'match'
   }
 })
 
@@ -98,7 +94,7 @@ onMounted(() => {
       <span>= </span>
       <span style="color: #248F8F">text</span>
       <span>.</span>
-      <span style="color: #a9a94e">{{ type }}</span>
+      <span style="color: #a9a94e">replace</span>
       <span>(</span>
       <span style="color: #248F8F">regexp</span>
       <span>,&nbsp;(&nbsp;) => {</span>

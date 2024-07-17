@@ -197,7 +197,7 @@ console.log(result) // ['"贪婪匹配"', '"惰性匹配"']
 </ClientOnly>
 
 <ClientOnly>
-<RegexpTest :text="['1949-10-01','2023-12-27']" description="请匹配下面<b>日期</b>" answer="\d{1,4}-(0\d|1[0-2])-(0\d|[12]\d|3[01])" :questionType="2" :excludedAnswers="['1949-10-01','.+','.*']"></RegexpTest>
+<RegexpTest :text="['1949-10-01','2023-12-27']" description="请匹配下面<b>日期</b>" answer="\d{4}-(0\d|1[0-2])-(0\d|[12]\d|3[01])" :questionType="2" :excludedAnswers="['1949-10-01','.+','.*']"></RegexpTest>
 </ClientOnly>
 
 <ClientOnly>
@@ -423,11 +423,11 @@ console.log(result);
 <RegexpTest :text="['^123ABC&abc$','123456','123abc','12345','1234567890123']" description="密码长度为<b>6-12位</b>，必须包含<b>数字</b>，<b>大写字母</b>，<b>小写字母</b>，以及<b>特殊字符（!@#$%^&*）</b>" answer="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])^[0-9A-Za-z!@#$%^&*]{6,12}$" :questionType="2" :excludedAnswers="['.+','.*']"></RegexpTest>
 </ClientOnly>
 
-### 括号的作用
+## 括号的作用
 
 我们前面已经遇到了括号 `()` 在分支中的使用场景，在正则表达式中，括号还有其他作用。
 
-#### 分组和分支结构
+### 分组和分支结构
 
 前面的介绍中，量词指定的是一个字符，例如 `a{3}` 表示前面的字符 `a` 出现三次,但如果我们想要 `ab` 连续出现三次，就需要用括号将 `ab` 包裹起来：`(ab){3}`，这也就是括号的功能之一——分组。
 
@@ -437,7 +437,7 @@ console.log(result);
 <RegexpTest :text="['ababab','cdcdcd','abcdabcdab']" description="使用<b>分组和分支</b>匹配下面字符串" answer="(ab|cd)+" answerType="2" excludedAnswers="['.+','.*']"></RegexpTest>
 </ClientOnly>
 
-####  引用分组
+###  引用分组
 
 引用分组是括号的一个重要作用，它配合 JavaScript 可以实现更强大的提取数据，替换操作。
 
@@ -505,3 +505,108 @@ console.log(result) // '1949/10/01'
 <ClientOnly>
   <RegexpTest3 text="http://www.test.com?id=123" description="使用<b>引用分组</b>将下面链接中<b>http</b>替换成<b>https</b>" answer="^(http)" type="replace" replacerAnswer="$1s"></RegexpTest3>
 </ClientOnly>
+
+### 反向引用
+
+除了使用 JavaScript API来引用分组，也可以在正则本身里引用分组。但只能引用之前出现的分组，即反向引用。
+
+还是以日期为例。
+
+比如要写一个正则支持匹配如下三种格式：
+- `yyyy-mm-dd`
+- `yyyy/mm/dd`
+- `yyyy.mm.dd`
+
+结合前面学的正则只是，你可能会想到这样的正则：
+
+```javascript
+const regexp = /\d{4}[-/.](0\d|1[0-2])[-/.](0\d|[12]\d|3[01])/
+
+const string1 = '1949-10-01'
+const string2 = '1949/10/01'
+const string3 = '1949.10.01'
+
+console.log(regexp.test(string1)) // true
+console.log(regexp.test(string2)) // true
+console.log(regexp.test(string3)) // true
+
+```
+:::info 提示
+实践发现字符集中的 `.`和 `/` 不会被转义。 
+:::
+
+但我们要求日期分隔符要前后一致呢？显然 "2022-02/22" 这种格式是不合法的，但上面的正则匹配通过了：
+
+```javascript
+const string4 = '2022-02/22'
+
+console.log(regexp.test(string4)) // true
+```
+此时我们需要使用引用分组：
+
+
+```javascript
+const regexp = /\d{4}([-/.])(0\d|1[0-2])\1(0\d|[12]\d|3[01])/
+
+const string1 = '1949-10-01'
+const string2 = '1949/10/01'
+const string3 = '1949.10.01'
+const string4 = '2022-02/22'
+
+console.log(regexp.test(string1)) // true
+console.log(regexp.test(string2)) // true
+console.log(regexp.test(string3)) // true
+console.log(regexp.test(string4)) // false
+
+```
+这里 `\1` 表示引用前面的分组 `([-/.])`，不管它匹配到什么（比如-），`\1` 都匹配那个同样的具体某个字符,同理 `\2` - `\9` 指代前面2-9个分组。
+
+如果是 `\10` 呢？是表示 `\10` 还是 `\1` 和 `0`？
+
+```javascript
+var regex = /(1)(2)(3)(4)(5)(6)(7)(8)(9)(#) \10+/;
+var string = "123456789# #####"
+console.log( regex.test(string) );
+// => true
+```
+答案是前者，虽然一个正则里出现\10比较罕见,
+
+<ClientOnly>
+<RegexpTest :text="['一心一意','三心二意','自言自语','无影无踪']" description="使用<b>反向引用</b>匹配下面<b>ABAC式成语</b>（中文字符集<b>[\u4e00-\u9fa5]</b>）" answer="([\u4e00-\u9fa5])[\u4e00-\u9fa5]\1[\u4e00-\u9fa5]" :questionType="2" :excludedAnswers="['.+','.*']"></RegexpTest>
+</ClientOnly>
+
+如果引用不存在的分组会怎样？
+
+因为反向引用，是引用前面的分组，但我们在正则里引用了不存在的分组时，此时正则不会报错，只是匹配反向引用的字符本身。例如 `\2`，就匹配"\2"。注意"\2"表示对"2"进行了转意。
+
+```javascript
+var regex = /\1\2\3\4\5\6\7\8\9/;
+console.log( regex.test("\1\2\3\4\5\6\7\8\9") ); 
+console.log( "\1\2\3\4\5\6\7\8\9".split("") ); //['\x01', '\x02', '\x03', '\x04', '\x05', '\x06', '\x07', '8', '9']
+```
+如果是老版本的浏览器，你可以见到这样的结果：
+
+![](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2017/7/19/f75ad2642625466dd5adcad3e2a4c51a~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.png)
+这是因为 `'\x01'`代表了`「`的Unicode编码。
+
+### 非捕获分组
+
+之前文中出现的分组，都会捕获它们匹配到的数据，以便后续引用，因此也称他们是捕获型分组。
+
+如果只想要括号最原始的功能，但不会引用它，即，既不在API里引用，也不在正则里反向引用。此时可以使用非捕获分组`(?:p)`,例如我们在匹配日期的例子中，如果将括号改成`(?:p)`：则匹配到的内容将不会保存在分组中：
+
+
+```javascript
+const text = '1949-10-01'
+const regexp = /(?:\d{4})-(?:\d{2})-(?:\d{2})/
+const result = text.match(regexp)
+console.log(result) // ['1949-10-01', index: 0, input: '1949-10-01']
+```
+
+<ClientOnly>
+  <RegexpTest2 text="+86-18888888888" description="匹配下面手机号码中号码部分（不考虑号码规则），并使用<b>非捕获分组</b>排除区号" answer="(?:\+\d{2})-(\d{11})"></RegexpTest2>
+</ClientOnly>
+
+介绍完括号的作用，我们来做几个练习：
+
+>未完待续...
