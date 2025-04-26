@@ -6,12 +6,12 @@ import {useIsMobile} from "@/hooks/useIsMobile.mjs";
 import Loading from "@components/Loading.vue";
 import VPNavBarMenu from "@vp-theme/components/VPNavBarMenu.vue";
 
-const bingImgList = ref<{isLoaded:boolean,img:BingImg}[]>([])
+const bingImgList = ref<{ isLoaded: boolean, img: BingImg }[]>([])
 const currentImgIndex = ref(0)
 
 const getImgListFromBing = async () => {
   return fetch("https://bing-wallpaper.vuejs.press/api/wallpaper").then((response) => response.json()).then(res => {
-     bingImgList.value = res.map(img => ({isLoaded:false,img}))
+    bingImgList.value = res.map(img => ({isLoaded: false, img}))
   })
 };
 
@@ -36,10 +36,23 @@ const sentenceList = ref([])
 const author = ref("")
 
 let timeout = null
-//a动画b漫画c游戏d文学e原创f来自网络g其他h影视i诗词j网易云k哲学l抖机灵
-const getSentence = () => fetch("https://v1.hitokoto.cn?c=d&c=f&c=h&c=i&c=j&c=k")
-    .then((res) => res.json())
-    .then(({from, hitokoto}) => {
+// 随机获取一句话
+const getSentence = () => Promise.race(
+    [
+      new Promise((resolve,reject) =>{
+        return fetch("https://v1.hitokoto.cn?c=d&c=f&c=h&c=i&c=j&c=k").then((res) => res.json()).then(res => {
+          resolve({from: res?.from || '', content: res?.hitokoto || ''})
+        })
+      } ),
+      new Promise(resolve=>setTimeout(()=>{
+        fetch("https://api.xygeng.cn/one").then((res) => res.json()).then(res => {
+          const data = res?.data || {}
+          resolve({from: data.origin || '', content: data.content || ''})
+        })
+      }, 200)) // 这个接口的句子太杂了，我愿意等上面哪个200毫秒
+    ]
+)
+    .then(({from, content}) => {
       sentenceList.value.length = 0
       author.value = from;
       let index = 0
@@ -56,7 +69,7 @@ const getSentence = () => fetch("https://v1.hitokoto.cn?c=d&c=f&c=h&c=i&c=j&c=k"
           }, 5000)
         }
       }
-      renderText(hitokoto)
+      renderText(content)
     });
 getSentence()
 onUnmounted(() => {
@@ -88,7 +101,6 @@ const isLoading = ref(true)
 let i = 0
 const imgsLoading = () => {
   i++
-  console.log(i)
   if (i === 3) {
     isLoading.value = false
   }

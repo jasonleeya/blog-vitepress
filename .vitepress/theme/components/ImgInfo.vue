@@ -142,7 +142,6 @@ const toggleInfoShow = () => {
     display: flex;
     align-items: center;
     gap: 5px;
-    width: calc(100% - 80px);
 
     .icon {
       width: 16px;
