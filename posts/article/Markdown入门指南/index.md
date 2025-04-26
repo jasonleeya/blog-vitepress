@@ -250,9 +250,6 @@ markdown支持直接在文件中嵌入HTML元素，而元素也是可以直接�
   </tr>
 </table>
 
-<script >
-  console.log('%c 打开控制台查看 ','color:white;background:red')
-</script>
 
 ## VitePress markdown增强语法
 

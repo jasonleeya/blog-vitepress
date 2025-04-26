@@ -6,26 +6,23 @@ import {useIsMobile} from "@/hooks/useIsMobile.mjs";
 import Loading from "@components/Loading.vue";
 import VPNavBarMenu from "@vp-theme/components/VPNavBarMenu.vue";
 
-const bingImgList = ref<BingImg[]>([])
+const bingImgList = ref<{isLoaded:boolean,img:BingImg}[]>([])
 const currentImgIndex = ref(0)
 
 const getImgListFromBing = async () => {
   return fetch("https://bing-wallpaper.vuejs.press/api/wallpaper").then((response) => response.json()).then(res => {
-    return bingImgList.value = res
+     bingImgList.value = res.map(img => ({isLoaded:false,img}))
   })
 };
-const loadedImgSet = new Set<string>()
 
 getImgListFromBing().then(() => {
   setLoadedImg()
 })
 // 避免重复加载，缓存当前，前后三张
 const setLoadedImg = () => {
-  if (loadedImgSet.size !== bingImgList.value.length) {
-    loadedImgSet.add(bingImgList.value[currentImgIndex.value].url)
-    loadedImgSet.add(bingImgList.value[(currentImgIndex.value + 1) % bingImgList.value.length].url)
-    loadedImgSet.add(bingImgList.value[(currentImgIndex.value - 1 + bingImgList.value.length) % bingImgList.value.length].url)
-  }
+  bingImgList.value[currentImgIndex.value].isLoaded = true
+  bingImgList.value[(currentImgIndex.value + 1) % bingImgList.value.length].isLoaded = true
+  bingImgList.value[(currentImgIndex.value - 1 + bingImgList.value.length) % bingImgList.value.length].isLoaded = true
 }
 const changeImg = (direction: 1 | -1 | null, index?: number) => {
   if (direction !== null) {
@@ -91,26 +88,26 @@ const isLoading = ref(true)
 let i = 0
 const imgsLoading = () => {
   i++
+  console.log(i)
   if (i === 3) {
-    setTimeout(() => {
-      isLoading.value = false
-    }, 500)
+    isLoading.value = false
   }
 }
 setTimeout(() => {
   isLoading.value = false
-}, 10000)
+}, 5000)
 
 const isMobile = useIsMobile()
 </script>
 
 <template>
+  <loading v-if="isLoading"></loading>
   <div class="hero">
-    <img v-for="(item,index) in bingImgList" v-show="!isLoading" :key="item.url"
+    <img v-for="(item,index) in bingImgList" :key="item.img.url"
          :class="{current:currentImgIndex === index}"
-         :src="loadedImgSet.has(item.url)?item.url:''" alt="" class="img-bg" @load="imgsLoading">
+         :src="item.isLoaded?item.img.url:''" alt="" class="img-bg" @load="imgsLoading">
     <div class="indicators">
-      <div v-for="(item,index) in bingImgList" :key="item.url" :class="{current:index === currentImgIndex}"
+      <div v-for="(item,index) in bingImgList" :key="item.img.url" :class="{current:index === currentImgIndex}"
            class="indicator" @click="changeImg(null,index)"></div>
     </div>
     <div class="hero-content">
@@ -121,7 +118,7 @@ const isMobile = useIsMobile()
                                          class="character">{{ item }}</span><span class="cursor">|</span></div>
         <div class="sentence-author">——「{{ author }}」</div>
       </div>
-      <img-info :change-img="changeImg" :info="bingImgList[currentImgIndex]" class="img-info"></img-info>
+      <img-info :change-img="changeImg" :info="bingImgList[currentImgIndex]?.img" class="img-info"></img-info>
       <div class="scroll-to-content" @click="scrollToContent">
         <svg height="50px" viewBox="0 0 100 100" width="50px" xmlns="http://www.w3.org/2000/svg">
           <polyline fill="none" points="10,10 50,40 90,10" stroke="rgba(2255,255,255,0.7)" stroke-linecap="round"
@@ -133,7 +130,6 @@ const isMobile = useIsMobile()
       </div>
     </div>
   </div>
-  <loading v-if="isLoading"></loading>
 </template>
 
 <style lang="scss" scoped>

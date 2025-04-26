@@ -25,7 +25,18 @@ const toggleInfoShow = () => {
   <collapsible-box :class="{mobile:isMobile}" :open="isInfoShow" class="img-info" direction="both">
     <div :class="{close:!isInfoShow}" class="switch" @click="toggleInfoShow"></div>
     <div v-if="info?.url" class="wrapper">
-      <div class="title">{{ info?.locales.zh?.headline }}</div>
+      <div class="title">
+        <span>{{ info?.locales.zh?.headline }}</span>
+        <div v-if="isInfoShow" class="change-img">
+          <el-icon class="icon" color="#fff" @click="changeImg(-1)">
+            <ArrowLeftBold/>
+          </el-icon>
+          <el-icon class="icon" color="#fff" @click="changeImg(1)">
+            <ArrowRightBold/>
+          </el-icon>
+        </div>
+
+      </div>
       <div class="description">{{ info?.locales.zh?.description }}</div>
       <div class="copyright">{{ info?.locales.zh?.copyright }}</div>
       <div class="address">
@@ -33,14 +44,6 @@ const toggleInfoShow = () => {
           <Location/>
         </el-icon>
         {{ info?.locales.zh?.title }}
-      </div>
-      <div v-if="isInfoShow" class="change-img">
-        <el-icon class="icon" color="#fff" @click="changeImg(-1)">
-          <ArrowLeftBold/>
-        </el-icon>
-        <el-icon class="icon" color="#fff" @click="changeImg(1)">
-          <ArrowRightBold/>
-        </el-icon>
       </div>
     </div>
   </collapsible-box>
@@ -73,6 +76,7 @@ const toggleInfoShow = () => {
     width: 30px;
     height: 30px;
     cursor: pointer;
+    z-index: 99;
 
     &:before {
       content: '';
@@ -120,6 +124,7 @@ const toggleInfoShow = () => {
     font-weight: 600;
     font-size: 1.1em;
     padding-bottom: 0.5em;
+    position: relative;
   }
 
   .description {
@@ -146,7 +151,7 @@ const toggleInfoShow = () => {
 
   .change-img {
     position: absolute;
-    right: 10px;
+    right: 35px;
     bottom: 0;
     opacity: 0;
     animation: show 1s forwards;

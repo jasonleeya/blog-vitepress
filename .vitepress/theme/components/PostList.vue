@@ -113,6 +113,7 @@ const isMobile = useIsMobile()
   gap: 15px;
   cursor: pointer;
   background-color: var(--card-bg);
+  text-decoration: none;
 
   .card-left {
     flex: 1;

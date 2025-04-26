@@ -399,4 +399,7 @@ const isMobile = useIsMobile()
 .icon.price-tag {
   transform: rotate(45deg);
 }
+.hot-post-title{
+  text-decoration: none;
+}
 </style>

@@ -271,3 +271,10 @@ iframe {
 .VPDoc th {
   white-space: nowrap;
 }
+.vp-doc.container{
+  max-width: unset;
+  padding: 0;
+}
+.vp-doc a{
+  text-decoration: none!important;
+}
