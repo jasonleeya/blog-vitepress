@@ -271,10 +271,21 @@ iframe {
 .VPDoc th {
   white-space: nowrap;
 }
-.vp-doc.container{
-  max-width: unset;
-  padding: 0;
+
+/*VitePress升级1.6.3后的兼容*/
+.vp-doc {
+  &.container {
+    max-width: unset;
+    padding: 0;
+  }
+  div, span {
+    text-decoration: none !important;
+  }
 }
-.vp-doc a{
-  text-decoration: none!important;
+@media screen and (max-width: 992px) {
+  .vp-doc{
+    a{
+      text-decoration: none !important;
+    }
+  }
 }
