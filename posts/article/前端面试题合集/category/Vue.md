@@ -1,4 +1,15 @@
+---
+category: Vue
+order: 4
+---
+<script setup>
+import NavHead from "../components/NavHead.vue";
+</script>
+<nav-head link="/posts/article/前端面试题合集/read.html">
+</nav-head>
+
 # Vue
+
 
 ## 说说你对vue的理解?
 

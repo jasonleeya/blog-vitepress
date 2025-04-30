@@ -1,3 +1,13 @@
+---
+category: HTML
+order: 2
+---
+<script setup>
+import NavHead from "../components/NavHead.vue";
+</script>
+<nav-head link="/posts/article/前端面试题合集/read.html">
+</nav-head>
+
 # HTML
 
 ## \<!DOCTYPE html> 标签有什么用？

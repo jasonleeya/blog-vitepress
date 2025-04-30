@@ -95,7 +95,7 @@ timeLineList.value.push(...Array.from(timeLineMap.entries()).map(item => {
       }
 
       &:before {
-        background-color: var(--el-color-primary);
+        background-color: var(--vp-c-brand);
       }
 
       .icon path {

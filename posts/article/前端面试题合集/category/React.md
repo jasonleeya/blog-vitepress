@@ -1,4 +1,15 @@
+---
+category: React
+order: 5
+---
+<script setup>
+import NavHead from "../components/NavHead.vue";
+</script>
+<nav-head link="/posts/article/前端面试题合集/read.html">
+</nav-head>
+
 # React
+
 
 ## 是否了解过 React 的架构?新的 Fiber 架构相较于之前的 Stack 架构有什么优势?
 

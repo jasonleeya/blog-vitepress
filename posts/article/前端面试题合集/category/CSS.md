@@ -1,6 +1,18 @@
+---
+category: CSS
+order: 3
+---
+<script setup>
+import NavHead from "../components/NavHead.vue";
+</script>
+<nav-head link="/posts/article/前端面试题合集/read.html">
+</nav-head>
+
 # CSS
 
+
 ## CSS3有哪些新特性
+
 
 1. **弹性布局**（Flexbox）与**网格布局**（Grid）；
 2. **过渡动画**（`transition`/`animation`）；
