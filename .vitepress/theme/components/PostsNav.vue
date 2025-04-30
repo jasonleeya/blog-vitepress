@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import {usePosts} from "@/hooks/usePosts.mts";
+import {usePosts} from "@hooks/usePosts";
 import {Document, Menu, PriceTag, Clock} from "@element-plus/icons-vue";
 import {ref, shallowRef} from "vue";
 import {formatDate} from "@/utils";
 import Tag from "@components/Tag.vue";
 import TimeLine from "@components/TimeLine.vue";
-import {useIsMobile} from "@/hooks/useIsMobile"
+import {useIsMobile} from "@hooks/useIsMobile"
 import IconHot from "@icons/IconHot.vue";
 
 enum Types {

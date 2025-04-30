@@ -117,6 +117,12 @@ export default defineConfig({
           )
         },
         {
+          find: /^@hooks\//,
+          replacement: fileURLToPath(
+              new URL('./hooks/', import.meta.url)
+          )
+        },
+        {
           find: /^@icons\//,
           replacement: fileURLToPath(
               new URL('./theme/components/icons/', import.meta.url)

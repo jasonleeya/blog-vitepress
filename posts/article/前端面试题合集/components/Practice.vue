@@ -19,9 +19,9 @@ import {computed, onMounted, PropType, ref, watch, watchEffect} from "vue";
 import {createHighlighter} from 'shiki'
 import MarkdownIt from 'markdown-it'
 import ActionBar from "./ActionBar.vue";
-import {useQuestion} from "../hooks.mjs";
+import {useQuestion} from "../hooks";
 import LookAnswer from "./LookAnswer.vue";
-import {useIsMobile} from "../../../../.vitepress/hooks/useIsMobile.mjs";
+import {useIsMobile} from "../../../../.vitepress/hooks/useIsMobile";
 
 const {currentQuestion, currentIndex, questionList, questionListLength} = useQuestion()
 let highlighter = null

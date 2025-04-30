@@ -22,6 +22,9 @@
       ],
       "@vp-theme*": [
         "node_modules/vitepress/dist/client/theme-default*"
+      ],
+      "@hooks*": [
+        ".vitepress/hooks*"
       ]
     }
   },
@@ -30,7 +33,6 @@
   ],
   "include": [
     ".vitepress/**/*.ts",
-    ".vitepress/**/*.mts",
     ".vitepress/**/*.d.ts",
     ".vitepress/**/*.vue",
     "node_modules/vitepress/dist/client/theme-default/**/*.vue",

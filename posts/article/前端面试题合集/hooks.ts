@@ -1,5 +1,6 @@
 import {ref, computed, watchEffect} from "vue";
 import category from './json/fileData.json'
+
 const currentCategory = ref<string>('');
 const questionList = ref([]);
 const currentIndex = ref(0);
@@ -41,7 +42,7 @@ export const useQuestion = () => {
 
   watchEffect(() => {
     if (!questionList.value.length || !currentQuestion.value) return
-    const currentQuestionTitle = questionList.value[currentIndex.value].title
+    const currentQuestionTitle = questionList.value[currentIndex.value]?.title
     //@ts-ignore
     if (!import.meta.env.SSR) {
       userAnswerData = JSON.parse(localStorage.getItem('userAnswerData') || '{}')
@@ -50,13 +51,8 @@ export const useQuestion = () => {
     isCollected.value = userAnswerData[currentQuestionTitle]?.isCollected || false
   })
 
-  watchEffect(() => {
-    if (!isPracticing.value) {
 
-    }
-  })
-
-  const setStatus = (type: string, value: boolean) => {
+  const storeState = () => {
     //@ts-ignore
     if (!import.meta.env.SSR) {
       userAnswerData = JSON.parse(localStorage.getItem('userAnswerData') || '{}')
@@ -65,14 +61,19 @@ export const useQuestion = () => {
     if (!userAnswerData[questionTitle]) {
       userAnswerData[questionTitle] = {}
     }
-    userAnswerData[questionTitle][type] = value
+    if (!isLearned.value && !isCollected.value && userAnswerData[questionTitle]) {
+      delete userAnswerData[questionTitle]
+    } else {
+      userAnswerData[questionTitle].isLearned = isLearned.value
+      userAnswerData[questionTitle].isCollected = isCollected.value
+    }
     //@ts-ignore
     if (!import.meta.env.SSR) {
       localStorage.setItem('userAnswerData', JSON.stringify(userAnswerData))
     }
   }
   return {
-    categoryList:category,
+    categoryList: category,
     currentCategory,
     questionList,
     currentIndex,
@@ -81,7 +82,7 @@ export const useQuestion = () => {
     isLearned,
     isCollected,
     questionListLength,
-    setStatus,
+    storeState,
     userAnswerData
   }
 }

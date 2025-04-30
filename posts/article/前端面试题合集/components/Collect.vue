@@ -12,7 +12,7 @@
       :offset="5"
       :disabled="disabled"
   >
-    <div class="wrapper" @click="handleClick">
+    <div class="wrapper" @click="handleClick" v-bind="$attrs">
       <div id="favorite" class="fave" :class="{animate:modelValue}"
            :style="{transition: `background ${canAnim&&modelValue ? 800 : 0}ms steps(55)`}"></div>
     </div>

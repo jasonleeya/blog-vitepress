@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme'
-import {useIsMobile} from "@/hooks/useIsMobile"
+import {useIsMobile} from "@hooks/useIsMobile"
 
 const isMobile = useIsMobile()
 

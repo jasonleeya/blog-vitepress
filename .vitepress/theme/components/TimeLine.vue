@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {usePosts} from "@/hooks/usePosts";
+import {usePosts} from "@hooks/usePosts";
 import {formatDate} from "@/utils";
 import {ref} from "vue";
 import CollapsibleBox from "@components/CollapsibleBox.vue";

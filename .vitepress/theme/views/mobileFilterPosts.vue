@@ -2,7 +2,7 @@
 <script setup lang="ts">
 
 import Tag from "@components/Tag.vue";
-import {usePosts} from "@/hooks/usePosts.mjs";
+import {usePosts} from "@hooks/usePosts";
 import {ref} from "vue";
 import PostList from "@components/PostList.vue";
 

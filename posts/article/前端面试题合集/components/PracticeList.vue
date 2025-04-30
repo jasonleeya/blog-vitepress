@@ -33,10 +33,10 @@
   <div class="content-wrapper">
     <div class="question-list" v-if="!isPracticing">
       <div v-for="(item,index) in questionList" class="question" @click="handleClickQuestion(index)"
-           :title="item.title">{{ index + 1 }}.
+           :title="item.title">{{ index + 1 }}.&nbsp;
         <span class="title">{{ item.title }}</span>
-        <div class="icons" v-if="!isMobile">
-          <collect :disabled="true" :model-value="userAnswerData[item.title]?.isCollected"></collect>
+        <div class="icons">
+          <collect :style="{width: isMobile?'52px':''}" :disabled="true" :model-value="userAnswerData[item.title]?.isCollected"></collect>
           <checkbox :disabled="true" :model-value="userAnswerData[item.title]?.isLearned"></checkbox>
         </div>
       </div>
@@ -49,10 +49,10 @@
 import NavHead from "./NavHead.vue";
 import {ref} from "vue";
 import Practice from "./Practice.vue";
-import {useQuestion} from "../hooks.mjs";
+import {useQuestion} from "../hooks";
 import Collect from "./Collect.vue";
 import Checkbox from "./Checkbox.vue";
-import {useIsMobile} from "../../../../.vitepress/hooks/useIsMobile.mjs";
+import {useIsMobile} from "../../../../.vitepress/hooks/useIsMobile";
 
 const isMobile = useIsMobile();
 const containerRef = ref();
@@ -207,16 +207,21 @@ const handleClickQuestion = (index) => {
     font-size: 16px;
     cursor: pointer;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     display: flex;
+    user-select: none;
+
+    .title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
     .icons {
       margin-left: auto;
       display: flex;
       align-items: center;
       padding-right: 10px;
+      transform: scale(0.8);
     }
 
     &:hover {
@@ -226,6 +231,17 @@ const handleClickQuestion = (index) => {
 
     &:nth-child(2n) {
       background: transparent;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .question {
+      padding-left: 10px;
+      padding-right: 0;
+
+      .icons {
+        padding-right: 0;
+      }
     }
   }
 }

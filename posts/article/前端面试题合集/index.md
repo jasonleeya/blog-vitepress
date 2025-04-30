@@ -16,18 +16,19 @@ import Navigation from "./components/Navigation.vue";
 
 
 ![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2025_04/前端面试题合集.png)
-``
+
 <style>
 img[alt="cover"] {
-  height: 200px!important;
+  height: 160px!important;
 }
+
 </style>
 
 # 前端面试题合集
 
 ::: warning 提示
 
-本篇文章收录的面试题为本人在网上搜集，AI生成加上本人根据自身面试经历总结而来，如有错误之处或有侵权，请联系本人。
+本篇合集收录的面试题均为本人在网上搜集，AI生成加上本人根据自身面试经历总结而来，如有错误之处或有侵权，请联系本人。
 
 :::
 

@@ -11,8 +11,8 @@
       <div class="content">
         <el-button type="primary" size="large" @click="handleNext">下一题</el-button>
         <el-button size="large" @click="handlePrev">上一题</el-button>
-        <checkbox v-model="isLearned" @update:model-value="setStatus('isLearned',isLearned)"></checkbox>
-        <collect v-model="isCollected" @update:model-value="setStatus('isCollected',isCollected)"></collect>
+        <checkbox v-model="isLearned" @update:model-value="storeState"></checkbox>
+        <collect v-model="isCollected" @update:model-value="storeState"></collect>
       </div>
     </div>
     <!--把footer顶起来   -->
@@ -26,9 +26,9 @@
 import Checkbox from "./Checkbox.vue";
 import Collect from "./Collect.vue";
 import {onMounted, onUnmounted} from "vue";
-import {useQuestion} from "../hooks.mjs";
+import {useQuestion} from "../hooks";
 
-const {isLearned, isCollected, currentIndex, questionListLength,setStatus} = useQuestion()
+const {isLearned, isCollected, currentIndex, questionListLength,storeState} = useQuestion()
 
 
 const prevNextEl: HTMLElement = document.querySelector('.prev-next')
