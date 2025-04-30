@@ -1,7 +1,7 @@
-import * as grayMatter from 'gray-matter';
+import grayMatter from 'gray-matter';
 import * as fs from 'fs';
 const dirPath = './posts/article/前端面试题合集';
-import * as MarkdownIt from 'markdown-it'
+import MarkdownIt from 'markdown-it'
 import { createHighlighter } from 'shiki'
 let md
 
@@ -79,5 +79,6 @@ function splitQuestion(question: string) {
 readFile()
 export {};
 
+//别管tsc报错
 // tsc posts/article/前端面试题合集/node.mts
 // node posts/article/前端面试题合集/node.mjs

@@ -76,7 +76,7 @@ const handleLookAnswer = () => {
 
 .index {
   margin-left: -18px;
-  color: #999;
+  color: #9094a5;
 }
 </style>
 <style>

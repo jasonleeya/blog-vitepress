@@ -29,7 +29,7 @@
 .mst {
   &_container {
     display: flex;
-    gap: 10px;
+    gap: 16px;
   }
 
   &_box {

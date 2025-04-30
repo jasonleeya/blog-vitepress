@@ -15,11 +15,13 @@ import Navigation from "./components/Navigation.vue";
 
 
 
-![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2025_04/前端面试题合集.png)
+![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2025_04/前端面试题合集.png){class="mst_cover"}
 
 <style>
-img[alt="cover"] {
-  height: 160px!important;
+@media (max-width: 992px) {
+.mst_cover{
+ height: 160px!important;
+}
 }
 
 </style>
