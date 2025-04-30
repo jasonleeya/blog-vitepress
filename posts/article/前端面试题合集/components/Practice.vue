@@ -69,23 +69,28 @@ watch(currentIndex, (index) => {
       requestAnimationFrame(() => _check())
     }
   }
-
   _check()
 
+  document.documentElement.scrollTop = 0
+
 }, {immediate: true})
+
+
 
 const isMobile = useIsMobile()
 
 const handleLookAnswer = () => {
-  isLookAnswer.value = true
   if (isMobile) {
     setTimeout(() => {
+      isLookAnswer.value = true
       isShowLookAnswerBtn.value = false
     },400)
   }else {
+    isLookAnswer.value = true
     isShowLookAnswerBtn.value = false
   }
 }
+
 </script>
 
 <style scoped lang="scss">

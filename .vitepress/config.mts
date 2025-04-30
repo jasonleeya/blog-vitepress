@@ -54,6 +54,11 @@ export default defineConfig({
   description: "欢迎来到我的技术分享小站",
   lastUpdated: true,
   ignoreDeadLinks: true,
+  head: [
+      [
+        'meta', {name: 'viewport', content: 'width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'}
+      ]
+  ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: '/logo.svg',

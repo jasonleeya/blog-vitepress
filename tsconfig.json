@@ -5,6 +5,7 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
       "@/*": [
