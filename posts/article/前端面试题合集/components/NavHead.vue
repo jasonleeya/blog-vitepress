@@ -38,7 +38,7 @@ const props = defineProps({
     top: 80px;
     padding-top: 10px;
     transform: translateY(-35px);
-    width: 100vw;
+    width: calc(100vw - 7px);
     margin-left: -20px;
     padding-left: 15px;
   }

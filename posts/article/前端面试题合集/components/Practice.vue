@@ -8,7 +8,8 @@
 <template>
   <div class="practice">
     <h1><span class="index">【{{ currentIndex + 1 }}/{{ questionListLength }}】</span>{{ currentQuestion?.title }}</h1>
-    <div class="answer" v-html="currentQuestion?.answer" v-if="isLoaded"></div>
+    <div class="answer" :class="{unreadable:!isLookAnswer}" v-html="currentQuestion?.answer" v-if="isLoaded"></div>
+    <look-answer class="look-answer" @click="handleLookAnswer" v-if="isShowLookAnswerBtn">查看答案</look-answer>
     <action-bar></action-bar>
   </div>
 </template>
@@ -19,8 +20,10 @@ import {createHighlighter} from 'shiki'
 import MarkdownIt from 'markdown-it'
 import ActionBar from "./ActionBar.vue";
 import {useQuestion} from "../hooks.mjs";
+import LookAnswer from "./LookAnswer.vue";
+import {useIsMobile} from "../../../../.vitepress/hooks/useIsMobile.mjs";
 
-const {currentQuestion, currentIndex, questionList,questionListLength} = useQuestion()
+const {currentQuestion, currentIndex, questionList, questionListLength} = useQuestion()
 let highlighter = null
 const md = MarkdownIt({
   highlight: (str, lang) => {
@@ -48,9 +51,13 @@ onMounted(async () => {
 // })
 
 
+const isLookAnswer = ref(false)
+const isShowLookAnswerBtn = ref(true)
 
-watch(currentIndex,  (index) => {
-  if(!questionList.value.length) return
+watch(currentIndex, (index) => {
+  isLookAnswer.value = false
+  isShowLookAnswerBtn.value = true
+  if (!questionList.value.length) return
 
   const question = JSON.parse(JSON.stringify(questionList.value[currentIndex.value]))
 
@@ -67,13 +74,39 @@ watch(currentIndex,  (index) => {
 
 }, {immediate: true})
 
+const isMobile = useIsMobile()
 
+const handleLookAnswer = () => {
+  isLookAnswer.value = true
+  if (isMobile) {
+    setTimeout(() => {
+      isShowLookAnswerBtn.value = false
+    },400)
+  }else {
+    isShowLookAnswerBtn.value = false
+  }
+}
 </script>
 
 <style scoped lang="scss">
+
+
 .answer {
-  min-height: calc(100vh - 800px);
+  min-height: calc(100vh - 500px);
+  &.unreadable{
+    filter: blur(5px);
+    user-select: none;
+  }
 }
+
+.look-answer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  user-select: none;
+}
+
 
 .index {
   margin-left: -18px;

@@ -97,3 +97,4 @@ function formatDate(date: Date | string | number, fmt: string = "yyyy-MM-dd hh:m
   }
   return fmt;
 }
+export {};

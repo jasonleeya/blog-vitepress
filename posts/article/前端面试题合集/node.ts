@@ -53,7 +53,9 @@ function splitQuestion(question: string) {
   }
 }
 
-  readFile()
+readFile()
+
+export {};
 
 // tsc posts/article/前端面试题合集/node.ts
 // node posts/article/前端面试题合集/node.js

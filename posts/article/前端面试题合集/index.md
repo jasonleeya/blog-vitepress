@@ -13,7 +13,15 @@ import Navigation from "./components/Navigation.vue";
   <read></read>
 </ClientOnly>
 
+
+
 ![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2025_04/前端面试题合集.png)
+``
+<style>
+img[alt="cover"] {
+  height: 200px!important;
+}
+</style>
 
 # 前端面试题合集
 

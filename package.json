@@ -8,8 +8,9 @@
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview",
-    "node": "tsc node/index.mts && node node/index",
-    "deploy": "tsc node/index.mts && node node/index && cloudbase framework deploy"
+    "node": "ts-node node/index",
+    "deploy": "ts-node node/index && cloudbase framework deploy",
+    "gen-question": "ts-node posts/article/前端面试题合集/node.ts"
   },
   "author": "JasonLee",
   "license": "ISC",
