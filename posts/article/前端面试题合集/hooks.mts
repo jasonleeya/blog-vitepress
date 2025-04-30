@@ -1,6 +1,5 @@
 import {ref, computed, watchEffect} from "vue";
 import category from './json/fileData.json'
-
 const currentCategory = ref<string>('');
 const questionList = ref([]);
 const currentIndex = ref(0);
@@ -9,12 +8,23 @@ const isPracticing = ref(false)
 const isLearned = ref(false);
 const isCollected = ref(false);
 const questionListLength = computed(() => questionList.value.length)
-let userAnswerData = JSON.parse(localStorage.getItem('userAnswerData') || '{}')
+let userAnswerData
 
-currentCategory.value = category.find(item => item.order === 1).category
+type Category = {
+  category: string
+  order: number
+  count: number
+  icon?: string
+}
+
+//@ts-ignore
+if (!import.meta.env.SSR) {
+  userAnswerData = JSON.parse(localStorage.getItem('userAnswerData') || '{}')
+}
+
+currentCategory.value = (category as Category[]).find(item => item.order === 1).category
 
 export const useQuestion = () => {
-
 
 
   watchEffect(async () => {
@@ -30,29 +40,39 @@ export const useQuestion = () => {
   })
 
   watchEffect(() => {
-    if (!questionList.value.length||!currentQuestion.value) return
+    if (!questionList.value.length || !currentQuestion.value) return
     const currentQuestionTitle = questionList.value[currentIndex.value].title
-     userAnswerData = JSON.parse(localStorage.getItem('userAnswerData') || '{}')
+    //@ts-ignore
+    if (!import.meta.env.SSR) {
+      userAnswerData = JSON.parse(localStorage.getItem('userAnswerData') || '{}')
+    }
     isLearned.value = userAnswerData[currentQuestionTitle]?.isLearned || false
     isCollected.value = userAnswerData[currentQuestionTitle]?.isCollected || false
   })
 
-  watchEffect(()=>{
+  watchEffect(() => {
     if (!isPracticing.value) {
 
     }
   })
 
-  const setStatus = (type:string,value:boolean) => {
-     userAnswerData = JSON.parse(localStorage.getItem('userAnswerData') || '{}')
+  const setStatus = (type: string, value: boolean) => {
+    //@ts-ignore
+    if (!import.meta.env.SSR) {
+      userAnswerData = JSON.parse(localStorage.getItem('userAnswerData') || '{}')
+    }
     const questionTitle = questionList.value[currentIndex.value].title
-    if(!userAnswerData[questionTitle]) {
+    if (!userAnswerData[questionTitle]) {
       userAnswerData[questionTitle] = {}
     }
     userAnswerData[questionTitle][type] = value
-    localStorage.setItem('userAnswerData', JSON.stringify(userAnswerData))
+    //@ts-ignore
+    if (!import.meta.env.SSR) {
+      localStorage.setItem('userAnswerData', JSON.stringify(userAnswerData))
+    }
   }
   return {
+    categoryList:category,
     currentCategory,
     questionList,
     currentIndex,

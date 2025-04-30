@@ -8,8 +8,8 @@
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview",
-    "node": "tsc node/index.ts && node node/index",
-    "deploy": "tsc node/index.ts && node node/index && cloudbase framework deploy"
+    "node": "tsc node/index.mts && node node/index",
+    "deploy": "tsc node/index.mts && node node/index && cloudbase framework deploy"
   },
   "author": "JasonLee",
   "license": "ISC",

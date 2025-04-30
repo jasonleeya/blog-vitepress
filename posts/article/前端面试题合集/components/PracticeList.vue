@@ -12,9 +12,10 @@
                      values="0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0"/>
     </filter>
   </svg>
-  <nav-head :link="isPracticing?'':'/posts/article/前端面试题合集'" @click="()=>{isPracticing = false;getUserAnswerData()}">
+  <nav-head :link="isPracticing?'':'/posts/article/前端面试题合集'"
+            @click="()=>{isPracticing = false;getUserAnswerData()}">
     <div class="tab-container" ref="containerRef" @wheel="handleWheel">
-      <div class="item" v-for="item in category" :key="item.category" :style="{order:item.order}"
+      <div class="item" v-for="item in categoryList" :key="item.category" :style="{order:item.order}"
            @click="handleTabClick(item.category)"
            :id="item.category"
            :class="{active: item.category === currentCategory}">
@@ -34,7 +35,7 @@
       <div v-for="(item,index) in questionList" class="question" @click="handleClickQuestion(index)"
            :title="item.title">{{ index + 1 }}.
         <span class="title">{{ item.title }}</span>
-        <div class="icons">
+        <div class="icons" v-if="!isMobile">
           <collect :disabled="true" :model-value="userAnswerData[item.title]?.isCollected"></collect>
           <checkbox :disabled="true" :model-value="userAnswerData[item.title]?.isLearned"></checkbox>
         </div>
@@ -45,19 +46,23 @@
 </template>
 
 <script setup lang="ts">
-import category from '../json/fileData.json'
 import NavHead from "./NavHead.vue";
 import {ref} from "vue";
 import Practice from "./Practice.vue";
-import {useQuestion} from "../hooks";
+import {useQuestion} from "../hooks.mjs";
 import Collect from "./Collect.vue";
 import Checkbox from "./Checkbox.vue";
+import {useIsMobile} from "../../../../.vitepress/hooks/useIsMobile.mjs";
 
+const isMobile = useIsMobile();
 const containerRef = ref();
-let {currentCategory, questionList, currentIndex, isPracticing, userAnswerData} = useQuestion()
+let {categoryList, currentCategory, questionList, currentIndex, isPracticing, userAnswerData} = useQuestion()
 
 const getUserAnswerData = () => {
-  userAnswerData = JSON.parse(localStorage.getItem('userAnswerData') || '{}')
+  // @ts-ignore
+  if (!import.meta.env.SSR) {
+    userAnswerData = JSON.parse(localStorage.getItem('userAnswerData') || '{}')
+  }
 }
 const handleTabClick = (category: string) => {
   const element = document.getElementById(category);

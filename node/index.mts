@@ -1,4 +1,4 @@
-import axios from "axios";
+const axios = require('axios');
 axios.defaults.baseURL = 'https://tcb.lsj97.com/api/blog'
 
 const fs = require('fs');

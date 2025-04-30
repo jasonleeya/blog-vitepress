@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import {nextTick, onMounted, PropType, ref} from "vue";
-import {useIsMobile} from "../../../.vitepress/hooks/useIsMobile.mjs";
 
 const props = defineProps({
   text: {

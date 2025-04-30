@@ -2,7 +2,7 @@
 import CollapsibleBox from "@components/CollapsibleBox.vue";
 import {ArrowLeftBold, ArrowRightBold, Location} from "@element-plus/icons-vue";
 import {PropType, ref} from "vue";
-import {useIsMobile} from "@/hooks/useIsMobile.mts";
+import {useIsMobile} from "@/hooks/useIsMobile";
 
 defineProps({
   info: {

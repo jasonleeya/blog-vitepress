@@ -26,7 +26,7 @@
 import Checkbox from "./Checkbox.vue";
 import Collect from "./Collect.vue";
 import {onMounted, onUnmounted} from "vue";
-import {useQuestion} from "../hooks";
+import {useQuestion} from "../hooks.mjs";
 
 const {isLearned, isCollected, currentIndex, questionListLength,setStatus} = useQuestion()
 

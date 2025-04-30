@@ -18,7 +18,7 @@ import {computed, onMounted, PropType, ref, watch, watchEffect} from "vue";
 import {createHighlighter} from 'shiki'
 import MarkdownIt from 'markdown-it'
 import ActionBar from "./ActionBar.vue";
-import {useQuestion} from "../hooks";
+import {useQuestion} from "../hooks.mjs";
 
 const {currentQuestion, currentIndex, questionList,questionListLength} = useQuestion()
 let highlighter = null

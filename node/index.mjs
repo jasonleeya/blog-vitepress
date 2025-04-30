@@ -11,8 +11,8 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var axios_1 = require("axios");
-axios_1.default.defaults.baseURL = 'https://tcb.lsj97.com/api/blog';
+var axios = require('axios');
+axios.defaults.baseURL = 'https://tcb.lsj97.com/api/blog';
 var fs = require('fs');
 var grayMatter = require('gray-matter');
 var childProcess = require('child_process');
@@ -42,7 +42,7 @@ function readAllPosts(parentPath) {
     fs.writeFileSync('./.vitepress/posts.json', JSON.stringify(posts));
 }
 readAllPosts();
-axios_1.default.post('/updatePosts', { postList: posts }).then(function (res) {
+axios.post('/updatePosts', { postList: posts }).then(function (res) {
     console.log('文章列表更新数据库成功', res.data);
 });
 function getFileLastUpdateTimeFromGit(url) {

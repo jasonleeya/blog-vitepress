@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {usePosts} from "@/hooks/usePosts.mts";
+import {usePosts} from "@/hooks/usePosts";
 import {formatDate} from "@/utils";
 import {ref} from "vue";
 import CollapsibleBox from "@components/CollapsibleBox.vue";
@@ -108,7 +108,8 @@ timeLineList.value.push(...Array.from(timeLineMap.entries()).map(item => {
     padding-top: 20px;
     padding-bottom: 20px;
     display: flex;
-    .title{
+
+    .title {
       font-weight: bold;
       font-size: 20px;
       color: var(--el-text-color-primary);

@@ -5,7 +5,7 @@ import {ref, shallowRef} from "vue";
 import {formatDate} from "@/utils";
 import Tag from "@components/Tag.vue";
 import TimeLine from "@components/TimeLine.vue";
-import {useIsMobile} from "@/hooks/useIsMobile.mjs";
+import {useIsMobile} from "@/hooks/useIsMobile"
 import IconHot from "@icons/IconHot.vue";
 
 enum Types {

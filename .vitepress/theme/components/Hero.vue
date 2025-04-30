@@ -2,7 +2,7 @@
 import {ref, onMounted, onUnmounted} from "vue";
 import {useData} from "vitepress";
 import ImgInfo from "@components/ImgInfo.vue";
-import {useIsMobile} from "@/hooks/useIsMobile.mjs";
+import {useIsMobile} from "@/hooks/useIsMobile"
 import Loading from "@components/Loading.vue";
 import VPNavBarMenu from "@vp-theme/components/VPNavBarMenu.vue";
 
