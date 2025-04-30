@@ -39,7 +39,7 @@ let timeout = null
 // 随机获取一句话
 const getSentence = () => Promise.race(
     [
-      new Promise((resolve,reject) =>{
+      new Promise((resolve) =>{
         return fetch("https://v1.hitokoto.cn?c=d&c=f&c=h&c=i&c=j&c=k").then((res) => res.json()).then(res => {
           resolve({from: res?.from || '', content: res?.hitokoto || ''})
         })

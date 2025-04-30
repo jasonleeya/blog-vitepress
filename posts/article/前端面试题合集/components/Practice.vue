@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted, PropType, ref, watch, watchEffect} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {createHighlighter} from 'shiki'
 import MarkdownIt from 'markdown-it'
 import ActionBar from "./ActionBar.vue";
@@ -54,7 +54,7 @@ onMounted(async () => {
 const isLookAnswer = ref(false)
 const isShowLookAnswerBtn = ref(true)
 
-watch(currentIndex, (index) => {
+watch(currentIndex, () => {
   isLookAnswer.value = false
   isShowLookAnswerBtn.value = true
   if (!questionList.value.length) return
