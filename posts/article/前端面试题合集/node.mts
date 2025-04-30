@@ -1,8 +1,32 @@
-const grayMatter = require('gray-matter');
-const fs = require('fs');
+import * as grayMatter from 'gray-matter';
+import * as fs from 'fs';
 const dirPath = './posts/article/前端面试题合集';
-// const MarkdownIt = require('markdown-it')
-// const md = MarkdownIt()
+import * as MarkdownIt from 'markdown-it'
+import { createHighlighter } from 'shiki'
+let md
+
+const highlighter = await createHighlighter({
+  themes: ['vitesse-light'],
+  langs: ['javascript', 'css', 'html', 'typescript', 'js', 'bash', 'vue'],
+})
+md = MarkdownIt({
+  highlight: (str, lang) => {
+    try {
+      const code = highlighter.codeToHtml(str, {
+        lang,
+        theme: 'vitesse-light',
+      })
+      return `<div class="language-${lang} "><span class="lang">${lang}</span>${code}</div>`
+    }catch (e) {
+      return str
+    }
+  }
+})
+
+type Category = {
+  category: string
+  count: number
+}
 
 function readFile() {
   console.log('读取文件中...')
@@ -15,7 +39,7 @@ function readFile() {
     const path = dirPath + '/category/' + item;
     const result = grayMatter(fs.readFileSync(path, 'utf-8'));
     const fileContent = result.content
-    const fileData = {...result.data, count: 0}
+    const fileData:Category = {...(result.data as Category), count: 0}
     const questionStringArray = parseQuestions(fileContent)
     const questionList = []
     questionStringArray.forEach(questionString => {
@@ -48,14 +72,12 @@ function splitQuestion(question: string) {
 
   return {
     title,
-    // answer: md.render(answer.trim())
-    answer: answer.trim()
+    answer: md.render(answer.trim())
   }
 }
 
 readFile()
-
 export {};
 
-// tsc posts/article/前端面试题合集/node.ts
-// node posts/article/前端面试题合集/node.js
+// tsc posts/article/前端面试题合集/node.mts
+// node posts/article/前端面试题合集/node.mjs

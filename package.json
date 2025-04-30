@@ -10,7 +10,7 @@
     "docs:preview": "vitepress preview",
     "node": "ts-node node/index",
     "deploy": "ts-node node/index && cloudbase framework deploy",
-    "gen-question": "ts-node posts/article/前端面试题合集/node.ts"
+    "gen-question": "ts-node posts/article/前端面试题合集/node.mts"
   },
   "author": "JasonLee",
   "license": "ISC",

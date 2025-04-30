@@ -8,48 +8,20 @@
 <template>
   <div class="practice">
     <h1><span class="index">【{{ currentIndex + 1 }}/{{ questionListLength }}】</span>{{ currentQuestion?.title }}</h1>
-    <div class="answer" :class="{unreadable:!isLookAnswer}" v-html="currentQuestion?.answer" v-if="isLoaded"></div>
+    <div class="answer" :class="{unreadable:!isLookAnswer}" v-html="currentQuestion?.answer"></div>
     <look-answer class="look-answer" @click="handleLookAnswer" v-if="isShowLookAnswerBtn">查看答案</look-answer>
     <action-bar></action-bar>
   </div>
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref, watch} from "vue";
-import {createHighlighter} from 'shiki'
-import MarkdownIt from 'markdown-it'
+import {ref, watch} from "vue";
 import ActionBar from "./ActionBar.vue";
 import {useQuestion} from "../hooks";
 import LookAnswer from "./LookAnswer.vue";
 import {useIsMobile} from "../../../../.vitepress/hooks/useIsMobile";
 
 const {currentQuestion, currentIndex, questionList, questionListLength} = useQuestion()
-let highlighter = null
-const md = MarkdownIt({
-  highlight: (str, lang) => {
-    const code = highlighter.codeToHtml(str, {
-      lang,
-      theme: 'vitesse-light',
-    })
-    return `<div class="language-${lang} "><span class="lang">${lang}</span>${code}</div>`
-  }
-})
-
-const isLoaded = ref(false)
-onMounted(async () => {
-  highlighter = await createHighlighter({
-    themes: ['vitesse-light'],
-    langs: ['javascript', 'css', 'html', 'typescript', 'js', 'bash', 'vue'],
-  })
-  isLoaded.value = true
-})
-
-
-// highlighter = await createHighlighter({
-//   themes: ['vitesse-light'],
-//   langs: ['javascript','css','html','typescript','js','bash','vue'],
-// })
-
 
 const isLookAnswer = ref(false)
 const isShowLookAnswerBtn = ref(true)
@@ -59,22 +31,10 @@ watch(currentIndex, () => {
   isShowLookAnswerBtn.value = true
   if (!questionList.value.length) return
 
-  const question = JSON.parse(JSON.stringify(questionList.value[currentIndex.value]))
-
-  function _check() {
-    if (isLoaded.value) {
-      question.answer = md.render(question.answer)
-      currentQuestion.value = question
-    } else {
-      requestAnimationFrame(() => _check())
-    }
-  }
-  _check()
-
+  currentQuestion.value = JSON.parse(JSON.stringify(questionList.value[currentIndex.value]))
   document.documentElement.scrollTop = 0
 
 }, {immediate: true})
-
 
 
 const isMobile = useIsMobile()
@@ -84,8 +44,8 @@ const handleLookAnswer = () => {
     setTimeout(() => {
       isLookAnswer.value = true
       isShowLookAnswerBtn.value = false
-    },400)
-  }else {
+    }, 400)
+  } else {
     isLookAnswer.value = true
     isShowLookAnswerBtn.value = false
   }
@@ -98,7 +58,8 @@ const handleLookAnswer = () => {
 
 .answer {
   min-height: calc(100vh - 500px);
-  &.unreadable{
+
+  &.unreadable {
     filter: blur(5px);
     user-select: none;
   }
