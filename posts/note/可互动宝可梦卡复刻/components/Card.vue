@@ -7,7 +7,7 @@
 -->
 <template>
   <div class="card-wrapper">
-    <div class="card"
+    <div class="game-card"
          @mouseenter="handleMouseEnter"
          @mousemove="handleMouseMove"
          @mouseleave="handleMouseLeave"
@@ -25,6 +25,7 @@
           }">
       <div class="shine" :style="{opacity: isHover ? 1 : 0}"></div>
     </div>
+    <span class="notice">PC端鼠标悬停查看效果</span>
   </div>
 </template>
 
@@ -100,9 +101,10 @@ const handleMouseLeave = () => {
   align-items: center;
   width: 100%;
   transform: scale(0.8);
+  position: relative;
 }
 
-.card {
+.game-card {
   --pointer-x: 0;
   --pointer-y: 0;
   --img-url:'';
@@ -113,7 +115,6 @@ const handleMouseLeave = () => {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transform: rotateX(calc(var(--mouse-y) * 0.1deg)) rotateY(calc(var(--mouse-x) * -0.1deg));
   transform-origin: center center;
   border-radius: 15px;
   will-change: trasform;
@@ -147,6 +148,9 @@ const handleMouseLeave = () => {
     mix-blend-mode: color-dodge;
     will-change: mask, background, filter;
   }
-
+}
+.notice {
+  position: absolute;
+  bottom: -40px;
 }
 </style>

@@ -14,6 +14,7 @@ import LazyLoader from "@components/LazyLoader.vue";
 <ClientOnly>
   <read></read>
   <iframe src="https://demos.lsj97.com/#/pieChart3d"></iframe>
+<p style="text-align: center;font-size: 14px;color: #999;margin-bottom: -20px;margin-top: 10px">可鼠标或手势操作查看效果</p>
 </ClientOnly>
 
 <br>
