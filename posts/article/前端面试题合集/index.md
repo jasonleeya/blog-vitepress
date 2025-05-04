@@ -3,6 +3,7 @@ category: 文章
 tags:
   - 面试题
 description: 全网有点全面试题合集
+sticky: 2
 ---
 
 <script setup>
