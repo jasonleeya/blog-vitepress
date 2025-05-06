@@ -7,7 +7,7 @@ let md
 
 const highlighter = await createHighlighter({
   themes: ['vitesse-light'],
-  langs: ['javascript', 'css', 'html', 'typescript', 'js', 'bash', 'vue'],
+  langs: ['javascript', 'css', 'html', 'typescript', 'js', 'bash', 'vue','json'],
 })
 md = MarkdownIt({
   highlight: (str, lang) => {

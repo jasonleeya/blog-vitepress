@@ -758,9 +758,19 @@ PostCSS 是一个基于 JavaScript 的 CSS 处理工具，其核心功能是通�
 
 ## object-fit的作用?
 
-## 单行文本怎么实现两端对齐？
+`object-fit` 是 CSS 属性，用于**控制替换元素（如图片、视频）的内容如何适配其容器尺寸**，避免拉伸或压缩导致的变形。
 
+**具体作用**：
 
+1. **属性值**：
+   - `fill`（默认）：强制内容填满容器，忽略宽高比。
+   - `contain`：保持比例缩放，完整显示内容（可能有留白）。
+   - `cover`：保持比例缩放，覆盖整个容器（可能裁剪内容）。
+   - `none`：保持原始尺寸，不缩放（居中显示）。
+   - `scale-down`：选择 `none` 或 `contain` 中更小的尺寸。
+2. **典型场景**：
+   - **头像裁剪**：方形容器显示用户上传的非方形图片（`object-fit: cover`）。
+   - **商品图展示**：固定宽高容器内展示不同比例的图片（`object-fit: contain`）。
 
 
 
@@ -892,4 +902,158 @@ z-index 是 CSS 中控制元素堆置顺序的重要属性，它确定了元素�
 
 ## Atom CSS 是什么？
 
+Atom CSS（原子化CSS）是一种**将样式拆分为单一职责的最小化CSS类**的方法，每个类仅定义一种样式属性，通过组合类名实现复杂样式，提升代码复用性与可维护性。  
+
+**核心原理与特点**  
+
+1. **单一职责**：  
+   - 每个类对应一个样式属性（如`.m-4 { margin: 1rem; }`、`.text-red { color: red; }`）。  
+   - 示例代码：  
+     ```html  
+     <div class="m-4 p-2 text-red bg-gray-100"></div>  
+     ```
+
+2. **实用类库驱动**：  
+   - **Tailwind CSS**：提供丰富的预定义原子类（如`flex`、`w-1/2`）。  
+   - **UnoCSS**：按需生成原子类，减少体积。  
+
+3. **优点**：  
+   - **减少CSS体积**：按需生成，无未使用的样式。  
+   - **避免样式冲突**：无全局作用域，类名直接映射样式。  
+   - **快速迭代**：通过组合类名调整样式，无需编写新CSS。  
+
+4. **缺点**：  
+   - **类名冗长**：HTML中需组合多个类，可读性降低。  
+   - **学习成本**：需记忆大量原子类命名规则。  
+
+**与传统CSS方法对比**  
+
+| **方法**     | 原子化CSS                | 传统CSS（如BEM）         |
+| ------------ | ------------------------ | ------------------------ |
+| **样式定义** | 分散的原子类组合         | 模块化类名+嵌套结构      |
+| **复用性**   | 高（全局复用原子类）     | 低（依赖组件作用域）     |
+| **维护性**   | 易调整，但需管理类名组合 | 依赖命名规范，易出现冗余 |
+| **适用场景** | 快速原型、轻量级项目     | 大型项目、强设计系统     |
+
+**实现工具示例（Tailwind CSS）**  
+
+```html  
+<!-- 组合原子类实现卡片样式 -->  
+<div class="max-w-sm rounded-lg shadow-md bg-white p-6">  
+  <h3 class="text-xl font-bold text-gray-800 mb-2">标题</h3>  
+  <p class="text-gray-600">内容...</p>  
+</div>  
+```
+
+**总结**：Atom CSS通过极简的样式单元组合提升开发效率，适合追求轻量、快速迭代的场景，但需权衡代码可读性与维护成本。****
+
 ## 什么是响应式设计？响应式设计的基本原理是什么？如何进行实现？
+
+响应式设计是一种**通过灵活布局和动态调整使网页适配不同设备屏幕的技术**，确保用户在不同终端（PC、平板、手机）上获得最佳浏览体验。  
+
+**基本原理**  
+
+1. **流式网格布局**：使用百分比而非固定宽度，元素尺寸随容器自动调整。  
+2. **弹性媒体**：图片、视频等媒体资源按比例缩放（如`max-width: 100%`）。  
+3. **媒体查询（Media Queries）**：根据设备特性（如屏幕宽度、分辨率）应用不同CSS规则。  
+4. **移动优先（Mobile First）**：先设计移动端布局，再通过媒体查询逐步增强大屏体验。  
+
+**核心实现方法**  
+
+1. **HTML 基础设置**：  
+   ```html  
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+   <!-- 确保视口宽度与设备一致，禁止缩放 -->  
+   ```
+
+2. **CSS 媒体查询**（核心工具）：  
+   ```css  
+   /* 移动端默认样式 */  
+   .container { padding: 10px; }  
+   
+   /* 平板适配 */  
+   @media (min-width: 768px) {  
+     .container { padding: 20px; }  
+   }  
+   
+   /* PC适配 */  
+   @media (min-width: 1024px) {  
+     .container { max-width: 1200px; margin: 0 auto; }  
+   }  
+   ```
+
+3. **弹性布局技术**：  
+   - **Flexbox**：单维度（行/列）灵活排列，解决对齐与空间分配问题。  
+     ```css  
+     .nav {  
+       display: flex;  
+       justify-content: space-between;  
+     }  
+     ```
+   - **CSS Grid**：二维网格布局，复杂结构适配更高效。  
+     ```css  
+     .grid {  
+       display: grid;  
+       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));  
+     }  
+     ```
+
+4. **响应式单位与计算**：  
+   - 相对单位：`vw`（视口宽度百分比）、`rem`（根字体比例）、`%`。  
+   - CSS函数：`calc()` 动态计算尺寸（如 `width: calc(100% - 20px)`）。  
+
+5. **响应式图片优化**：  
+   - **`srcset` 与 `sizes`**：根据屏幕密度和宽度加载合适图片。  
+     ```html  
+     <img src="small.jpg"  
+          srcset="medium.jpg 1000w, large.jpg 2000w"  
+          sizes="(max-width: 600px) 100vw, 50vw">  
+     ```
+   - **`picture` 元素**：针对不同场景切换图片源。  
+     ```html  
+     <picture>  
+       <source media="(min-width: 800px)" srcset="desktop.jpg">  
+       <source media="(min-width: 500px)" srcset="tablet.jpg">  
+       <img src="mobile.jpg" alt="响应式图片">  
+     </picture>  
+     ```
+
+**辅助工具与框架**  
+
+1. **CSS 预处理器**：  
+   - 使用 Sass/Less 变量管理断点（Breakpoint），提升代码可维护性。  
+     ```scss  
+     $tablet: 768px;  
+     @mixin tablet {  
+       @media (min-width: #{$tablet}) { @content; }  
+     }  
+     .header {  
+       font-size: 16px;  
+       @include tablet { font-size: 18px; }  
+     }  
+     ```
+
+2. **前端框架**：  
+   - **Bootstrap**：内置栅格系统（12列）和响应式工具类（如`.d-none .d-md-block`）。  
+   - **Tailwind CSS**：通过实用类快速构建响应式界面（如`md:text-lg`）。  
+
+3. **测试工具**：  
+   - 浏览器开发者工具：模拟不同设备尺寸，实时调试。  
+   - 在线服务：Responsinator、BrowserStack 多设备预览。  
+
+**最佳实践与常见问题**  
+
+1. **断点选择**：  
+   - 基于内容而非设备（如布局断裂时设置断点），常用参考：  
+     - 手机：< 768px  
+     - 平板：768px ~ 1024px  
+     - 桌面：≥ 1024px  
+
+2. **性能优化**：  
+   - 避免过多媒体查询嵌套，减少CSS文件体积。  
+   - 使用 `display: none` 谨慎隐藏元素，优先考虑结构优化。  
+
+3. **兼容性处理**：  
+   - 旧版IE支持：Polyfill（如 Respond.js）或条件注释降级方案。  
+
+**总结**：响应式设计通过**弹性布局 + 媒体查询 + 动态资源**实现多端适配，结合移动优先策略和现代CSS工具，可高效构建跨设备友好的Web应用。
