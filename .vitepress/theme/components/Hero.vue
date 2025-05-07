@@ -46,7 +46,7 @@ const getSentence = () => Promise.race(
         return fetch("https://v1.hitokoto.cn?c=d&c=f&c=h&c=i&c=j&c=k").then((res) => res.json()).then(res => {
           resolve({from: res?.from || '', content: res?.hitokoto || ''})
         })
-      } ),
+      }),
       new Promise(resolve=>setTimeout(()=>{
         fetch("https://api.xygeng.cn/one").then((res) => res.json()).then(res => {
           const data = res?.data || {}
@@ -73,7 +73,7 @@ const getSentence = () => Promise.race(
         }
       }
       renderText(content)
-    });
+    })
 getSentence()
 onUnmounted(() => {
   clearTimeout(timeout)

@@ -64,9 +64,9 @@ const isShow = ref(false)
 setTimeout(async () => {
   isShow.value = true
   await nextTick()
-  const bcr = cardRef.value.getBoundingClientRect()
-  cardLeft = bcr.left
-  cardTop = bcr.top
+  const bcr = cardRef.value?.getBoundingClientRect()
+  cardLeft = bcr?.left
+  cardTop = bcr?.top
 },500)
 
 const shouldTransition = ref(false)

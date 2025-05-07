@@ -67,8 +67,8 @@ export default defineConfig({
     avatar: 'https://q.qlogo.cn/g?b=qq&nk=1615685977&s=100',
     nav: [
       {text: '首页', link: '/'},
-      {text: '关于我', link: '/intro'},
       {text: '个人作品', link: '/pages/demos'},
+      {text: '关于我', link: '/intro'},
     ],
     medias: [
       {icon: '/images/medias/github.svg', type: 'github', link: 'https://github.com/jasonleeya'},
