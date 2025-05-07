@@ -102,9 +102,8 @@ const scrollToContent = () => {
 
 const isLoading = ref(true)
 let i = 0
-const imgsLoading = () => {
-  i++
-  if (i === 3) {
+const imgsLoading = (index:number) => {
+  if (index === 0) {
     isLoading.value = false
   }
 }
@@ -120,7 +119,8 @@ const isMobile = useIsMobile()
   <div class="hero">
     <img v-for="(item,index) in bingImgList" :key="item.img.url"
          :class="{current:currentImgIndex === index}"
-         :src="item.isLoaded?item.img.url:''" alt="" class="img-bg" @load="imgsLoading">
+         :style="{'z-index':bingImgList.length - index}"
+         :src="item.isLoaded?item.img.url:''" alt="" class="img-bg" @load="imgsLoading(index)">
     <div class="indicators">
       <div v-for="(item,index) in bingImgList" :key="item.img.url" :class="{current:index === currentImgIndex}"
            class="indicator" @click="changeImg(null,index)"></div>
@@ -184,7 +184,7 @@ const isMobile = useIsMobile()
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 3;
+    z-index: 13;
 
     .indicator {
       width: 40px;
@@ -210,7 +210,7 @@ const isMobile = useIsMobile()
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 12;
 
     .img-info {
       position: absolute;
