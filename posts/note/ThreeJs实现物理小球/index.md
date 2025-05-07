@@ -2,7 +2,6 @@
 category: 笔记
 tags:
   - ThreeJs
-cover: https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2025_05/pokemon.svg
 ---
 <script setup>
 import Read from "@components/Read.vue";
@@ -12,11 +11,13 @@ import Read from "@components/Read.vue";
   <read></read>
 </ClientOnly>
 
+![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2025_05/ThreeJs实现物理小球.png)
+
 # ThreeJs实现物理小球
 
 最近在重温了 Three.js，一直想找个实战项目练练手，加深对 3D 场景搭建、物理模拟以及交互功能实现的理解。在网上寻觅许久后，终于发现了一个非常契合我需求的项目 —— 一个能够生成若干具有物理特性的球体，并支持鼠标交互的酷炫案例。然而，当我满怀期待地打开代码时，却被眼前的压缩混淆代码泼了一盆冷水。密密麻麻的字符，几乎没有任何可读性，变量名也全是无意义的单字符，这无疑给我的学习之路设置了巨大的障碍。
 
-但越是有挑战，我越是充满斗志。我经过不懈努力，一步一步将代码还原，过程中不断加深了对Three.js使用的熟练程度，也学到了很多有用的技巧，下面就为大家分享这个项目的核心实现逻辑以及重要步骤代码。
+但越是有挑战，我越是充满斗志。我经过不懈努力，一步一步将代码还原（[点击查看效果](https://demos.lsj97.com/#/spherePacking)），过程中不断加深了对Three.js使用的熟练程度，也学到了很多有用的技巧，下面就为大家分享这个项目的核心实现逻辑以及重要步骤代码。
 
 ## 封装核心功能
 ```javascript
