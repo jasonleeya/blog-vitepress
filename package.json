@@ -9,7 +9,7 @@
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview",
     "node": "ts-node node/index",
-    "deploy": "ts-node node/index && cloudbase framework deploy",
+    "deploy": "ts-node node/index && tcb framework deploy",
     "generatePost": "node posts/article/前端面试题合集/node.mjs"
   },
   "author": "JasonLee",

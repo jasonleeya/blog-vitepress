@@ -39,6 +39,7 @@ interface ImportMetaEnv {
 
 interface BingImg {
   url: string
+  wallpaper: string
   locales: {
     zh: {
       title: string

@@ -11,7 +11,10 @@ const currentImgIndex = ref(0)
 
 const getImgListFromBing = async () => {
   return fetch("https://bing-wallpaper.vuejs.press/api/wallpaper").then((response) => response.json()).then(res => {
-    bingImgList.value = res.map(img => ({isLoaded: false, img}))
+    bingImgList.value = res.map(item => {
+      item.url = item.url.replace(/bing.com/g, "cn.bing.com")
+      return {isLoaded: false, img: item}
+    })
   })
 };
 

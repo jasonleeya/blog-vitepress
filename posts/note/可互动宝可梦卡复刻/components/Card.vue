@@ -8,6 +8,7 @@
 <template>
   <div class="card-wrapper">
     <div class="game-card"
+         v-if="isShow"
          @mouseenter="handleMouseEnter"
          @mousemove="handleMouseMove"
          @mouseleave="handleMouseLeave"
@@ -21,7 +22,7 @@
           '--foil-img-url':`url(${props.foilUrl})`,
           '--pointer-x': pointerX + 'px',
           '--pointer-y': pointerY + 'px',
-          '--radial-size':isHover?'70%':'0',
+          '--radial-size':isHover?'70%':'0'
           }">
       <div class="shine" :style="{opacity: isHover ? 1 : 0}"></div>
     </div>
@@ -30,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, PropType, ref} from "vue";
+import {nextTick, onMounted, PropType, ref} from "vue";
 
 const props = defineProps({
   imgUrl: {
@@ -53,11 +54,21 @@ const pointerX = ref(0)
 const pointerY = ref(0)
 const isHover = ref(false)
 
-onMounted(() => {
+/*onMounted(() => {
   const bcr = cardRef.value.getBoundingClientRect()
   cardLeft = bcr.left
   cardTop = bcr.top
-})
+})*/
+
+const isShow = ref(false)
+setTimeout(async () => {
+  isShow.value = true
+  await nextTick()
+  const bcr = cardRef.value.getBoundingClientRect()
+  cardLeft = bcr.left
+  cardTop = bcr.top
+},500)
+
 const shouldTransition = ref(false)
 const handleMouseEnter = () => {
   shouldTransition.value = true
@@ -100,6 +111,7 @@ const handleMouseLeave = () => {
   justify-content: center;
   align-items: center;
   width: 100%;
+  height: 512px;
   transform: scale(0.8);
   position: relative;
 }

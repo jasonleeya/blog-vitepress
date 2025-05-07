@@ -8,6 +8,7 @@
 <template>
   <div class="card-wrapper">
     <div class="game-card"
+         v-if="isShow"
          ref="cardRef"
          :style="{transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`}"
          @mousemove="handleMouseMove">
@@ -17,17 +18,27 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {nextTick, onMounted, ref} from "vue";
 
 let cardLeft = 0
 let cardTop = 0
 const cardRef = ref()
 
-onMounted(() => {
+/*onMounted(() => {
   const bcr = cardRef.value.getBoundingClientRect()
   cardLeft = bcr.left
   cardTop = bcr.top
-})
+})*/
+const isShow = ref(false)
+setTimeout(async () => {
+  isShow.value = true
+  await nextTick()
+  const bcr = cardRef.value.getBoundingClientRect()
+  cardLeft = bcr.left
+  cardTop = bcr.top
+},500)
+
+
 const rotateX = ref(0)
 const rotateY = ref(0)
 const handleMouseMove = (e: MouseEvent) => {
