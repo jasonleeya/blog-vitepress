@@ -146,3 +146,5 @@ createInteractiveElement 函数用于创建交互式元素。它通过监听鼠�
 
 
 通过这次代码还原和学习，我不仅完成了一个很棒的 Three.js 项目实践，也积累了宝贵的经验。在面对复杂代码时，不要畏惧，合理利用工具，结合自己的思考和分析，总能找到解决问题的办法。希望我的这段经历和分享，能够对同样在学习 Three.js 的小伙伴有所帮助，让我们一起在 3D 开发的世界里不断探索前行！
+
+完整代码：[spherePacking](https://gitee.com/lsj97/blog-demos/blob/master/src/views/spherePacking/index.vue)

@@ -210,4 +210,4 @@ pointerY.value = event.clientY - cardTop
 ```
 另外重要的一点是，需要设置`mix-blend-mode`属性为`color-dodge`,`mix-blend-mode`属性描述了元素的内容应该与元素的直系父元素的内容和元素的背景如何混合。
 
-以上便是宝可梦卡片的简单实现过程，更多的代码细节可参考：https://gitee.com/lsj97/blog-demos/blob/master/src/views/GameCard/Card.vue
+以上便是宝可梦卡片的简单实现过程，更多的代码细节可参考：[GameCard](https://gitee.com/lsj97/blog-demos/blob/master/src/views/GameCard/Card.vue)
