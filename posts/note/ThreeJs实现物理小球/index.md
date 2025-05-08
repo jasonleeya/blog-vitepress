@@ -1,7 +1,7 @@
 ---
 category: 笔记
 tags:
-  - ThreeJs
+  - Three.js
 ---
 <script setup>
 import Read from "@components/Read.vue";
