@@ -36,7 +36,8 @@
            :title="item.title">{{ index + 1 }}.&nbsp;
         <span class="title">{{ item.title }}</span>
         <div class="icons">
-          <collect :style="{width: isMobile?'52px':''}" :disabled="true" :model-value="userAnswerData[item.title]?.isCollected"></collect>
+          <collect :style="{width: isMobile?'52px':''}" :disabled="true"
+                   :model-value="userAnswerData[item.title]?.isCollected"></collect>
           <checkbox :disabled="true" :model-value="userAnswerData[item.title]?.isLearned"></checkbox>
         </div>
       </div>
@@ -47,7 +48,7 @@
 
 <script setup lang="ts">
 import NavHead from "./NavHead.vue";
-import {ref} from "vue";
+import {onMounted, ref, watchEffect} from "vue";
 import Practice from "./Practice.vue";
 import {useQuestion} from "../hooks";
 import Collect from "./Collect.vue";
@@ -56,16 +57,18 @@ import {useIsMobile} from "../../../../.vitepress/hooks/useIsMobile";
 
 const isMobile = useIsMobile();
 const containerRef = ref();
-let {categoryList, currentCategory, questionList, currentIndex, isPracticing, userAnswerData} = useQuestion()
+let {
+  categoryList,
+  currentCategory,
+  questionList,
+  currentIndex,
+  isPracticing,
+  userAnswerData,
+  getUserAnswerData
+} = useQuestion()
 
-const getUserAnswerData = () => {
-  // @ts-ignore
-  if (!import.meta.env.SSR) {
-    userAnswerData = JSON.parse(localStorage.getItem('userAnswerData') || '{}')
-  }
-}
-const handleTabClick = (category: string) => {
-  const element = document.getElementById(category);
+// category tab滚动到中间
+const handleScrollToCenter = (element: HTMLElement) => {
   const elementBCR = element.getBoundingClientRect();
   const containerBCR = containerRef.value.getBoundingClientRect();
   const elementXCenter = elementBCR.left + elementBCR.width / 2;
@@ -82,11 +85,27 @@ const handleTabClick = (category: string) => {
       behavior: 'smooth'
     })
   }
+}
+
+const handleTabClick = (category: string) => {
+  const element = document.getElementById(category);
+  handleScrollToCenter(element)
 
   currentCategory.value = category;
   isPracticing.value = false
   getUserAnswerData()
 }
+
+
+// 如果url有category, 自动滚动到对应的tab上
+onMounted(() => {
+  const categoryEl = document.getElementById(currentCategory.value);
+  if (categoryEl) {
+    categoryEl.scrollIntoView({block: 'center'});
+
+    handleScrollToCenter(categoryEl)
+  }
+})
 
 const handleRightIconClick = () => {
   containerRef.value.scrollTo({
@@ -109,7 +128,6 @@ const handleWheel = (e: WheelEvent) => {
     })
   }
 }
-
 
 const handleClickQuestion = (index) => {
   currentIndex.value = index

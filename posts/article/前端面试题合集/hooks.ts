@@ -1,4 +1,4 @@
-import {ref, computed, watchEffect} from "vue";
+import {ref, computed, watchEffect, onMounted} from "vue";
 import category from './json/fileData.json'
 
 const currentCategory = ref<string>('');
@@ -9,7 +9,7 @@ const isPracticing = ref(false)
 const isLearned = ref(false);
 const isCollected = ref(false);
 const questionListLength = computed(() => questionList.value.length)
-let userAnswerData
+const userAnswerData = ref({})
 
 type Category = {
   category: string
@@ -18,16 +18,25 @@ type Category = {
   icon?: string
 }
 
-//@ts-ignore
-if (!import.meta.env.SSR) {
-  userAnswerData = JSON.parse(localStorage.getItem('userAnswerData') || '{}')
-}
 
-currentCategory.value = (category as Category[]).find(item => item.order === 1).category
+// 获取url参数, c: category, q: question
+const searchParams = new URLSearchParams(window.location.search);
+const c = searchParams.get('c');
+const q = searchParams.get('q');
+// 获取用户答题数据
+const getUserAnswerData = () => {
+  // @ts-ignore
+  if (!import.meta.env.SSR) {
+    userAnswerData.value = Object.assign(userAnswerData.value, JSON.parse(localStorage.getItem('userAnswerData') || '{}'))
+  }
+}
+getUserAnswerData()
+
+currentCategory.value =c?c: (category as Category[]).find(item => item.order === 1).category
 
 export const useQuestion = () => {
 
-
+  // 依赖currentCategory获取题目list
   watchEffect(async () => {
     const file = await import(`./json/${currentCategory.value}.json`);
     let list = file.default
@@ -38,40 +47,65 @@ export const useQuestion = () => {
       }
     })
     questionList.value = list
+
+    // 如果url有问题，设置当前题目
+    if (q) {
+      const index = list.findIndex(item => item.title === q);
+      if (index !== -1) {
+        currentIndex.value = index
+        currentQuestion.value = list[index]
+        isPracticing.value = true
+      }
+    }
   })
 
+  // 依赖currentIndex获取当前题目, 设置答题状态
   watchEffect(() => {
     if (!questionList.value.length || !currentQuestion.value) return
     const currentQuestionTitle = questionList.value[currentIndex.value]?.title
-    //@ts-ignore
-    if (!import.meta.env.SSR) {
-      userAnswerData = JSON.parse(localStorage.getItem('userAnswerData') || '{}')
-    }
-    isLearned.value = userAnswerData[currentQuestionTitle]?.isLearned || false
-    isCollected.value = userAnswerData[currentQuestionTitle]?.isCollected || false
+    isLearned.value = userAnswerData.value[currentQuestionTitle]?.isLearned || false
+    isCollected.value = userAnswerData.value[currentQuestionTitle]?.isCollected || false
   })
 
-
-  const storeState = () => {
-    //@ts-ignore
-    if (!import.meta.env.SSR) {
-      userAnswerData = JSON.parse(localStorage.getItem('userAnswerData') || '{}')
-    }
-    const questionTitle = questionList.value[currentIndex.value].title
-    if (!userAnswerData[questionTitle]) {
-      userAnswerData[questionTitle] = {}
-    }
-    if (!isLearned.value && !isCollected.value && userAnswerData[questionTitle]) {
-      delete userAnswerData[questionTitle]
+  // 依赖currentQuestion和currentCategory设置url参数
+  watchEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (currentQuestion.value) {
+      searchParams.set('q', currentQuestion.value?.title);
     } else {
-      userAnswerData[questionTitle].isLearned = isLearned.value
-      userAnswerData[questionTitle].isCollected = isCollected.value
+      searchParams.delete('q');
+    }
+    if (currentCategory.value) {
+      searchParams.set('c', currentCategory.value);
+    }
+    history.replaceState(null, '', '?' + searchParams.toString());
+  })
+
+  // 依赖isPracticing设置当前题目
+  watchEffect(() => {
+    if (!isPracticing.value && currentQuestion.value) {
+      currentQuestion.value = null
+    }
+  })
+
+  // 设置答题状态并本地存储
+  const storeState = () => {
+    const questionTitle = questionList.value[currentIndex.value].title
+    if (!userAnswerData.value[questionTitle]) {
+      userAnswerData.value[questionTitle] = {}
+    }
+    if (!isLearned.value && !isCollected.value && userAnswerData.value[questionTitle]) {
+      delete userAnswerData.value[questionTitle]
+    } else {
+      userAnswerData.value[questionTitle].isLearned = isLearned.value
+      userAnswerData.value[questionTitle].isCollected = isCollected.value
     }
     //@ts-ignore
     if (!import.meta.env.SSR) {
-      localStorage.setItem('userAnswerData', JSON.stringify(userAnswerData))
+      localStorage.setItem('userAnswerData', JSON.stringify(userAnswerData.value))
     }
   }
+
   return {
     categoryList: category,
     currentCategory,
@@ -83,6 +117,7 @@ export const useQuestion = () => {
     isCollected,
     questionListLength,
     storeState,
-    userAnswerData
+    userAnswerData,
+    getUserAnswerData
   }
 }
