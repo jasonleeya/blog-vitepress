@@ -8,8 +8,12 @@
 <template>
   <div class="practice">
     <h1><span class="index">【{{ currentIndex + 1 }}/{{ questionListLength }}】</span>{{ currentQuestion?.title }}</h1>
-    <div class="answer" :class="{unreadable:!isLookAnswer}" v-html="currentQuestion?.answer"></div>
-    <look-answer class="look-answer" @click="handleLookAnswer" v-if="isShowLookAnswerBtn">查看答案</look-answer>
+    <div class="description" v-if="currentQuestion.description" v-html="currentQuestion?.description"></div>
+    <p><b>参考答案：</b></p>
+    <div class="answer-wrapper">
+      <div class="answer" :class="{unreadable:!isLookAnswer}" v-html="currentQuestion?.answer"></div>
+      <look-answer class="look-answer" @click="handleLookAnswer" v-if="isShowLookAnswerBtn&&currentQuestion.answer">查看答案</look-answer>
+    </div>
     <action-bar></action-bar>
   </div>
 </template>
@@ -55,7 +59,9 @@ const handleLookAnswer = () => {
 
 <style scoped lang="scss">
 
-
+.answer-wrapper{
+  position: relative;
+}
 .answer {
   min-height: calc(100vh - 500px);
 
@@ -66,8 +72,8 @@ const handleLookAnswer = () => {
 }
 
 .look-answer {
-  position: fixed;
-  top: 50%;
+  position: absolute;
+  top: 200px;
   left: 50%;
   transform: translateX(-50%);
   user-select: none;
@@ -76,7 +82,7 @@ const handleLookAnswer = () => {
 
 .index {
   margin-left: -18px;
-  color: #9094a5;
+  color: rgba(0,0,0,0.45);
 }
 </style>
 <style>

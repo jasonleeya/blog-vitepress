@@ -1,6 +1,6 @@
 ---
 category: TypeScript
-order: 14
+order: 15
 ---
 <script setup>
 import NavHead from "../components/NavHead.vue";
@@ -8,19 +8,24 @@ import NavHead from "../components/NavHead.vue";
 <nav-head link="/posts/article/前端面试题合集/read.html">
 </nav-head>
 
-
 # TypeScript
 
+## 什么是 TypeScript？它与 JavaScript 有什么关系？
 
-## 开发过程中为什么会选择使用TS, 相比于JS开发，有哪些优点？
+## 如何将 TypeScript 代码编译为 JavaScript 代码？
 
-## 解释keyof和typeof的作用
+## 什么是 TypeScript 的类型系统？请列举一些常见的类型。
 
-## type和interface的区别
 
-## any、unknown和never的区别是什么？
+## 开发过程中为什么会选择使用 TypeScript, 相比于 JavaScript 开发，有哪些优点？
 
-## 如何用TypeScript实现枚举类型的反向映射？
+## 解释 keyof 和 typeof 的作用
+
+## type 和 interface 的区别
+
+## any、unknown 和 never 的区别是什么？
+
+## 如何用 TypeScript 实现枚举类型的反向映射？
 
 ## TypeScript is 这个关键字是做什么？
 

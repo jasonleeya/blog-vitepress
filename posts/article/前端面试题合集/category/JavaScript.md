@@ -11,7 +11,7 @@ import NavHead from "../components/NavHead.vue";
 
 # JavaScript
 
-## 说说JavaScript中的数据类型？
+## 说说 JavaScript 中的数据类型？
 
 > **String**、**Number**、**Boolean**、**Undefined**、**Null**、**Object**、**Symbol**、**BigInt**
 
@@ -56,7 +56,7 @@ Javascript中的作用域说的是变量的可访问性和可见性。也就是�
 
 作用域链：作用域链是JavaScript中用于查找变量的一种机制。当在Javascript中使用一个变量的时候，首先Javascript引擎会尝试在当前作用域下去寻找该变量，如果没找到，再到它的上层作用域寻找，以此类推直到找到该变量或是已经到了全局作用域，这种一层一层的关系，就是 作用域链。
 
-## 谈谈this对象的理解
+## 谈谈 this 对象的理解
 
 > `this` 指向当前函数的执行上下文，谁“触发”函数，`this`就指向谁（动态变化）。
 
@@ -155,6 +155,7 @@ javascript 是一门单线程语言，意思就是同一时间段只能做一件
 - script (可以理解为外层同步代码)
 - setTimeout/setInterval
 - UI rendering/UI事件
+- DOM 事件回调（如 click）等
 - postMessage、MessageChannel
 - setImmediate、I/O（Node.js）
 
@@ -236,7 +237,7 @@ javascript 是一门单线程语言，意思就是同一时间段只能做一件
    - `document.querySelector('.类名')`
    - `父元素.getElementsByTagName('div')`
 
-## JavaScript代码中的"use strict"是什么意思 ?
+## JavaScript 代码中的"use strict"是什么意思 ?
 
 `"use strict"` 是 JavaScript 的**严格模式声明**，用于让代码在更严格的语法检查下运行，帮助开发者避免常见错误，提升代码安全性和性能。
 
@@ -303,7 +304,7 @@ console.log(stringValue.substr(3, 7)); // "lo worl"
 - `search()` 接收一个参数，可以是一个正则表达式字符串，也可以是一个`RegExp`对象，找到则返回匹配索引，否则返回 `-1`
 - `replace()` 接收两个参数，第一个参数为匹配的内容，第二个参数为替换的元素（可用函数）
 
-## JavaSript中如何判断一个变量的类型
+## JavaSript 中如何判断一个变量的类型
 
 - **typeof**
 
@@ -416,7 +417,7 @@ isNaN会对值先转换成数字，比如：`isNaN('一')`,`一`转换成了`NaN
 
 Number.isNaN不会进行转换，不是NaN一律返回false
 
-## typeof null返回什么？为什么？如何检测null？
+## typeof null 返回什么？为什么？如何检测 null？
 
 **`typeof null` 返回 `"object"`**,**原因**：JS早期设计的遗留问题。null的二进制表示全为0，而对象类型标签也是0，导致误判。虽不合理，但为兼容性保留至今。 **检测 null 的正确方法**：用严格等于（`===`）,不要用 `typeof`（会误判为对象）或 `==`（`null == undefined` 返回true）。
 
@@ -525,7 +526,7 @@ function deepClone(obj, hash = new WeakMap()) {
 - 直接绑每个 `li`：3次事件监听。
 - 事件代理：1次监听，后续新增 `li` 自动生效。
 
-## JavaScript如何阻止冒泡事件和默认事件？
+## JavaScript 如何阻止冒泡事件和默认事件？
 
 1. **阻止冒泡**： `event.stopPropagation()` （比如点击子元素时，阻止父元素的同类事件被触发）
 2. **阻止默认事件**： `event.preventDefault()` （比如点了`<a>`链接但不想跳转，或提交表单时阻止页面刷新）
@@ -545,7 +546,7 @@ function deepClone(obj, hash = new WeakMap()) {
 - **进程** = **独立餐馆**：每个餐馆有自己的厨房（内存）、食材（资源）、员工。一家店着火不会影响隔壁店。
 - **线程** = **同一餐馆里的多个厨师**：共享厨房和食材，协作高效，但一个厨师切到手可能整个餐馆停摆。
 
-## JavaScript中执行上下文和执行栈是什么？
+## JavaScript 中执行上下文和执行栈是什么？
 
 在 JavaScript 中，**执行上下文（Execution Context）** 是代码执行时的环境，每个函数调用或全局代码运行都会创建一个。它包含三部分：
 
@@ -639,199 +640,256 @@ a(); // 执行栈顺序：全局 → a → b → c，执行完依次弹出。
 - **数组成员**：用 `includes()` 替代 `indexOf() !== -1`（更直观）。
 - **字符串拼接**：优先模板字符串（如 `Hello ${name}`）。
 
-## Javascript如何实现继承？
+## JavaScript 创建对象的方法有哪些？
 
-**1. ES6 extends 继承**
+JavaScript 创建对象的常用方法包括**对象字面量、构造函数、工厂模式、原型模式、组合模式、ES6类语法**等，核心围绕原型链与封装实现不同场景需求。  
 
-```javascript
-class Child extends Parent{...}
+**具体方法与示例**  
+
+**1. 对象字面量（直接创建）**  
+
+```javascript  
+const obj = {  
+  name: 'Jack',  
+  sayHi() { console.log('Hi!'); }  
+};  
 ```
+- **特点**：简单直观，适合单例对象，无法复用。  
 
-**2. 原型链继承**
+**2. 构造函数模式**  
 
-```javascript
- function SuperType() {
-     this.property = true;
- }
- SuperType.prototype.getSuperValue = function() {
-     return this.property;
- }
- function SubType() {
-     this.subproperty = false;
- }
- // 创建SuperType的实例，并将该实例赋值给SubType.prototype
- SubType.prototype = new SuperType(); 
- 
- SubType.prototype.getSubValue = function() {
-     return this.subproperty;
- }
- 
- var instance = new SubType();
- console.log(instance.getSuperValue()); // true
+```javascript  
+function Person(name) {  
+  this.name = name;  
+  this.sayHi = function() { console.log('Hi!'); };  
+}  
+const person = new Person('Jack');  
 ```
+- **特点**：通过 `new` 创建实例，每个方法需重新创建（内存浪费）。  
 
- 缺点：
+**3. 工厂模式**  
 
-多个实例对引用类型的操作会被篡改。
-
-
-
-**3. 构造函数继承**
-
-```javascript
-function  SuperType(){
-    this.color=["red","green","blue"];
-}
-function  SubType(){
-    //继承自SuperType
-    SuperType.call(this);
-}
-var instance1 = new SubType();
-instance1.color.push("black");
-alert(instance1.color);//"red,green,blue,black"
-
-var instance2 = new SubType();
-alert(instance2.color);//"red,green,blue"
+```javascript  
+function createPerson(name) {  
+  return {  
+    name,  
+    sayHi() { console.log('Hi!'); }  
+  };  
+}  
+const person = createPerson('Jack');  
 ```
+- **特点**：封装创建过程，但无法识别对象类型（`instanceof` 无效）。  
 
-缺点：
+**4. 原型模式**  
 
-- 只能继承父类的**实例**属性和方法，不能继承原型属性/方法
-- 无法实现复用，每个子类都有父类实例函数的副本，影响性能
-
-
-
-**3. 组合继承**
-
-组合原型链继承和构造函数继承就是组合继承。用原型链实现对**原型**属性和方法的继承，用借用构造函数技术来实现**实例**属性的继承。
-
-```javascript
-function SuperType(name){
-  this.name = name;
-  this.colors = ["red", "blue", "green"];
-}
-SuperType.prototype.sayName = function(){
-  alert(this.name);
-};
-
-function SubType(name, age){
-  // 继承属性
-  // 第二次调用SuperType()
-  SuperType.call(this, name);
-  this.age = age;
-}
-
-// 继承方法
-// 构建原型链
-// 第一次调用SuperType()
-SubType.prototype = new SuperType(); 
-// 重写SubType.prototype的constructor属性，指向自己的构造函数SubType
-SubType.prototype.constructor = SubType; 
-SubType.prototype.sayAge = function(){
-    alert(this.age);
-};
+```javascript  
+function Person() {}  
+Person.prototype.name = 'Jack';  
+Person.prototype.sayHi = function() { console.log('Hi!'); };  
+const person = new Person();  
 ```
+- **特点**：方法共享，属性独立需手动添加，引用类型属性可能被误改。  
 
-缺点：
+**5. 组合模式（构造函数 + 原型）**  
 
-从上面代码我们也可以看到`SuperType` 执行了两次，造成了多构造一次的性能开销
-
-
-
-**4. 原型式继承**
-
-这里主要借助`Object.create`方法实现普通对象的继承
-
-```javascript
-let parent = {
-    name: "parent",
-    friends: ["p1", "p2", "p3"],
-    getName: function() {
-      return this.name;
-    }
-  };
-
-  let person1 = Object.create(parent4);
-  person1.name = "tom";
-  person1.friends.push("jerry");
-
-  let person2 = Object.create(parent4);
-  person2.friends.push("lucy");
-
-  console.log(person1.name); // tom
-  console.log(person1.name === person1.getName()); // true
-  console.log(person2.name); // parent
-  console.log(person1.friends); // ["p1", "p2", "p3","jerry","lucy"]
-  console.log(person2.friends); // ["p1", "p2", "p3","jerry","lucy"]
+```javascript  
+function Person(name) {  
+  this.name = name;  
+}  
+Person.prototype.sayHi = function() { console.log('Hi!'); };  
+const person = new Person('Jack');  
 ```
+- **特点**（**最常用**）：构造函数定义属性，原型定义方法，兼顾独立性与共享性。  
 
-缺点：
+**6. 动态原型模式**  
 
-因为`Object.create `方法实现的是浅拷贝，多个实例的引用类型属性指向相同的内存，存在篡改的可能
-
-
-
-**5.寄生式继承**
-
-```javascript
-let parent = {
-    name: "parent",
-    friends: ["p1", "p2", "p3"],
-    getName: function() {
-        return this.name;
-    }
-};
-
-function clone(original) {
-    let clone = Object.create(original);
-    clone.getFriends = function() {
-        return this.friends;
-    };
-    return clone;
-}
-
-let person = clone(parent);
-
-console.log(person.getName()); // parent
-console.log(person.getFriends()); // ["p1", "p2", "p3"]
+```javascript  
+function Person(name) {  
+  this.name = name;  
+  // 仅首次调用时初始化原型  
+  if (typeof this.sayHi !== 'function') {  
+    Person.prototype.sayHi = function() { console.log('Hi!'); };  
+  }  
+}  
+const person = new Person('Jack');  
 ```
+- **特点**：延迟原型初始化，更优雅的封装。  
 
-缺点：
+**7. 寄生构造函数模式**  
 
-跟原型式继承一样
-
-**6. 寄生组合式继承**
-
-```javascript
-function clone (parent, child) {
-    // 这里改用 Object.create 就可以减少组合继承中多进行一次构造的过程
-    child.prototype = Object.create(parent.prototype);
-    child.prototype.constructor = child;
-}
-
-function Parent() {
-    this.name = 'parent';
-    this.play = [1, 2, 3];
-}
-Parent.prototype.getName = function () {
-    return this.name;
-}
-function Child() {
-    Parent.call(this);
-    this.friends = 'child';
-}
-
-clone(Parent, Child);
-
-Child.prototype.getFriends = function () {
-    return this.friends;
-}
-
-let person = new Child(); 
-console.log(person); //{friends:"child",name:"child",play:[1,2,3],__proto__:Parent}
-console.log(person.getName()); // parent
-console.log(person.getFriends()); // child
+```javascript  
+function Person(name) {  
+  const obj = new Object();  
+  obj.name = name;  
+  obj.sayHi = function() { console.log('Hi!'); };  
+  return obj; // 覆盖默认返回的实例  
+}  
+const person = new Person('Jack');  
 ```
+- **特点**：类似工厂模式，但使用 `new` 操作符，适用于扩展已有对象。  
+
+**8. Object.create()（原型式继承）**  
+
+```javascript  
+const personProto = {  
+  sayHi() { console.log('Hi!'); }  
+};  
+const person = Object.create(personProto);  
+person.name = 'Jack';  
+```
+- **特点**：基于现有对象创建，无需构造函数，适合简单继承场景。  
+
+**9. ES6类语法（语法糖）**  
+
+```javascript  
+class Person {  
+  constructor(name) {  
+    this.name = name;  
+  }  
+  sayHi() { console.log('Hi!'); }  
+}  
+const person = new Person('Jack');  
+```
+- **特点**：语法更清晰，本质仍是原型继承，支持 `static`、`extends` 等特性。  
+
+**对比与选型建议**  
+
+| **方法**     | **优点**               | **缺点**      | **适用场景**         |
+| ------------ | ---------------------- | ------------- | -------------------- |
+| **字面量**   | 简单快速               | 无法复用      | 单例对象             |
+| **构造函数** | 类型识别（instanceof） | 方法重复创建  | 需明确类型标识       |
+| **组合模式** | 属性独立、方法共享     | 代码稍冗余    | 通用对象创建（推荐） |
+| **ES6类**    | 语法简洁、易维护       | 需支持ES6环境 | 现代项目（首选）     |
+
+**总结**：  
+- **简单对象**：使用字面量或 `Object.create()`；  
+- **复杂可复用对象**：组合模式或 ES6 类；  
+- **特殊需求**：工厂模式、寄生构造函数。
+
+## JavaScript 如何实现继承？
+
+JavaScript 通过 **原型链机制** 实现继承，常见方式包括原型链继承、构造函数继承、组合继承、寄生组合继承（最优解）及 ES6 `class` 语法糖，核心在于复用父类属性和方法。  
+
+**1. 原型链继承**  
+
+**原理**：子类原型指向父类实例，继承父类方法。  
+```javascript  
+function Parent() {  
+  this.name = 'Parent';  
+}  
+Parent.prototype.say = function() { console.log(this.name); }  
+
+function Child() {}  
+Child.prototype = new Parent(); // 继承  
+
+const child = new Child();  
+child.say(); // 'Parent'  
+```
+**缺点**：  
+- 父类引用属性被所有子类实例共享；  
+- 无法向父类构造函数传参。  
+
+**2. 构造函数继承**  
+
+**原理**：子类构造函数内调用父类构造函数，继承父类属性。  
+```javascript  
+function Parent(name) {  
+  this.name = name;  
+}  
+
+function Child(name) {  
+  Parent.call(this, name); // 继承属性  
+}  
+
+const child = new Child('Child');  
+console.log(child.name); // 'Child'  
+```
+**缺点**：  
+- 无法继承父类原型方法；  
+- 方法需定义在构造函数中，无法复用。  
+
+**3. 组合继承（常用）**  
+
+**原理**：结合原型链继承方法 + 构造函数继承属性。  
+```javascript  
+function Parent(name) {  
+  this.name = name;  
+}  
+Parent.prototype.say = function() { console.log(this.name); }  
+
+function Child(name) {  
+  Parent.call(this, name); // 第二次调用 Parent  
+}  
+Child.prototype = new Parent(); // 第一次调用 Parent  
+
+const child = new Child('Child');  
+child.say(); // 'Child'  
+```
+**缺点**：  
+- 父类构造函数被调用两次，导致子类原型中存在冗余属性。  
+
+**4. 寄生组合继承（最优解）**  
+
+**原理**：通过 `Object.create()` 优化组合继承，避免重复调用父类构造函数。  
+```javascript  
+function Parent(name) {  
+  this.name = name;  
+}  
+Parent.prototype.say = function() { console.log(this.name); }  
+
+function Child(name) {  
+  Parent.call(this, name);  
+}  
+// 关键：创建父类原型的副本，避免直接引用  
+Child.prototype = Object.create(Parent.prototype);  
+Child.prototype.constructor = Child; // 修复构造函数指向  
+
+const child = new Child('Child');  
+child.say(); // 'Child'  
+```
+**优点**：  
+- 只调用一次父类构造函数；  
+- 原型链保持纯净，无冗余属性。  
+
+**5. ES6 `class` 继承**  
+
+**原理**：语法糖，底层基于寄生组合继承实现。  
+```javascript  
+class Parent {  
+  constructor(name) {  
+    this.name = name;  
+  }  
+  say() { console.log(this.name); }  
+}  
+
+class Child extends Parent {  
+  constructor(name) {  
+    super(name); // 调用父类构造函数  
+  }  
+}  
+
+const child = new Child('Child');  
+child.say(); // 'Child'  
+```
+**优势**：  
+- 语法简洁，内置 `super` 访问父类；  
+- 支持 `static` 方法继承；  
+- 推荐使用，需 Babel 转译兼容旧浏览器。  
+
+**继承方案对比**  
+
+| **方式**         | **优点**                          | **缺点**                          | **推荐指数** |  
+|------------------|----------------------------------|----------------------------------|------------|  
+| 原型链继承        | 简单                              | 引用属性共享、无法传参               | ★☆☆☆☆      |  
+| 构造函数继承      | 独立实例属性、支持传参              | 无法继承原型方法                   | ★★☆☆☆      |  
+| 组合继承          | 属性独立、方法共享                  | 父类构造函数调用两次                | ★★★☆☆      |  
+| 寄生组合继承      | 最优性能、无冗余属性                | 代码稍复杂                         | ★★★★★      |  
+| ES6 `class`      | 语法简洁、易维护                   | 需转译兼容旧环境                    | ★★★★★      |  
+
+**总结**：  
+- **现代项目首选**：ES6 `class`（Babel 转译 + 寄生组合继承）；  
+- **兼容旧环境**：手动实现寄生组合继承；  
+- **避免使用**：纯原型链/构造函数继承（存在明显缺陷）。
 
 ## 说说new操作符具体干了什么？
 
@@ -853,7 +911,7 @@ function mynew(Func, ...args) {
 }
 ```
 
-## new一个函数和直接调用函数以及和Object.create的区别?
+## new一个函数和直接调用函数以及和 Object.create 的区别?
 
 在 JavaScript 中，`new` 调用构造函数、直接调用函数和 `Object.create()` 三者在 **对象创建方式**、**原型链处理**、**`this` 绑定** 和 **返回值** 上存在显著差异。以下是详细对比：
 
@@ -1008,7 +1066,11 @@ function mynew(Func, ...args) {
 
 - **直接调用函数**：无对象创建需求时，避免内部依赖 `this`，或用严格模式防止污染全局。
 
-## 说说JavaScript中的事件模型
+
+
+## 说说你对 new.target 的理解
+
+## 说说 JavaScript 中的事件模型
 
 **1. 原始事件模型（DOM0级）**
 
@@ -1118,7 +1180,7 @@ Function.prototype.myBind = function (context) {
 }
 ```
 
-## Javascript本地存储的方式有哪些？区别及应用场景？
+## Javascript 本地存储的方式有哪些？区别及应用场景？
 
 javaScript本地缓存的方法我们主要讲述以下四种：
 
@@ -1376,7 +1438,7 @@ AJAX（Asynchronous JavaScript and XML）核心是**用JavaScript异步发送HTT
 
 **异步**：任务触发后**不阻塞后续代码**，结果通过回调、Promise等方式延迟处理。
 
-## Javascipt中async await 和promise和generator有什么区别？
+## Javascipt中 async await 和 promise 和 generator 有什么区别？
 
 1. **Promise**：
    - **链式调用**（`.then().catch()`），解决回调地狱。
@@ -1389,7 +1451,7 @@ AJAX（Asynchronous JavaScript and XML）核心是**用JavaScript异步发送HTT
    - `async` 函数隐式返回 Promise，`await` 后接 Promise。
    - **更简洁直观**，错误处理用 `try/catch`。
 
-## 谈谈你对Promise的理解
+## 谈谈你对 Promise 的理解
 
 `promise`是异步编程的一种方案，解决了地狱回调的问题，是一种链式调动的方式
 
@@ -1422,6 +1484,95 @@ AJAX（Asynchronous JavaScript and XML）核心是**用JavaScript异步发送HTT
 - 替代回调函数，解决嵌套问题。
 - 配合 `async/await` 编写更同步风格的异步代码：
 
+## 谈谈你对 async await 的理解
+
+**1. 本质与作用**
+
+- **简化异步流程**：`async/await` 是 ES2017 引入的语法糖，旨在以同步代码的书写方式处理异步操作，避免“回调地狱”（Callback Hell）和 `Promise` 链式调用的嵌套问题。
+- **基于 Promise**：`async` 函数本质是返回一个 `Promise` 对象，而 `await` 后通常跟随一个 `Promise`，并等待其解决（resolve）或拒绝（reject）。
+
+**2. 执行机制**
+
+- **暂停与恢复**：在 `async` 函数中，遇到 `await` 会暂停当前函数的执行，交出线程控制权（非阻塞主线程），直到等待的 `Promise` 状态变更后继续执行后续代码。
+- **事件循环协作**：`await` 的等待过程依赖事件循环机制。如果 `Promise` 已解决，`await` 直接返回值；若未解决，则挂起函数，将后续代码推入微任务队列。
+
+**3. 错误处理**
+
+- **try/catch 捕获异常**：通过 `try...catch` 可以捕获 `await` 表达式中 `Promise` 的拒绝（reject）或同步错误。
+  ```javascript
+  async function fetchData() {
+    try {
+      const res = await fetch('https://api.example.com');
+      const data = await res.json();
+    } catch (error) {
+      console.error('请求失败:', error);
+    }
+  }
+  ```
+- **未捕获的异常**：若未使用 `try...catch`，`async` 函数返回的 `Promise` 会被标记为 `rejected`，需通过 `.catch()` 处理。
+
+**4. 对比传统异步方案**
+
+- **对比 Promise 链**：
+  ```javascript
+  // Promise 链式调用
+  fetchData()
+    .then(res => res.json())
+    .then(data => console.log(data))
+    .catch(error => console.error(error));
+  
+  // async/await
+  async function process() {
+    const res = await fetchData();
+    const data = await res.json();
+    console.log(data);
+  }
+  ```
+  `async/await` 更接近同步逻辑，可读性更强。
+
+- **对比 Generator**：`async/await` 是 Generator + Promise 的语法封装，省去手动执行生成器的步骤。
+
+**5. 注意事项**
+
+- **并行优化**：多个独立的异步操作应并行执行，避免串行等待。
+  ```javascript
+  // 低效（串行）
+  const a = await fetchA();
+  const b = await fetchB();
+  
+  // 高效（并行）
+  const [a, b] = await Promise.all([fetchA(), fetchB()]);
+  ```
+- **顶层作用域限制**：`await` 只能在 `async` 函数内使用，在全局或普通函数中需包裹 IIFE：
+  ```javascript
+  (async () => {
+    await init();
+  })();
+  ```
+
+**6. 底层原理**
+
+- **Generator + 自动执行器**：Babel 等工具会将 `async/await` 转换为 Generator 函数 + 自动执行器（类似 `co` 库）的代码。
+  ```javascript
+  // 转换前
+  async function example() {
+    await task();
+  }
+  
+  // 转换后（简化）
+  function example() {
+    return spawn(function* () {
+      yield task();
+    });
+  }
+  ```
+
+**总结**
+
+- **核心价值**：`async/await` 通过同步代码风格实现异步逻辑，提升代码可读性与可维护性。
+- **适用场景**：适用于需要顺序执行的异步任务（如接口链式调用），或需要精细控制错误边界的情况。
+- **性能**：与 `Promise` 无本质差异，但需注意避免不必要的串行等待。
+
 ## Promise.all,Promise.allSettled,Promise.race分别有哪些应用场景？
 
 1. **Promise.all**：
@@ -1444,7 +1595,7 @@ AJAX（Asynchronous JavaScript and XML）核心是**用JavaScript异步发送HTT
 
 无法捕获**纯回调式异步**例如 `setTimeout`、`XMLHttpRequest` 或未返回 `Promise` 的回调函数中的错误,可捕获通过 `async/await` 将 `Promise` 转换为同步的写法
 
-## Promise中的值穿透是什么？
+## Promise 中的值穿透是什么？
 
 .then 或者 .catch 的参数期望是函数，传入非函数则会发生值穿透。
 
@@ -1457,7 +1608,7 @@ AJAX（Asynchronous JavaScript and XML）核心是**用JavaScript异步发送HTT
 4      .then(console.log) // 输出 1
 ```
 
-## Javascript中的计时是否精确？
+## Javascript 中的计时是否精确？
 
 - **硬件**：就算是原子钟都会有误差，
 - **系统**：setTimeout setIntervel本质是调用系统接口，不同操作系统会有差异
@@ -1487,7 +1638,7 @@ https://v.douyin.com/ctHRAUHlwu4/
 
 **6. 缓存无限增长**：缓存对象未清理，数据越积越多。
 
-## 说说你的ES6-ES12的了解
+## 说说你的 ES6-ES12 的了解
 
 ES6到ES12的主要特性我简要总结如下：
 
@@ -1553,13 +1704,11 @@ const target = document.querySelector('.target');
 observer.observe(target);
 ```
 
-## 说说var、let、const之间的区别
+## 说说 var、let、const 之间的区别
 
 **变量提升**
 
-```
-var` 声明的变量存在变量提升，即变量可以在声明之前调用，值为`undefined
-```
+`var` 声明的变量存在变量提升，即变量可以在声明之前调用，值为`undefined`
 
 `let`和`const`不存在变量提升，即它们所声明的变量一定要在声明后使用，否则报错
 
@@ -1585,13 +1734,23 @@ var` 声明的变量存在变量提升，即变量可以在声明之前调用，
 
 `const`声明一个只读的常量。一旦声明，常量的值就不能改变
 
-## let和const 声明的变量是否会被挂载到全局对象上？
+## let 和 const 声明的变量是否会被挂载到全局对象上？
 
 全局作用域下**`let/const`**声明的变量存在于全局作用域，但不会成为全局对象的属性。
 
 ## const 定义的变量可以修改吗？
 
 对于**基本类型**不可修改，对于**引用类型**变量指向的内存地址不可变（不能换对象），但内部属性/元素可修改。
+
+## 说说对 ES6 中 rest 参数的理解
+
+## 怎么理解 ESM 中的 export * from "a.js" 这种写法？
+
+## 如何理解 ES6 模块化方案的缓存机制？
+
+## 详细讲一下 Symbol 数据类型特征与实际使用案例？
+
+
 
 ## 哪些方法可以保持前后端实时通信？
 
@@ -1700,7 +1859,7 @@ var` 声明的变量存在变量提升，即变量可以在声明之前调用，
 - **简单兼容**：长轮询（旧浏览器兼容）。
 - **超低延迟**：WebRTC（视频会议）。
 
-## 谈谈你对webSocket的理解
+## 谈谈你对 webSocket 的理解
 
 WebSocket 是一种在单个 TCP 连接上实现**全双工实时通信**的协议，专为高频、低延迟的数据交互设计。以下是其核心特性和应用解析：
 
@@ -1815,7 +1974,7 @@ wss.on('connection', (ws) => {
 
 **总结**： WebSocket 是构建实时应用的基石，尤其适合双向高频交互场景。需权衡其资源消耗和实现复杂度，结合心跳、加密等措施确保稳定安全。对于简单需求，可优先考虑 SSE 或短轮询；复杂实时系统则首选 WebSocket。
 
-## 解释for...of和for...in的区别
+## 解释 for...of 和 for...in 的区别
 
 **1. 遍历目标**
 
@@ -1997,7 +2156,7 @@ const total = response?.data?.total ?? 0;
 
 - `?.` 护盾保护属性访问，`??` 精准填补空值漏洞。
 
-## Symbol类型主要的用途是什么？
+## Symbol 类型主要的用途是什么？
 
 **1. 创建唯一的对象属性键**
 
@@ -2257,7 +2416,7 @@ console.log([...myIterable]); // 输出 [1, 2]
 
 
 
-## 解释ES Module和CommonJS的区别。
+## 解释 ES Module 和 CommonJS 的区别。
 
 1. **语法与加载方式**
    - **ESM**：使用 `import`/`export` 语法，**静态加载**（编译时确定依赖），支持异步加载。
@@ -2282,7 +2441,7 @@ console.log([...myIterable]); // 输出 [1, 2]
 
 
 
-## 解释Proxy和Reflect的作用
+## 解释 Proxy 和 Reflect 的作用
 
 `Proxy` 和 `Reflect` 是 ES6 中用于增强对象操作的 API，核心作用如下：
 
@@ -2308,11 +2467,11 @@ console.log([...myIterable]); // 输出 [1, 2]
 
 **总结** `Proxy` 用于**拦截并扩展对象操作**，`Reflect` 提供**标准化且安全的默认行为**，二者配合可实现更灵活的对象控制。
 
-## 你对Set、Map两种数据结构怎么理解?
+## 你对 Set、Map 两种数据结构怎么理解?
 
 
 
-## Set和WeakSet与Map和 WeakMap之间的区别
+## Set 和 WeakSet 与 Map 和 WeakMap 之间的区别
 
  **1. 键与值的特性**
 
@@ -2338,7 +2497,7 @@ console.log([...myIterable]); // 输出 [1, 2]
 - **WeakSet**：临时跟踪对象存在性（如记录已处理过的 DOM 元素）。
 - **WeakMap**：关联对象与元数据且避免内存泄漏（如存储对象私有数据）。
 
-## 谈谈你对requestanimationframe 和 requestidlecallback的了解
+## 谈谈你对 requestanimationframe 和 requestidlecallback 的了解
 
 `requestAnimationFrame`（rAF）和 `requestIdleCallback`（rIC）是浏览器提供的任务调度 API，核心区别如下：
 
@@ -2413,12 +2572,12 @@ requestIdleCallback((deadline) => {
   - **每次进入绑定元素或其子元素时都会触发**。
   - **冒泡**（子元素触发 `mouseover` 后，会向上冒泡到父元素）。
 
-## currentTarget与target的区别
+## currentTarget 与 target 的区别
 
 - `e.target`：**触发**事件的元素
 - `e.currentTarget`：**绑定**事件的元素
 
-## 说说Web Worker
+## 说说 Web Worker
 
 Web Worker 是浏览器提供的**多线程机制**，允许在后台运行脚本而不阻塞主线程，核心特点如下：
 
@@ -2572,7 +2731,7 @@ Web Worker 是浏览器提供的**多线程机制**，允许在后台运行脚�
   }  
   ```
 
-## 如何编写高性能的JavaScript代码？
+## 如何编写高性能的 JavaScript代码？
 
 - 将js脚本放在页面底部，加快渲染页面;
 - 使用非阻塞方式下载js脚本;
@@ -2605,41 +2764,41 @@ Web Worker 是浏览器提供的**多线程机制**，允许在后台运行脚�
    - `filter`：接收一个回调函数，筛选符合条件的元素，返回新数组。
    - `reduce`：接收一个回调函数，将数组元素逐步累计到一个结果中，返回最终结果。
 
-   ```
-   1const numbers = [1, 2, 3, 4];
-   2const doubled = numbers.map(num => num * 2);    // [2, 4, 6, 8]
-   3const evens = numbers.filter(num => num % 2 === 0); // [2, 4]
-   4const sum = numbers.reduce((total, num) => total + num, 0); // 10
+   ```javascript
+   const numbers = [1, 2, 3, 4];
+   const doubled = numbers.map(num => num * 2);    // [2, 4, 6, 8]
+   const evens = numbers.filter(num => num % 2 === 0); // [2, 4]
+   const sum = numbers.reduce((total, num) => total + num, 0); // 10
    ```
 
 2. **函数柯里化（Currying）**
 
    - 通过返回一个新的函数，将参数拆分为多个独立调用的函数。
 
-   ```
-   1function add(x) {
-   2    return function(y) {
-   3        return x + y;
-   4    }
-   5}
-   6const add5 = add(5);   // add5 是一个新函数
-   7console.log(add5(3));  // 8
+   ```javascript
+   function add(x) {
+       return function(y) {
+           return x + y;
+       }
+   }
+   const add5 = add(5);   // add5 是一个新函数
+   console.log(add5(3));  // 8
    ```
 
 3. **函数组合**
 
    - 组合多个函数，将一个函数的输出作为下一个函数的输入。
 
-   ```
-   1function compose(f, g) {
-   2    return function(x) {
-   3        return f(g(x));
-   4    }
-   5}
-   6const addOne = x => x + 1;
-   7const square = x => x * x;
-   8const addOneThenSquare = compose(square, addOne);
-   9console.log(addOneThenSquare(2)); // 9
+   ```javascript
+   function compose(f, g) {
+       return function(x) {
+           return f(g(x));
+       }
+   }
+   const addOne = x => x + 1;
+   const square = x => x * x;
+   const addOneThenSquare = compose(square, addOne);
+   console.log(addOneThenSquare(2)); // 9
    ```
 
 **高阶函数的优势**
@@ -2811,11 +2970,11 @@ channel.onmessage = (e) => console.log(e.data);
 - 兼容场景用`localStorage`事件
 - 跨域用`postMessage`（需控制目标窗口）
 
-## 你对token 进行身份验证了解多少？
+## 你对 token 进行身份验证了解多少？
 
 Token 身份验证主要是用来替代传统的 Session 机制，让身份验证更灵活安全。大致流程是用户登录后，服务端生成一个 Token（比如 JWT）返回给前端，之后前端每次请求都在请求头里带上这个 Token，服务端验证通过后才响应数据。它的优势在于**无状态**（服务端不用存会话信息，适合分布式系统）、**安全性高**（Token 可以加密，配合 HTTPS 防泄露），而且**跨域和移动端支持更好**。常见的方案像 JWT 会把用户信息直接打包进 Token，而 Refresh Token 则是用长短效 Token 结合，避免频繁登录。简单来说，Token 就像一张加密的“通行证”，服务端解密验证合法后，才会允许访问资源。
 
-## 如何安全存储JWT？
+## 如何安全存储 JWT？
 
 在 Web 应用中安全存储 JWT（JSON Web Token）是身份验证的关键环节，以下是行业最佳实践和常见解决方案：
 
@@ -2887,6 +3046,96 @@ fetch('/login').then(res => {
 | 移动端/Native 应用 | 安全存储库（如 Android Keystore） |
 
 **关键原则**：JWT 本身无法绝对安全，需结合传输加密（HTTPS）、短期令牌、刷新令牌等多层防御策略。
+
+
+
+## 简述 JavaScript 的错误处理机制
+
+JavaScript 通过 **`try/catch` 语句**、**错误类型系统**及**事件循环错误传播机制**处理运行时异常，支持主动抛出与异步错误捕获。  
+
+**核心机制与用法**  
+
+**1. 错误类型（内置 Error 子类）**  
+
+- **`SyntaxError`**：语法错误（解析阶段抛出，无法捕获）；  
+- **`ReferenceError`**：引用未声明变量；  
+- **`TypeError`**：类型操作错误（如调用非函数）；  
+- **`RangeError`**：数值越界（如数组负长度）；  
+- **`URIError`** / **`EvalError`**：特定API使用错误；  
+- **自定义错误**：继承 `Error` 类扩展业务错误。  
+
+**2. 错误处理方式**  
+
+- **`try/catch/finally`**：  
+  ```javascript  
+  try {  
+    JSON.parse('invalid json');  
+  } catch (err) {  
+    console.error(err.message); // 捕获异常  
+  } finally {  
+    console.log('始终执行');  
+  }  
+  ```
+- **`throw` 主动抛出**：  
+  ```javascript  
+  if (!data) throw new Error('数据为空');  
+  ```
+
+**3. 异步错误处理**  
+
+- **Promise 链式捕获**：  
+  ```javascript  
+  fetch(url)  
+    .then(res => res.json())  
+    .catch(err => console.error('请求失败:', err));  
+  ```
+- **`async/await` + `try/catch`**：  
+  ```javascript  
+  async function loadData() {  
+    try {  
+      const res = await fetch(url);  
+    } catch (err) {  
+      console.error(err);  
+    }  
+  }  
+  ```
+- **全局捕获**：  
+  ```javascript  
+  // 未捕获的 Promise 错误  
+  window.addEventListener('unhandledrejection', event => {  
+    console.error('Unhandled Rejection:', event.reason);  
+  });  
+  
+  // 全局同步错误  
+  window.onerror = (msg, url, line) => {  
+    console.error(`Error: ${msg} at ${url}:${line}`);  
+    return true; // 阻止默认错误提示  
+  };  
+  ```
+
+**错误传播规则**  
+
+1. **同步代码**：错误逐层向上冒泡，直至被 `catch` 或全局 `onerror` 处理；  
+2. **异步代码**：  
+   - **宏任务（setTimeout等）**：错误无法被外部 `try/catch` 捕获；  
+   - **微任务（Promise）**：通过 `.catch()` 或 `unhandledrejection` 捕获；  
+3. **模块系统**：ES6 模块默认启用严格模式，未捕获错误直接终止脚本。  
+
+**注意事项**  
+
+- **无法捕获的异常**：  
+  - 语法错误（解析阶段抛出）；  
+  - 异步回调中的错误（如 `setTimeout` 内部未捕获的 `throw`）；  
+- **错误对象属性**：  
+  - `message`：错误描述；  
+  - `stack`：调用栈信息（非标准但广泛支持）；  
+- **生产环境监控**：  
+  - 使用 `window.onerror` 或 `Sentry`、`Bugsnag` 等工具收集日志；  
+- **性能影响**：避免在频繁执行的代码中过度使用 `try/catch`。  
+
+
+
+**总结**：掌握错误类型、同步/异步捕获方式及全局监控，是构建健壮 JavaScript 应用的关键。优先使用 `try/catch` 处理预期内的错误，结合全局监听兜底未知异常。
 
 ## Array.prototype.reduce的高级用法有哪些？
 
@@ -3578,33 +3827,33 @@ Fetch 和 Ajax（基于 XMLHttpRequest）都是用来做异步请求的，主要
 **示例代码**：
 
 ```javascript
-1function hasCircularReference(obj) {
-2  const seen = new Set();
-3
-4  function detect(obj) {
-5    if (obj && typeof obj === 'object') {
-6      if (seen.has(obj)) {
-7        return true; // 循环引用
-8      }
-9      seen.add(obj);
-10      for (const key of Object.keys(obj)) {
-11        if (detect(obj[key])) {
-12          return true;
-13        }
-14      }
-15    }
-16    return false;
-17  }
-18
-19  return detect(obj);
-20}
-21
-22// 测试循环引用
-23const a = {};
-24const b = { a };
-25a.b = b;
-26
-27console.log(hasCircularReference(a)); // 输出：true**2. 使用 `WeakMap` 进行检测**
+function hasCircularReference(obj) {
+  const seen = new Set();
+
+  function detect(obj) {
+    if (obj && typeof obj === 'object') {
+      if (seen.has(obj)) {
+        return true; // 循环引用
+      }
+      seen.add(obj);
+      for (const key of Object.keys(obj)) {
+        if (detect(obj[key])) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  return detect(obj);
+}
+
+// 测试循环引用
+const a = {};
+const b = { a };
+a.b = b;
+
+console.log(hasCircularReference(a)); // 输出：true**2. 使用 `WeakMap` 进行检测**
 ```
 
 `WeakMap` 也可以用来检测循环引用，它与 `Set` 类似，但使用 `WeakMap` 可以避免内存泄漏，因为 `WeakMap` 的键是弱引用的。
@@ -3612,33 +3861,33 @@ Fetch 和 Ajax（基于 XMLHttpRequest）都是用来做异步请求的，主要
 **示例代码**：
 
 ```javascript
-1function hasCircularReference(obj) {
-2  const seen = new WeakMap();
-3
-4  function detect(obj) {
-5    if (obj && typeof obj === 'object') {
-6      if (seen.has(obj)) {
-7        return true; // 循环引用
-8      }
-9      seen.set(obj, true);
-10      for (const key of Object.keys(obj)) {
-11        if (detect(obj[key])) {
-12          return true;
-13        }
-14      }
-15    }
-16    return false;
-17  }
-18
-19  return detect(obj);
-20}
-21
-22// 测试循环引用
-23const a = {};
-24const b = { a };
-25a.b = b;
-26
-27console.log(hasCircularReference(a)); // 输出：true
+function hasCircularReference(obj) {
+  const seen = new WeakMap();
+
+  function detect(obj) {
+    if (obj && typeof obj === 'object') {
+      if (seen.has(obj)) {
+        return true; // 循环引用
+      }
+      seen.set(obj, true);
+      for (const key of Object.keys(obj)) {
+        if (detect(obj[key])) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  return detect(obj);
+}
+
+// 测试循环引用
+const a = {};
+const b = { a };
+a.b = b;
+
+console.log(hasCircularReference(a)); // 输出：true
 ```
 
 **3. 使用 JSON 序列化**
@@ -3648,21 +3897,21 @@ Fetch 和 Ajax（基于 XMLHttpRequest）都是用来做异步请求的，主要
 **示例代码**：
 
 ```javascript
-复制1function isCircular(obj) {
-2  try {
-3    JSON.stringify(obj);
-4    return false;
-5  } catch (e) {
-6    return true;
-7  }
-8}
-9
-10// 测试循环引用
-11const a = {};
-12const b = { a };
-13a.b = b;
-14
-15console.log(isCircular(a)); // 输出：true
+function isCircular(obj) {
+  try {
+    JSON.stringify(obj);
+    return false;
+  } catch (e) {
+    return true;
+  }
+}
+
+// 测试循环引用
+const a = {};
+const b = { a };
+a.b = b;
+
+console.log(isCircular(a)); // 输出：true
 ```
 
 ## WebWorker、SharedWorker 和 ServiceWorker 有哪些区别？
@@ -3678,15 +3927,15 @@ Fetch 和 Ajax（基于 XMLHttpRequest）都是用来做异步请求的，主要
 **示例**：
 
 ```javascript
-1// main.js
-2const worker = new Worker('worker.js');
-3worker.postMessage('Hello, worker!');
-4worker.onmessage = (event) => console.log(event.data);
-5
-6// worker.js
-7self.onmessage = (event) => {
-8  self.postMessage(`Received: ${event.data}`);
-9};
+// main.js
+const worker = new Worker('worker.js');
+worker.postMessage('Hello, worker!');
+worker.onmessage = (event) => console.log(event.data);
+
+// worker.js
+self.onmessage = (event) => {
+  self.postMessage(`Received: ${event.data}`);
+};
 ```
 
 **2. SharedWorker**
@@ -3700,23 +3949,23 @@ Fetch 和 Ajax（基于 XMLHttpRequest）都是用来做异步请求的，主要
 **示例**：
 
 ```javascript
-1// main1.js
-2const worker = new SharedWorker('shared-worker.js');
-3worker.port.postMessage('Hello from page 1!');
-4worker.port.onmessage = (event) => console.log(event.data);
-5
-6// main2.js
-7const worker = new SharedWorker('shared-worker.js');
-8worker.port.postMessage('Hello from page 2!');
-9worker.port.onmessage = (event) => console.log(event.data);
-10
-11// shared-worker.js
-12self.onconnect = (event) => {
-13  const port = event.ports[0];
-14  port.onmessage = (event) => {
-15    port.postMessage(`Received: ${event.data}`);
-16  };
-17};
+// main1.js
+const worker = new SharedWorker('shared-worker.js');
+worker.port.postMessage('Hello from page 1!');
+worker.port.onmessage = (event) => console.log(event.data);
+
+// main2.js
+const worker = new SharedWorker('shared-worker.js');
+worker.port.postMessage('Hello from page 2!');
+worker.port.onmessage = (event) => console.log(event.data);
+
+// shared-worker.js
+self.onconnect = (event) => {
+  const port = event.ports[0];
+  port.onmessage = (event) => {
+    port.postMessage(`Received: ${event.data}`);
+  };
+};
 ```
 
 **3. ServiceWorker**
@@ -3730,27 +3979,27 @@ Fetch 和 Ajax（基于 XMLHttpRequest）都是用来做异步请求的，主要
 **示例**：
 
 ```javascript
-复制1// service-worker.js
-2self.addEventListener('install', (event) => {
-3  // Perform install steps
-4  event.waitUntil(
-5    caches.open('my-cache').then((cache) => {
-6      return cache.addAll([
-7        '/',
-8        '/styles/main.css',
-9        '/script/main.js'
-10      ]);
-11    })
-12  );
-13});
-14
-15self.addEventListener('fetch', (event) => {
-16  event.respondWith(
-17    caches.match(event.request).then((response) => {
-18      return response || fetch(event.request);
-19    })
-20  );
-21});
+// service-worker.js
+self.addEventListener('install', (event) => {
+  // Perform install steps
+  event.waitUntil(
+    caches.open('my-cache').then((cache) => {
+      return cache.addAll([
+        '/',
+        '/styles/main.css',
+        '/script/main.js'
+      ]);
+    })
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
+});
 ```
 
 ## 一直在 window 上面挂内容（数据，方法等等），是否有什么风险？
@@ -3784,9 +4033,9 @@ Fetch 和 Ajax（基于 XMLHttpRequest）都是用来做异步请求的，主要
 `hashchange` 事件适用于基于哈希的路由（即 `#` 形式的路由，如 `example.com/#/home`）。
 
 ```javascript
-1window.addEventListener('hashchange', function() {
-2    console.log('Hash changed to:', location.hash);
-3});
+window.addEventListener('hashchange', function() {
+    console.log('Hash changed to:', location.hash);
+});
 ```
 
 - **原理**：当 URL 中的 `#` 部分发生变化时，会触发 `hashchange` 事件。
@@ -3798,10 +4047,10 @@ Fetch 和 Ajax（基于 XMLHttpRequest）都是用来做异步请求的，主要
 `popstate` 事件适用于 `history` API（例如 `pushState`、`replaceState`）实现的前端路由。
 
 ```javascript
-1window.addEventListener('popstate', function(event) {
-2    console.log('Location changed to:', location.pathname);
-3    console.log('State data:', event.state);
-4});
+window.addEventListener('popstate', function(event) {
+    console.log('Location changed to:', location.pathname);
+    console.log('State data:', event.state);
+});
 ```
 
 - **原理**：当 `history` 堆栈发生变化（例如使用 `back`、`forward`、`go` 等方法）时，会触发 `popstate` 事件。
@@ -3813,25 +4062,25 @@ Fetch 和 Ajax（基于 XMLHttpRequest）都是用来做异步请求的，主要
 `pushState` 和 `replaceState` 本身不会触发 `popstate`，可以重写它们并手动触发事件。
 
 ```javascript
-复制1const originalPushState = history.pushState;
-2history.pushState = function (...args) {
-3    originalPushState.apply(this, args);
-4    window.dispatchEvent(new Event('pushstate'));
-5};
-6
-7const originalReplaceState = history.replaceState;
-8history.replaceState = function (...args) {
-9    originalReplaceState.apply(this, args);
-10    window.dispatchEvent(new Event('replacestate'));
-11};
-12
-13// 监听自定义的 pushstate 和 replacestate 事件
-14window.addEventListener('pushstate', () => {
-15    console.log('URL changed (pushState):', location.pathname);
-16});
-17window.addEventListener('replacestate', () => {
-18    console.log('URL changed (replaceState):', location.pathname);
-19});
+const originalPushState = history.pushState;
+history.pushState = function (...args) {
+    originalPushState.apply(this, args);
+    window.dispatchEvent(new Event('pushstate'));
+};
+
+const originalReplaceState = history.replaceState;
+history.replaceState = function (...args) {
+    originalReplaceState.apply(this, args);
+    window.dispatchEvent(new Event('replacestate'));
+};
+
+// 监听自定义的 pushstate 和 replacestate 事件
+window.addEventListener('pushstate', () => {
+    console.log('URL changed (pushState):', location.pathname);
+});
+window.addEventListener('replacestate', () => {
+    console.log('URL changed (replaceState):', location.pathname);
+});
 ```
 
 ## MessageChannel 是什么，有什么使用场景？

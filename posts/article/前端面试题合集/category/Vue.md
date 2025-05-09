@@ -1,17 +1,20 @@
 ---
 category: Vue
 order: 4
+
 ---
+
 <script setup>
 import NavHead from "../components/NavHead.vue";
 </script>
+
 <nav-head link="/posts/article/前端面试题合集/read.html">
 </nav-head>
 
 # Vue
 
 
-## 说说你对vue的理解?
+## 说说你对 Vue 的理解?
 
 Vue 是一个**渐进式前端框架**，核心在于 **数据驱动** 和 **组件化**，通过响应式系统自动更新视图，减少 DOM 操作。其特点包括：
 
@@ -46,7 +49,7 @@ MVVM 是 **Model-View-ViewModel** 的架构模式，核心是通过 **数据绑�
 
 Vue的双向绑定核心是通过数据劫持（比如`Object.defineProperty`或Vue3的`Proxy`）结合发布-订阅模式实现的。简单说，数据变化时自动更新视图（数据驱动），视图变化（比如输入框输入）时通过事件监听同步更新数据。`v-model`就是语法糖，内部自动处理了`value`属性和`input`事件的绑定。底层还依赖依赖收集和虚拟DOM的比对更新。
 
-## 谈谈你对Vue数据响应式的理解 
+## 谈谈你对 Vue 数据响应式的理解 
 
 Vue的数据响应式核心是让数据变动自动触发视图更新。实现原理主要是通过：
 
@@ -55,7 +58,7 @@ Vue的数据响应式核心是让数据变动自动触发视图更新。实现�
 3. **派发更新**：数据变化时触发`setter`或`Proxy`的拦截，通知所有关联的`Watcher`重新渲染组件。
    需要注意，直接通过索引改数组或给对象新增属性无法触发响应（Vue2中需用`Vue.set`或数组变异方法），而Vue3的`Proxy`天然支持这些操作。
 
-## Vue实例挂载的过程中发生了什么??
+## Vue 实例挂载的过程中发生了什么??
 
 1. **合并配置**：把用户传的`options`（比如data、methods）和全局配置（如Vue.mixin的内容）合并。
 2. **初始化生命周期/事件/渲染函数**：创建组件实例关联的`$parent`、`$children`，初始化事件监听等。
@@ -64,7 +67,7 @@ Vue的数据响应式核心是让数据变动自动触发视图更新。实现�
 5. **挂载DOM**：执行`render`生成虚拟DOM，通过`patch`方法转成真实DOM插入页面，同时触发`mounted`钩子。
    整个过程穿插调用`beforeCreate`、`created`、`beforeMount`等生命周期钩子。
 
-## 计算属性和watch的区别及使用场景
+## computed 和 watch 的区别及使用场景
 
 **选择原则**：
 
@@ -96,13 +99,13 @@ Vue的数据响应式核心是让数据变动自动触发视图更新。实现�
 - **用 `watch`**：
   需要**响应数据变化执行副作用**（如异步请求、操作 DOM、调用方法），或需要监听非响应式数据（如路由参数）。
 
-## Vue中的v-show和v-if怎么理解？
+## Vue 中的 v-show 和 v-if 怎么理解？
 
 - **v-if** 是“条件渲染”，根据表达式真假决定是否渲染元素到DOM。为`false`时元素直接不存在于DOM中，切换时会触发组件的销毁/重建，适合条件变动少的场景。
 - **v-show** 是“显示切换”，无论条件如何，元素始终被渲染到DOM，只是通过`display: none`控制显隐。切换开销小，适合频繁切换的场景。
   简单说：`v-if`操作DOM增删，`v-show`只改CSS显隐。
 
-## 说说你对Vue生命周期的理解?
+## 说说你对 Vue 生命周期的理解?
 
  Vue生命周期是组件从创建到销毁的各个阶段，每个阶段会触发对应的钩子函数，方便我们在特定时机执行逻辑。主要分这几个阶段：
 
@@ -121,9 +124,28 @@ Vue的数据响应式核心是让数据变动自动触发视图更新。实现�
 
 **注意**：Vue3用`setup`替代了部分选项式API的钩子，但逻辑类似（如`onMounted`替代`mounted`）。父子组件的生命周期顺序也要注意（父beforeCreate→子created→子mounted→父mounted）。
 
+## created 和 mounted 有什么区别？
 
+在Vue中，`created`和`mounted`是两个常用的生命周期钩子函数，它们在组件的生命周期中扮演着不同的角色：
 
-## 为什么Vue中的v-if和v-for不建议一起用?
+**created**：
+
+- `created`是组件生命周期中的一个钩子函数，在Vue实例被创建后立即调用。
+- 在`created`钩子函数中，Vue实例已经完成了数据观测（data observation），但尚未渲染真实DOM。这意味着你可以访问实例中的数据、方法、计算属性等，但不能保证实例已经被插入到DOM中。
+- `created`常用于一些初始化操作，例如数据请求、事件监听或其他非DOM相关的任务。因为此时，组件的模板还未被编译成真实DOM。
+
+**mounted**：
+
+- `mounted`是组件生命周期中的一个钩子函数，在Vue实例挂载到DOM后调用。
+- 在`mounted`钩子函数中，Vue实例已经完成了模板编译，并且已经将生成的虚拟DOM渲染到真实DOM中。
+- `mounted`常用于需要对DOM进行操作的任务，例如初始化第三方库、绑定事件监听器、执行动画等。因为此时，组件已经被插入到DOM中，可以安全地访问和操作DOM元素。
+
+区别总结：
+
+- `created`在实例创建后被调用，适合处理数据初始化和非DOM相关的任务。
+- `mounted`在实例挂载到DOM后被调用，适合进行DOM操作、初始化第三方库和绑定事件监听。
+
+## 为什么 Vue 中的 v-if 和 v-for 不建议一起用?
 
 1. **优先级问题**：
    - **Vue2**中`v-for`优先级高于`v-if`，会导致先循环所有数据再逐个判断条件，即使大部分数据无需渲染，造成性能浪费。
@@ -133,16 +155,68 @@ Vue的数据响应式核心是让数据变动自动触发视图更新。实现�
 
 **正确做法**：将`v-if`移到外层容器（如用`<template>`包裹），或通过**计算属性**提前过滤数据，再用`v-for`遍历。
 
-## 为什么data属性是一个函数而不是一个对象？
+## 为什么 data 属性是一个函数而不是一个对象？
 
 Vue的`data`必须是一个函数，主要目的是**保证组件复用时数据的独立性**。
 
 - **对象的问题**：如果直接传对象，所有组件实例会共享同一个数据引用。修改其中一个实例的数据，会影响其他实例，导致状态污染。
 - **函数的作用**：函数每次返回一个全新的数据对象，确保每个实例维护自己的独立状态（类似工厂模式）。
 
+## Vue2 动态给 data 添加一个新的属性时会发生什么
+
+
+
 ## 父子组件的生命周期执行顺序是什么？
 
-## Vue2与Vue3有些什么区别？
+## Vue 中，推荐在哪个生命周期发起请求？
+
+推荐在 `mounted` 生命周期钩子中发起请求。这样做有几个重要的理由：
+
+1. **确保 DOM 已经被渲染**：
+   - `mounted` 钩子在组件的 DOM 已经被插入文档之后调用。这意味着你可以确保所有的 DOM 元素都已经存在，如果你的请求结果需要直接操作或依赖这些 DOM 元素，那么在 `mounted` 中发起请求是安全的。
+2. **避免不必要的请求**：
+   - 在 `created` 钩子中发起请求有时会导致在组件还没有挂载时请求数据。如果组件在请求完成之前被销毁，可能会引发内存泄漏或不必要的资源浪费。因此，等待组件挂载完成再发起请求可以减少这些潜在问题。
+3. **处理组件状态**：
+   - 在 `mounted` 钩子中发起请求，能够确保你有机会在请求开始前处理组件的状态（例如设置加载状态），并且在请求完成后更新组件的状态（例如显示数据或处理错误）。
+
+尽管 `mounted` 是推荐的生命周期钩子，但也有一些特定场景可能需要在 `created` 钩子中发起请求，例如：
+
+- **SSR（服务器端渲染）**：在服务器端渲染中，Vue 实例的 `mounted` 钩子不会被调用，因为 DOM 并不会被真正挂载。在这种情况下，你可能需要在 `created` 钩子中发起请求。
+- **依赖数据初始化**：如果组件在挂载之前就需要某些数据来初始化，可以在 `created` 钩子中发起请求，以确保数据在组件挂载时已经可用。
+
+**代码示例**
+
+```javascript
+export default {
+  data() {
+    return {
+      items: [],
+      loading: false,
+      error: null
+    };
+  },
+  mounted() {
+    this.fetchData();
+  },
+  methods: {
+    async fetchData() {
+      this.loading = true;
+      try {
+        const response = await axios.get('/api/items');
+        this.items = response.data;
+      } catch (error) {
+        this.error = error;
+      } finally {
+        this.loading = false;
+      }
+    }
+  }
+};
+```
+
+
+
+## Vue2 与 Vue3 有些什么区别？
 
 1. **响应式系统**
    - **Vue 2**：基于 `Object.defineProperty`，无法监听对象新增属性或数组索引变化（需 `Vue.set`）。
@@ -292,12 +366,157 @@ Vue 3 选择 Proxy 的核心动机在于其**更强大的拦截能力**、**更�
 
 ## Vue3 composition api相比于option api有哪些优势?
 
-1. 为了更好的逻辑复用和代码组织
-2. 更好的类型推导
+Vue 3 引入 Composition API 的原因主要是为了更好地解决以下几个问题：
 
-有了composition api，配合reactivity api，可以在组件内部进行更加细粒度的控制，使得组件中不同的功能高度聚合，提升了代码的可维护性。对于不同组件的相同功能，也能够更好的复用。相比于option api,composition api中没有了指向奇怪的this，所有的api变得更加函数式，这有利于和类型推断系统比如TS深度配合。
+1. **更好的代码组织和重用**
 
-## Vue组件间通信方式都有哪些?
+在 Vue 2 中，使用选项式 API（Options API）来定义组件的逻辑，通常将数据、方法、计算属性和生命周期钩子分开写在不同的配置对象中。当组件变得复杂时，不同功能的代码可能会散落在各个部分，难以维护和重用。
+
+示例：
+
+```javascript
+// Vue 2 中使用 Options API
+export default {
+  data() {
+    return {
+      count: 0,
+      message: 'Hello World'
+    };
+  },
+  computed: {
+    doubleCount() {
+      return this.count * 2;
+    }
+  },
+  methods: {
+    increment() {
+      this.count++;
+    }
+  },
+  created() {
+    console.log(this.message);
+  }
+};
+```
+
+通过 Composition API，可以将相关功能的逻辑组织在一起，从而提高代码的可读性和可维护性。
+
+**示例**：
+
+```javascript
+// Vue 3 中使用 Composition API
+import { ref, computed, onMounted } from 'vue';
+
+export default {
+  setup() {
+    const count = ref(0);
+    const message = ref('Hello World');
+    
+    const doubleCount = computed(() => count.value * 2);
+    
+    const increment = () => {
+      count.value++;
+    };
+    
+    onMounted(() => {
+      console.log(message.value);
+    });
+    
+    return {
+      count,
+      doubleCount,
+      increment,
+      message
+    };
+  }
+};
+```
+
+2. **更好的逻辑复用**
+
+在 Vue 2 中，逻辑复用主要通过 mixins 和 scoped slots 实现，但它们都有一些缺点，比如命名冲突和代码可读性差。
+
+Composition API 通过组合函数（composable functions）来实现逻辑复用，这些函数可以在多个组件之间共享和复用逻辑，避免了 mixins 的缺点。
+
+示例：
+
+```javascript
+// 一个组合函数，可以在多个组件中复用
+import { ref, onMounted } from 'vue';
+
+export function useMessage() {
+  const message = ref('Hello World');
+  
+  onMounted(() => {
+    console.log(message.value);
+  });
+  
+  return {
+    message
+  };
+}
+```
+
+**在组件中使用：**
+
+```javascript
+import { ref } from 'vue';
+import { useMessage } from './useMessage';
+
+export default {
+  setup() {
+    const count = ref(0);
+    const { message } = useMessage();
+    
+    const increment = () => {
+      count.value++;
+    };
+    
+    return {
+      count,
+      message,
+      increment
+    };
+  }
+};
+```
+
+3. **更好的 TypeScript 支持**
+
+Composition API 天然地支持 TypeScript，使得类型推断和类型检查更为自然和方便。相比于 Options API，通过 Composition API 定义的逻辑更容易进行类型声明和类型推断，提升了开发体验。
+
+示例：
+
+```javascript
+import { ref, computed } from 'vue';
+
+export default {
+  setup() {
+    const count = ref<number>(0);
+    const doubleCount = computed<number>(() => count.value * 2);
+    
+    const increment = (): void => {
+      count.value++;
+    };
+    
+    return {
+      count,
+      doubleCount,
+      increment
+    };
+  }
+};
+```
+
+4. **适应函数式编程趋势**
+
+Composition API 借鉴了函数式编程的思想，将逻辑封装成函数，使得代码更加简洁、模块化、可测试，同时也更符合现代 JavaScript 开发趋势。
+
+**总结**
+
+Vue 3 引入 Composition API 主要是为了提升代码组织和复用性、提供更好的 TypeScript 支持、适应函数式编程趋势，并且解决 Vue 2 中存在的一些问题。通过 Composition API，可以让组件逻辑更加清晰、灵活和易于维护。
+
+## Vue 组件间通信方式都有哪些?
 
 1. **Props / $emit**
    - **父子通信**：父组件通过 `props` 传数据给子组件，子组件通过 `$emit` 触发事件通知父组件。
@@ -327,7 +546,44 @@ Vue 3 选择 Proxy 的核心动机在于其**更强大的拦截能力**、**更�
 1. **自上而下流动**：父组件通过 props 向子组件传递数据；
 2. **禁止逆向修改**：子组件不能直接修改 props，子组件通过**自定义事件**（`$emit`）通知父组件修改数据。
 
-## 说说你对nexttick的理解?
+## v-model 的原理是什么样的？
+
+`v-model`是Vue.js框架中的一个指令，用于在表单元素和组件之间实现双向数据绑定。它提供了一种简洁的方式来将表单输入的值与Vue实例的属性进行关联。
+
+当使用`v-model`指令时，Vue会根据表单元素的类型（如`input`、`select`、`textarea`等）自动为其添加相应的事件监听器，并在用户输入时更新绑定的数据。
+
+具体地讲，`v-model`的原理如下：
+
+1. 在模板中，我们可以使用`v-model`指令来绑定一个变量到表单元素（或组件）上，例如：`<input v-model="message">`。
+2. Vue解析模板时，会将`v-model`指令转换成合适的属性和事件绑定。对于大多数表单元素，它会将`value`属性与输入框的当前值进行绑定，并监听`input`事件来实时更新绑定的数据。
+3. 当用户在输入框中键入或选择内容时，触发`input`事件。Vue会捕获该事件并更新绑定的数据，以及根据数据的变化重新渲染视图。
+4. 同样地，如果在表单元素上使用`v-model`的`lazy`修饰符，Vue会监听`change`事件而不是`input`事件。这样，只有当用户完成输入并触发`change`事件时，才会更新绑定的数据。
+
+`v-model`指令实现双向绑定的原理是通过监听表单元素的输入事件（如`input`或`change`），将用户的输入同步到Vue实例中的属性，并在属性值变化时重新渲染视图。这使得我们可以轻松地将表单数据与Vue实例的状态保持同步，消除了手动监听和更新的冗余代码。
+
+## Vue 中的双向绑定和单向数据流原则是否冲突？
+
+在 Vue 中，双向绑定和单向数据流原则并不冲突，而是可以协同工作的。
+
+**双向绑定（Two-Way Data Binding）**
+
+- **定义**：允许视图（UI）和模型（数据）之间的双向同步。即，当数据变化时，视图自动更新；当视图中的数据（如用户输入）变化时，模型也会相应更新。
+- **实现**：Vue 使用 `v-model` 指令实现双向绑定，适用于表单输入元素，使得数据和视图之间能够同步更新。
+
+**单向数据流（One-Way Data Flow）**
+
+- **定义**：数据从父组件流向子组件，数据流动方向是单向的。子组件不能直接修改父组件的数据，而是通过事件将数据变化通知给父组件，父组件再根据需要更新数据。
+- **实现**：Vue 组件的设计遵循单向数据流，数据通过 props 从父组件传递到子组件，子组件通过事件向父组件发送通知。
+
+**如何协调两者**
+
+1. **双向绑定** 在表单控件中的使用（如 `v-model`）实际是 Vue 对单向数据流的封装。尽管 `v-model` 使得视图和数据双向绑定，但其本质上仍然遵循单向数据流原则：
+   - **数据流动**：数据流动从父组件传递到子组件，`v-model` 只是将数据和视图的同步简化。
+   - **更新机制**：当用户输入变化时，视图更新数据，数据的变化再传递回父组件，确保数据的统一管理和维护。
+2. **实现细节**：
+   - **内部实现**：`v-model` 在内部使用了事件监听（如 `input` 事件）和数据绑定（如 `value` 属性）来实现双向同步，但在组件设计层面，数据流动仍然是单向的。
+
+## 说说你对 nexttick 的理解?
 
 Vue 的 `nextTick` 用于在 **下次 DOM 更新周期后执行回调**，**解决数据变化后 DOM 未及时更新的问题**，确保代码逻辑在正确时机执行。核心作用与原理如下：
 
@@ -356,7 +612,7 @@ Vue 的 `nextTick` 用于在 **下次 DOM 更新周期后执行回调**，**解�
   - 优先使用 `Promise.then`（微任务）。
   - 不支持则降级到 `MutationObserver` → `setImmediate` → `setTimeout`（宏任务）。
 
-## 说说你对vue的mixin的理解，有什么应用场景？
+## 说说你对 Vue 的 mixin 的理解，有什么应用场景？
 
 Vue 的 `mixin` 是一种 **逻辑复用机制**，允许将组件的选项（如 `data`、`methods`、生命周期钩子）抽离为独立模块，供多个组件混入使用。
 
@@ -381,7 +637,7 @@ Vue 的 `mixin` 是一种 **逻辑复用机制**，允许将组件的选项（�
 
 **总结**：mixin 适合简单逻辑复用，但复杂场景推荐 Composition API。
 
-## 说说你对slot的理解？slot使用场景有哪些？
+## 说说你对 slot 的理解？slot 使用场景有哪些？
 
 Vue 的 `slot`（插槽）是 **组件内容分发的核心机制**，允许父组件向子组件传递模板片段，实现动态内容定制。以下是核心理解与使用场景：
 
@@ -424,7 +680,7 @@ Vue 的 `slot`（插槽）是 **组件内容分发的核心机制**，允许父�
 
 列表**增删/排序**时，`index` 会动态变化，Vue 可能**错误复用 DOM 节点**，导致表单项、组件状态与数据不匹配。
 
-## 怎么缓存当前的组件？缓存后怎么更新？说说你对keep-alive的理解是什么？
+## 怎么缓存当前的组件？缓存后怎么更新？说说你对 keep-alive 的理解是什么？
 
 **1. 如何缓存组件？**
 
@@ -447,7 +703,7 @@ Vue 的 `slot`（插槽）是 **组件内容分发的核心机制**，允许父�
   - 频繁切换的 Tab 页、路由页面。
   - 需保留状态的复杂表单组件。
 
-## Vue中异步组件和动态组件的区别是什么？
+## Vue 中异步组件和动态组件的区别是什么？
 
 异步组件与动态组件的核心区别在于**加载机制**和**使用场景**：
 
@@ -480,7 +736,7 @@ Vue 的 `slot`（插槽）是 **组件内容分发的核心机制**，允许父�
 - 异步组件解决**加载时机**问题（性能优化），动态组件解决**渲染目标**问题（逻辑交互）。
 - 异步组件本质是**代码分割**，动态组件是**条件渲染**。
 
-## Vue中组件和插件有什么区别？
+## Vue 中组件和插件有什么区别？
 
 组件（Component）和插件（Plugin）在 Vue 中的核心区别如下：
 
@@ -499,7 +755,11 @@ Vue 的 `slot`（插槽）是 **组件内容分发的核心机制**，允许父�
 - 组件：封装一个 `<DatePicker>` 选择器；
 - 插件：开发一个全局错误监控工具（如 `Vue.use(ErrorTracker)`）。
 
-## Vue常用的修饰符有哪些？有什么应用场景？
+## Vue中的$nextTick有什么作用？
+
+
+
+## Vue 常用的修饰符有哪些？有什么应用场景？
 
 **一、事件修饰符**
 
@@ -619,6 +879,52 @@ Vue 的 `slot`（插槽）是 **组件内容分发的核心机制**，允许父�
    - **高亮元素**：特定条件下动态添加样式（如输入验证错误）。
    - **拖拽指令**：封装拖拽逻辑，复用至可拖拽组件。
 
+## template 标签为什么不可以使用 v-show？
+
+`<template>` 标签在 Vue 中是一个 **占位符元素**，它本身在渲染时不会生成任何实际的 DOM 元素，只是为了包裹一些结构或逻辑，帮助开发者更好地组织模板内容。因此，`<template>` 标签没有实际的渲染结果，它的存在只在编译和渲染过程中起到作用。
+
+**为什么 `v-show` 不能直接用于 `<template>`？**
+
+1. **`v-show` 是基于 `display` 样式控制元素的显示和隐藏的**：
+   - 当使用 `v-show` 时，Vue 会动态控制绑定元素的 `display` 样式。如果元素被隐藏，`display: none` 会被应用到该元素，反之则会恢复为正常的显示状态。
+   - 然而，`<template>` 本身并不会渲染任何真实的 DOM 元素。它的作用仅限于包裹其他元素，并不生成实际的 HTML 元素。因此，`v-show` 并不适用于 `<template>` 标签。
+2. **`<template>` 没有实际的 DOM 元素**：
+   - `v-show` 操作的是 DOM 元素的样式，而 `<template>` 本身并不渲染为一个真实的 DOM 元素，因此 `v-show` 无法对 `<template>` 标签本身进行样式控制。
+
+**示例：**
+
+如果你在 Vue 中使用 `v-show` 绑定到 `<template>` 上，会得到一个警告，并且不会起作用：
+
+```html
+<template v-show="isVisible">
+  <div>内容</div>
+</template>
+```
+
+这种情况下，Vue 会提示 `v-show` 不能直接应用在 `<template>` 标签上，因为 `<template>` 并不渲染任何实际的 DOM 元素。
+
+**正确的使用方式：**
+
+如果你想根据条件控制 `<template>` 中的内容的显示与隐藏，可以将 `v-show` 或 `v-if` 应用到 `<template>` 内部的实际渲染元素上：
+
+```html
+<template>
+  <div v-show="isVisible">
+    内容
+  </div>
+</template>
+```
+
+或者使用 `v-if` 来实现条件渲染：
+
+```html
+<template>
+  <div v-if="isVisible">
+    内容
+  </div>
+</template>
+```
+
 ## Vue3 中 Teleport 组件的作用是什么？
 
 Vue Teleport 用于将组件模板内的内容**渲染到 DOM 中的指定位置**(如body)，解决父组件样式或结构限制（如 `overflow:hidden`、层级问题）。
@@ -627,7 +933,7 @@ Vue Teleport 用于将组件模板内的内容**渲染到 DOM 中的指定位置
 
 - 默认情况下，`<script setup>` 的组件是**封闭的**，父组件无法直接访问子组件的内部状态或方法,`defineExpose` 可**显式暴露子组件的属性或方法**，允许父组件通过 `ref` 访问这些内容
 
-## Vuex是什么？有哪几种属性？
+## Vuex 是什么？有哪几种属性？
 
 Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式，包含5个属性，分别是：
 
@@ -637,12 +943,12 @@ Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式，包含5个
 - **Actions**：**异步**操作（通过 `dispatch` 触发，内部可调用 `commit`）；
 - **Modules**：模块化拆分复杂 Store。
 
-##  Vuex中Action 和 Mutation 的区别？
+##  Vuex 中 Action 和 Mutation 的区别？
 
 - **Mutation**：同步修改 `state`，通过 `commit` 调用；
 - **Action**：处理异步（如接口请求），通过 `dispatch` 调用，内部可提交多个 Mutation。
 
-## 页面刷新Vuex数据刷新丢失怎么办？
+## 页面刷新 Vuex 数据刷新丢失怎么办？
 
 ```javascript
 // 页面加载时读取 localStorage  
@@ -702,6 +1008,211 @@ store.subscribe((mutation, state) => {
 - **选择 Vuex**：
   - Vue 2 项目或需要严格状态管理流程的大型应用。
   - 依赖时间旅行调试功能或已有 Vuex 生态集成的遗留项目。
+
+## Pinia 有哪些使用场景？
+
+Pinia 是 Vue.js 官方推荐的状态管理工具，它的设计简单、轻量，适合多种场景使用，特别是在 Vue 3 的项目中。
+
+以下是 Pinia 的主要使用场景及具体说明：
+
+**1. 全局状态管理**
+
+Pinia 的核心功能是管理全局状态，适用于以下场景：
+
+- **跨组件共享数据**：当多个组件需要共享同一份状态时（如用户信息、权限等）。
+- **全局状态存储**：如用户登录态、应用设置（语言、主题）、权限配置等。
+
+**示例**：
+
+```javascript
+// store/user.js
+import { defineStore } from 'pinia';
+
+export const useUserStore = defineStore('user', {
+  state: () => ({
+    isLoggedIn: false,
+    username: '',
+  }),
+  actions: {
+    login(username) {
+      this.isLoggedIn = true;
+      this.username = username;
+    },
+    logout() {
+      this.isLoggedIn = false;
+      this.username = '';
+    },
+  },
+});
+```
+
+**2. 持久化数据存储**
+
+在需要跨页面或跨会话保留某些数据时，Pinia 可以与持久化插件结合（如 `pinia-plugin-persistedstate`）实现状态持久化。
+
+**适用场景**：
+
+- 保留登录信息、用户配置、购物车数据等。
+- 恢复应用的上一次操作状态。
+
+**示例**：
+
+```javascript
+import { defineStore } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+
+export const useSettingsStore = defineStore('settings', {
+  state: () => ({
+    theme: 'light',
+  }),
+  persist: true, // 开启持久化
+});
+```
+
+**3. 模块化管理复杂项目**
+
+在大型项目中，Pinia 通过独立 Store 文件管理不同模块的数据和逻辑，避免代码耦合，使代码更清晰。
+
+**适用场景**：
+
+- 项目中存在多个功能模块（如用户、权限、订单、商品管理等），需要对状态进行模块化划分。
+- 不同模块间需要数据共享或依赖。
+
+**示例**：
+
+```javascript
+// stores/user.js
+export const useUserStore = defineStore('user', { /* 用户模块 */ });
+// stores/product.js
+export const useProductStore = defineStore('product', { /* 商品模块 */ });
+```
+
+**4. 异步数据管理**
+
+Pinia 支持直接在 Store 中使用异步操作，可以在 actions 中执行 API 请求，并更新状态。
+
+**适用场景**：
+
+- 处理异步请求（如从后端获取数据并更新全局状态）。
+- 在状态管理中封装业务逻辑，避免将复杂逻辑直接写在组件中。
+
+**示例**：
+
+```javascript
+import axios from 'axios';
+
+export const useProductStore = defineStore('product', {
+  state: () => ({
+    products: [],
+  }),
+  actions: {
+    async fetchProducts() {
+      const response = await axios.get('/api/products');
+      this.products = response.data;
+    },
+  },
+});
+```
+
+**5. 组件解耦与状态分离**
+
+Pinia 提供响应式的状态管理，能够让组件逻辑与数据状态分离，适用于以下场景：
+
+- 当组件的数据和逻辑复杂，需要抽离到 Store 中管理。
+- 多个组件依赖同一逻辑和数据时，通过 Store 提供统一的接口。
+
+**示例**：
+
+```javascript
+export const useCounterStore = defineStore('counter', {
+  state: () => ({
+    count: 0,
+  }),
+  actions: {
+    increment() {
+      this.count++;
+    },
+  },
+});
+
+// 在多个组件中使用：
+const counterStore = useCounterStore();
+counterStore.increment();
+```
+
+**6. 替代 Vuex 进行状态管理**
+
+Pinia 是 Vuex 的现代化替代品，在以下场景中可以选择 Pinia：
+
+- **新项目**：在 Vue 3 项目中推荐直接使用 Pinia。
+- **迁移项目**：将旧 Vuex 项目迁移至 Vue 3 时，使用 Pinia 替代 Vuex。
+
+**示例**：
+
+```javascript
+// 使用 Pinia 替代 Vuex 语法更简洁
+const useStore = defineStore('main', {
+  state: () => ({
+    count: 0,
+  }),
+  actions: {
+    increment() {
+      this.count++;
+    },
+  },
+});
+```
+
+**7. 适配 TypeScript 项目**
+
+Pinia 对 TypeScript 支持友好，适合以下场景：
+
+- 项目使用 TypeScript，状态和逻辑需要严格的类型约束。
+- 需要提升开发效率，通过类型推导减少错误。
+
+**示例**：
+
+```javascript
+import { defineStore } from 'pinia';
+
+interface State {
+  count: number;
+}
+
+export const useCounterStore = defineStore<'counter', State>('counter', {
+  state: () => ({
+    count: 0,
+  }),
+  actions: {
+    increment() {
+      this.count++;
+    },
+  },
+});
+```
+
+**8. 动态创建 Store**
+
+Pinia 支持动态创建 Store，可以根据实际需求动态生成状态管理实例。适用于以下场景：
+
+- 动态模块加载或组件实例化时创建独立的状态实例。
+
+**示例**：
+
+```javascript
+import { defineStore } from 'pinia';
+
+export const createDynamicStore = (id) => {
+  return defineStore(id, {
+    state: () => ({
+      data: null,
+    }),
+  });
+};
+
+const storeA = createDynamicStore('moduleA');
+const storeB = createDynamicStore('moduleB');
+```
 
 ## vue-router 中\$route和\$router的区别？
 
@@ -876,7 +1387,7 @@ Vue Router 传参方式主要有三种：
 
 Vue Router 通过路由配置中的 `children` 属性然后再父组件模板中放置**`<router-view>`**来实现嵌套路由
 
-## Vue中的过滤器了解吗？过滤器的应用场景有哪些？
+## Vue 中的过滤器了解吗？过滤器的应用场景有哪些？
 
 **一、过滤器核心概念**
 
@@ -920,7 +1431,7 @@ Vue 3 移除过滤器，推荐使用 **计算属性** 或 **方法** 替代。
 
 
 
-## 了解过vue中的diff算法吗？说说看
+## 了解过 Vue 中的 diff 算法吗？说说看
 
 Vue的diff算法用于高效更新虚拟DOM，减少真实DOM操作，提升性能。其核心思路如下：
 
@@ -998,7 +1509,7 @@ function render() {
 }  
 ```
 
-## 说下你的Vue项目的目录结构，如果是大型项目你该怎么划分结构和划分组件呢？
+## 说下你的 Vue 项目的目录结构，如果是大型项目你该怎么划分结构和划分组件呢？
 
 **一、基础目录结构（中小型项目）**
 
@@ -1058,7 +1569,7 @@ src/
    - 基础组件加前缀（如 `BaseButton`）。
    - 业务组件体现功能（如 `UserAvatarUploader`）。
 
-## Vue要做权限管理该怎么做？控制到按钮级别的权限怎么做？
+## Vue 要做权限管理该怎么做？控制到按钮级别的权限怎么做？
 
 **1. 获取并存储权限数据**
 
@@ -1178,7 +1689,7 @@ export const hasAnyPermission = (permissions) =>
 
 
 
-## 如何解决vue项目部署后页面出现白屏的问题？
+## 如何解决 Vue 项目部署后页面出现白屏的问题？
 
 1. **检查静态资源路径**
 
@@ -1368,7 +1879,7 @@ export default defineComponent({
 
 `h` 函数通过创建虚拟 DOM，Vue 可以在数据变化时比较新旧虚拟 DOM，计算出最小的 DOM 更新，优化性能。这种方式避免了频繁的实际 DOM 操作，从而提升了应用的性能。
 
-## Vue3性能提升体现在哪些方面？
+## Vue3 性能提升体现在哪些方面？
 
 **1. 响应式系统优化（Proxy 替代 defineProperty）**
 
@@ -1410,7 +1921,7 @@ export default defineComponent({
 - **Fragment 支持**：组件支持多根节点，减少无意义包裹元素（如 `<div>`）。
 - **Teleport 组件**：跨 DOM 层级渲染（如弹窗），避免冗余的父级样式影响。
 
-## Vue3里为什么要用 Proxy API 替代 defineProperty API ？
+## Vue3 里为什么要用 Proxy API 替代 defineProperty API ？
 
 1. **更全面的数据劫持能力**
    - **Object.defineProperty**：
@@ -1450,7 +1961,7 @@ export default defineComponent({
    - **Options API**：生命周期钩子（如 `mounted`）分散在代码中。
    - **Composition API**：通过 `onMounted` 等函数式钩子集中管理，支持逻辑内聚。
 
-## 说说Vue3中Treeshaking特性？
+## 说说 Vue3 中 Treeshaking 特性？
 
 Vue3 的 Tree-shaking 通过模块化设计，将功能拆分为独立函数或组件。打包时，**没用到的代码（如未引入的API、组件）会被自动移除**，减小体积。比如没用到 `Transition` 组件，最终打包就不会包含它。
 
@@ -1471,9 +1982,39 @@ Vue3 通过以下设计实现高效的 Tree Shaking，显著减少打包体积�
 - **体积优化**：Vue 3 核心库体积从 Vue 2 的 ~20KB 压缩后降至 ~10KB。
 - **灵活适配场景**：开发者根据项目需求精准引入功能，避免冗余代码（如移动端项目移除服务端渲染相关代码）。
 
+## 怎么理解 Vue3 提供的 markRaw ？
 
+在 Vue 3 中，`markRaw` 是一个用于标记对象的 API，主要用于优化性能和防止 Vue 的响应式系统对某些对象的处理。以下是对 `markRaw` 的详细理解：
 
-## Vue3中 ref 和 reactive 的区别及使用场景？
+**1. 功能**
+
+- **标记为非响应式**：`markRaw` 可以将一个对象标记为非响应式对象。使用该 API 后，Vue 不会将这个对象转换为响应式对象，任何对其属性的修改都不会触发 Vue 的响应式系统。
+
+**2. 用法场景**
+
+- **性能优化**：在某些情况下，某些对象（如大型库的实例、第三方插件等）不需要响应式特性，因为它们的属性变化不需要 Vue 进行监测。这时可以使用 `markRaw` 来优化性能。
+- **避免不必要的代理**：使用 `markRaw` 可以避免 Vue 对某些对象的代理开销，尤其是当这些对象不会被 Vue 观察或更新时。
+
+**3. 例子**
+
+```javascript
+import { markRaw } from 'vue';
+
+// 一个非响应式的对象
+const nonReactiveObj = markRaw({ someProperty: 'value' });
+
+// 使用这个对象
+console.log(nonReactiveObj.someProperty); // 'value'
+
+// 修改属性不会触发 Vue 的响应式系统
+nonReactiveObj.someProperty = 'new value';
+```
+
+**4. 结合其他 API 使用**
+
+- `markRaw` 通常与 Vue 的响应式 API（如 `reactive`、`ref`）结合使用，用于明确哪些对象需要被监测，哪些对象不需要。
+
+## Vue3 中 ref 和 reactive 的区别及使用场景？
 
 | **选择依据**   | **`ref`**                          | **`reactive`**       |
 | :------------- | :--------------------------------- | :------------------- |
@@ -1492,7 +2033,7 @@ Vue3 通过以下设计实现高效的 Tree Shaking，显著减少打包体积�
 
 在Vue中可以通过`<component :is="组件变量">`实现动态组件。比如用`v-bind:is`绑定一个组件名或导入的组件对象变量，Vue会根据变量值动态渲染对应组件。配合`keep-alive`包裹可以缓存组件状态，避免频繁销毁创建。
 
-## 谈谈你对Vue中transition的理解？
+## 谈谈你对 Vue 中 transition 的理解？
 
 Vue 的 `<transition>` 组件用于**元素/组件的过渡动画**，核心机制：
 
@@ -1525,17 +2066,17 @@ Vue 的 `<transition>` 组件用于**元素/组件的过渡动画**，核心机�
 
 **优势**：简化动画逻辑，提升交互体验，支持 CSS/JS 灵活控制。
 
-## assets和static的区别？
+## assets 和 static 的区别？
 
 `assets` 目录，在编译过程中会被 webpack 处理，当做模块依赖，只支持相对路径的形式。一般放置可能会变动的文件。
 
 `static` 目录，一般存放第三方文件，不会被 webpack 解析，会直接被复制到最终的打包目录（默认是 `dist/static` ）下，必须使用绝对路径引用，这些文件是不会变动的。
 
-## vue初始化页面闪动问题
+## Vue 初始化页面闪动问题
 
 使用vue开发时，在vue初始化之前，由于 `div` 是不归 `vue` 管的，所以我们写的代码在还没有解析的情况下会容易出现花屏现象，看到类似于 `{{message}}` 的字样，虽然一般情况下这个时间很短暂，但是我们还是有必要让解决这个问题的。首先：在css里加上 `[v-cloak] { display: none; }` 。如果没有彻底解决问题，则在根元素加上 style="display: none;" :style="{display:  block }"
 
-## Vue 3 中的 watch 和 watchEffect 有什么区别？
+## Vue3 中的 watch 和 watchEffect 有什么区别？
 
 **1. 依赖收集方式**
 
@@ -1581,7 +2122,7 @@ Vue 的 `<transition>` 组件用于**元素/组件的过渡动画**，核心机�
 - **`watch`**：精准控制监听目标，适合需要旧值或条件触发的场景。
 - **`watchEffect`**：简化依赖管理，适合自动追踪和立即执行的副作用。
 
-## Vue函数式组件的特点是什么？与普通组件的区别？
+## Vue 函数式组件的特点是什么？与普通组件的区别？
 
 Vue 函数式组件是**无状态、无实例**的组件，特点及区别如下：
 
@@ -1725,7 +2266,7 @@ Vue 的 `render` 函数通过 **JavaScript 编程式生成虚拟 DOM**，替代�
 - 模板更直观，适合简单/静态结构；
 - Render 函数适合逻辑复杂或需编程式生成的场景。
 
-## 请叙述Vue 中使用了哪些设计模式？
+## 请叙述 Vue 中使用了哪些设计模式？
 
 Vue 中主要应用了以下设计模式：
 
@@ -1749,7 +2290,7 @@ Vue 中主要应用了以下设计模式：
 - **装饰器模式**（通过 `@Component` 装饰类组件）；
 - **模板方法模式**（生命周期钩子定义通用流程，用户覆盖具体步骤）。
 
-## Vue项目开发中有些什么性能优化手段?
+## Vue 项目开发中有些什么性能优化手段?
 
 1. **代码层面**：
    - **懒加载路由**：`component: () => import('...')` 分割代码；
@@ -1770,7 +2311,7 @@ Vue 中主要应用了以下设计模式：
    - **Tree-shaking**：移除未使用代码；
    - **预渲染/SSG**：静态页面生成（如 VitePress、Nuxt）。
 
-## Vue中的v-cloak有什么作用？
+## Vue 中的 v-cloak 有什么作用？
 
 `v-cloak` 用于**解决 Vue 实例初始化前模板表达式（如 `{{ data }}`）短暂暴露的问题**。
 
@@ -1782,7 +2323,7 @@ Vue 中主要应用了以下设计模式：
 
 
 
-## 你知道Vue SSR吗？
+## 你知道 Vue SSR 吗？
 
 Vue SSR（服务端渲染）指在**服务端生成完整 HTML** 返回给客户端，解决 SPA 首屏白屏、SEO 差等问题。
 
@@ -1869,3 +2410,800 @@ Vue SSR（服务端渲染）指在**服务端生成完整 HTML** 返回给客户
    - **副作用**：手动操作 DOM 可能引入副作用和意外的行为。
 3. **错误处理**：
    - **调试困难**：调试数据和视图的不一致性问题可能更加困难。
+
+
+
+## vue3 的响应式库是独立出来的，如果单独使用是什么样的效果？
+
+在 Vue 3 中，响应式系统被抽离到一个独立的库中，名为 `@vue/reactivity`。这个库可以单独使用来管理响应式状态，类似于 Vue 的响应式系统，但不依赖于 Vue 组件或 Vue 实例。
+
+**独立使用效果**
+
+1. **创建响应式对象**：
+
+   使用 `reactivity` 库可以创建响应式对象，类似于 Vue 的 `ref` 和 `reactive`。
+
+   ```javascript
+   import { reactive, effect } from '@vue/reactivity';
+   
+   const state = reactive({
+     count: 0
+   });
+   
+   effect(() => {
+     console.log(`Count is: ${state.count}`);
+   });
+   
+   state.count++;
+   // 输出: Count is: 1
+   ```
+
+2. **使用 `ref`**：
+
+   对于基本类型的数据，可以使用 `ref` 来创建响应式数据。
+
+   ```javascript
+   import { ref } from '@vue/reactivity';
+   
+   const count = ref(0);
+   
+   effect(() => {
+     console.log(`Count is: ${count.value}`);
+   });
+   
+   count.value++;
+   // 输出: Count is: 1
+   ```
+
+3. **依赖追踪和计算属性**：
+
+   使用 `effect` 可以创建响应式的副作用，类似于 Vue 组件中的计算属性。
+
+   ```javascript
+   import { reactive, effect, computed } from '@vue/reactivity';
+   
+   const state = reactive({
+     count: 0
+   });
+   
+   const doubled = computed(() => state.count * 2);
+   
+   effect(() => {
+     console.log(`Doubled count is: ${doubled.value}`);
+   });
+   
+   state.count++;
+   // 输出: Doubled count is: 2
+   ```
+
+## Vue 是如何识别和解析指令的？
+
+Vue 在处理模板中的指令（如 `v-if`、`v-for`、`v-bind` 等）时，主要依赖于编译阶段和虚拟 DOM 机制来识别和解析指令。以下是 Vue 识别和解析指令的主要步骤：
+
+**1. 编译阶段**
+
+在 Vue 中，模板会被编译成 JavaScript 渲染函数。编译过程包括以下几个步骤：
+
+**1.1 模板解析**
+
+Vue 使用 `compiler`（编译器）将模板字符串转换成抽象语法树（AST）。在这个阶段，模板中的所有指令、元素、插值等都会被解析成 AST 节点。
+
+```javascript
+const ast = parse(template); // 将模板转换为 AST
+```
+
+**1.2 指令处理**
+
+在解析过程中，Vue 会检查 AST 节点的属性，识别指令并将它们转换成指令对象。每个指令对象都包含处理该指令的逻辑，比如 `v-if` 指令会被处理成一个条件判断节点。
+
+```javascript
+const directives = {
+  'v-if': processIf,
+  'v-for': processFor,
+  'v-bind': processBind,
+  'v-model': processModel,
+  // 其他指令
+};
+
+function processIf(node, dir) {
+  // 处理 v-if 指令的逻辑
+}
+
+function processFor(node, dir) {
+  // 处理 v-for 指令的逻辑
+}
+```
+
+**1.3 生成渲染函数**
+
+经过处理的 AST 会被转换成渲染函数，这个函数用于创建虚拟 DOM。渲染函数中会包含指令的逻辑，例如，`v-if` 的条件判断逻辑会被编译到渲染函数中。
+
+```javascript
+const renderFunction = generateRenderFunction(ast); // 生成渲染函数
+```
+
+**2. 运行时阶段**
+
+在运行时，Vue 使用渲染函数来生成虚拟 DOM。每当数据发生变化时，Vue 会重新渲染组件，并根据指令的逻辑来更新视图。
+
+**2.1 指令更新**
+
+Vue 在虚拟 DOM 的 `patch` 阶段，会根据指令的逻辑来更新实际的 DOM。例如，对于 `v-if` 指令，Vue 会根据条件判断是否在 DOM 中插入或删除节点。
+
+```javascript
+function patch(oldVNode, newVNode) {
+  // 更新虚拟 DOM
+  // 根据指令逻辑更新实际 DOM
+}
+```
+
+**2.2 生命周期钩子**
+
+某些指令可能需要在组件的生命周期钩子中进行处理。例如，`v-show` 指令会根据绑定的条件来控制元素的 `display` 属性，这会在组件的生命周期中进行设置。
+
+```javascript
+复制function updateDisplay(el, value) {
+  el.style.display = value ? '' : 'none';
+}
+```
+
+## Vue3 相比较于 Vue2，在编译阶段有哪些改进？
+
+以下是一些主要的改进：
+
+1. **虚拟 DOM 的优化**
+
+   - **Proxy 代理**：Vue 3 使用 `Proxy` 对象来实现响应式系统，而 Vue 2 使用 `Object.defineProperty`。`Proxy` 提供了更灵活和高效的方式来追踪对象的变化。
+
+   - **静态节点提升**：Vue 3 在编译阶段对静态节点进行了优化，将其提升到静态节点，以减少重复渲染。
+
+
+2. **编译器的改进**
+
+   - **更小的编译器体积**：Vue 3 的编译器经过了重构，减少了体积，并且更快。
+
+   - **更高效的编译策略**：使用了更高效的编译策略和优化手段，生成的渲染函数代码更简洁。
+
+
+3. **模板编译**
+
+   - **新的编译器**：Vue 3 引入了新的模板编译器，与 Vue 2 相比，编译后的代码更加高效，生成的虚拟 DOM 更简洁。
+
+   - **编译时优化**：Vue 3 的编译器能够识别和优化模板中的常见模式，比如静态节点提升，减少不必要的重新渲染。
+
+
+4. **响应式系统的改进**
+
+   - **基于 Proxy 的响应式系统**：Vue 3 的响应式系统基于 `Proxy` 实现，比 Vue 2 使用的 `Object.defineProperty` 更高效，支持更广泛的对象操作，并且不需要 `Object.defineProperty` 的限制。
+
+   - **更快的依赖追踪**：`Proxy` 能够更高效地追踪依赖关系，减少了性能开销。
+
+
+5. **编译时类型检查**
+   - **TypeScript 支持**：Vue 3 从设计之初就考虑了对 TypeScript 的支持，编译器和核心库的类型定义更加完善，提升了开发时的类型检查和 IDE 支持。
+
+
+6. **组件的改进**
+
+   - **更强大的组件编译**：Vue 3 对组件的编译做了大量的优化，使得组件在运行时更高效。
+
+   - **编译时的插件支持**：Vue 3 支持更多的编译时插件，能够在构建过程中处理组件的特定需求。
+
+
+7. **编译时常量折叠**
+   - **常量折叠**：编译器会对模板中的常量进行折叠优化，减少运行时的计算开销。
+
+
+8. **更简洁的代码生成**
+   - **优化的代码生成**：Vue 3 编译器生成的代码比 Vue 2 更简洁，减少了冗余的代码，提高了执行效率。
+
+
+
+## vue-cli 有哪些功能？
+
+Vue CLI 是 Vue.js 官方提供的一个工具，用于快速构建和管理 Vue.js 项目。它提供了一系列功能，使得开发者能够高效地创建、配置和管理 Vue 应用。
+
+以下是 Vue CLI 的主要功能和所做的事情：
+
+**1. 项目初始化**
+
+- **快速创建项目**：使用命令行工具快速生成新的 Vue 项目结构，包括基础的配置文件和示例代码。
+
+  ```shell
+  vue create my-project
+  ```
+
+- **选择预设**：在创建项目时，可以选择预定义的配置预设，或者根据项目需求自定义选择功能（如 Vue Router、Vuex、TypeScript 等）。
+
+**2. 配置管理**
+
+- **Webpack 配置**：Vue CLI 内置了对 Webpack 的配置，开发者可以在不深入理解 Webpack 的情况下，使用预配置的功能。
+- **可扩展性**：通过 `vue.config.js` 文件，允许开发者自定义和扩展默认配置。
+
+**3. 开发环境**
+
+- **开发服务器**：提供内置的开发服务器，支持热重载（Hot Module Replacement），使得开发过程更加高效和流畅。
+
+  ```shell
+  npm run serve
+  ```
+
+**4. 构建和打包**
+
+- **生产构建**：支持一键构建项目并输出到 `dist` 文件夹，适合部署到生产环境。
+
+  ```shell
+  npm run build
+  ```
+
+- **优化功能**：内置了多种优化功能，如代码压缩、Tree Shaking、懒加载等，提高最终构建产物的性能。
+
+**5. 插件系统**
+
+- **插件生态**：支持官方和社区开发的插件，可以在项目中方便地安装和使用，如 Vue Router、Vuex、PWA 支持等。
+
+  ```shell
+  vue add router
+  ```
+
+- **自定义插件**：开发者可以创建自定义插件，扩展 Vue CLI 的功能。
+
+**6. 脚手架功能**
+
+- **生成组件**：提供命令生成 Vue 组件、页面、路由等代码片段，减少重复工作。
+
+  ```shell
+  vue generate component MyComponent
+  ```
+
+**7. 统一的工具链**
+
+- **支持多种语言和工具**：支持 TypeScript、Sass、Less、Pug 等多种语言和工具，简化开发流程。
+
+**8. 代码质量管理**
+
+- **Linting**：集成 ESLint，可以在开发过程中实时检查代码质量。
+- **测试框架**：支持集成测试框架，如 Jest 和 Mocha，以提高代码的可靠性。
+
+**9. 文档生成**
+
+- **自动生成文档**：支持生成 API 文档和组件文档，便于开发和维护。
+
+**10. Vue UI**
+
+- **图形化界面**：提供 Vue UI 工具，允许开发者通过图形界面管理项目配置、插件、依赖等，无需手动编辑配置文件。
+
+  ```shell
+  vue ui
+  ```
+
+## Vue3 为什么不需要时间分片？
+
+Vue 3 不需要时间分片（time slicing）主要是因为它的核心渲染机制和性能优化策略已经足够高效，能够在大多数情况下提供流畅的用户体验。以下是详细的原因：
+
+1. **编译器优化**
+
+Vue 3 引入了一个全新的编译器，能够生成更高效的渲染函数。这个编译器在编译过程中进行了一系列优化，例如：
+
+- **静态提升**：将不变的节点提升为常量，只在初次渲染时计算一次。
+- **预字符串化**：将静态内容直接转化为字符串，减少了运行时的开销。
+- **缓存事件处理程序**：避免了不必要的重新绑定。
+
+这些优化措施大大减少了 Vue 3 在更新 DOM 时的计算量，使得渲染过程更加高效。
+
+2. **响应式系统的改进**
+
+Vue 3 使用了基于代理的响应式系统，替代了 Vue 2 中基于 `Object.defineProperty` 的实现。新的响应式系统更加高效，具备以下优点：
+
+- **精细的依赖追踪**：只追踪实际使用的属性，避免了不必要的依赖收集。
+- **懒惰计算**：仅在需要时才计算依赖，减少了计算量。
+
+这些改进使得 Vue 3 能够更快速地响应数据变化，从而减少了渲染开销。
+
+3. **虚拟 DOM 和 Diff 算法的优化**
+
+Vue 3 对虚拟 DOM 及其 diff 算法进行了优化，使得差异计算更加高效：
+
+- **静态标记**：编译期间标记静态节点，跳过不变的部分。
+- **块级优化**：将动态节点分块，只对发生变化的块进行更新。
+
+这些优化措施减少了 DOM 更新的频率和范围，提高了整体渲染性能。
+
+4. **单次异步队列**
+
+Vue 3 的更新机制基于单次异步队列（single asynchronous queue），它确保在同一事件循环中只进行一次批量更新。这种方式减少了不必要的重复计算和 DOM 操作，使得更新过程更加高效。
+
+5. **自动批处理**
+
+Vue 3 实现了自动批处理机制，在同一个事件循环中对多次数据更新进行合并，从而减少了渲染次数。这种机制在避免频繁重绘的同时，保证了界面的流畅性。
+
+6. **现代浏览器的性能**
+
+现代浏览器的性能已经得到了极大的提升，尤其是在处理 JavaScript 和 DOM 操作方面。Vue 3 的优化能够充分利用这些性能改进，从而在绝大多数情况下不需要时间分片。
+
+总结
+
+Vue 3 通过编译器优化、响应式系统改进、虚拟 DOM 和 Diff 算法优化、单次异步队列、自动批处理等技术手段，大幅提升了渲染效率和性能。再加上现代浏览器的性能提升，使得 Vue 3 能够在大多数情况下提供流畅的用户体验，而无需借助时间分片等复杂的技术。
+
+## 怎么在 Vue 中定义全局方法？
+
+在 Vue.js 中定义全局方法，可以通过多种方式实现，包括直接在 Vue 的原型对象上添加方法、使用 Vue 3 的全局 API (`app.config.globalProperties`)、以及通过混入 (mixin) 等方法。
+
+以下是几种常见的方法：
+
+**方法一：在 Vue 2 中通过 Vue.prototype 定义全局方法**
+
+```javascript
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+
+Vue.config.productionTip = false;
+
+// 定义全局方法
+Vue.prototype.$myGlobalMethod = function () {
+  console.log('这是一个全局方法');
+};
+
+new Vue({
+  render: h => h(App),
+}).$mount('#app');
+```
+
+**在组件中使用**
+
+```vue
+<template>
+  <div>
+    <button @click="useGlobalMethod">调用全局方法</button>
+  </div>
+</template>
+
+<script>
+export default {
+  methods: {
+    useGlobalMethod() {
+      this.$myGlobalMethod();
+    }
+  }
+}
+</script>
+```
+
+**方法二：在 Vue 3 中通过 `app.config.globalProperties` 定义全局方法**
+
+```javascript
+// main.js
+import { createApp } from 'vue';
+import App from './App.vue';
+
+const app = createApp(App);
+
+// 定义全局方法
+app.config.globalProperties.$myGlobalMethod = function () {
+  console.log('这是一个全局方法');
+};
+
+app.mount('#app');
+```
+
+**在组件中使用**
+
+```vue
+<template>
+  <div>
+    <button @click="useGlobalMethod">调用全局方法</button>
+  </div>
+</template>
+
+<script>
+export default {
+  methods: {
+    useGlobalMethod() {
+      this.$myGlobalMethod();
+    }
+  }
+}
+</script>
+```
+
+**方法三：使用混入（Mixin）**
+
+你可以创建一个混入对象并将其全局注册，从而在所有组件中使用这个混入对象定义的方法。
+
+```javascript
+// globalMixin.js
+export const globalMixin = {
+  methods: {
+    $myGlobalMethod() {
+      console.log('这是一个全局方法');
+    }
+  }
+};
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+import { globalMixin } from './globalMixin';
+
+Vue.config.productionTip = false;
+
+// 全局混入
+Vue.mixin(globalMixin);
+
+new Vue({
+  render: h => h(App),
+}).$mount('#app');
+```
+
+**在组件中使用**
+
+```vue
+<template>
+  <div>
+    <button @click="useGlobalMethod">调用全局方法</button>
+  </div>
+</template>
+
+<script>
+export default {
+  methods: {
+    useGlobalMethod() {
+      this.$myGlobalMethod();
+    }
+  }
+}
+</script>
+```
+
+**方法四：创建插件**
+
+你可以创建一个 Vue 插件来封装全局方法，并在 `main.js` 中安装插件。
+
+```javascript
+// myPlugin.js
+export default {
+  install(Vue) {
+    Vue.prototype.$myGlobalMethod = function () {
+      console.log('这是一个全局方法');
+    }
+  }
+};
+// main.js
+import Vue from 'vue';
+import App from './App.vue';
+import myPlugin from './myPlugin';
+
+Vue.config.productionTip = false;
+
+// 安装插件
+Vue.use(myPlugin);
+
+new Vue({
+  render: h => h(App),
+}).$mount('#app');
+```
+
+**在组件中使用**
+
+```vue
+<template>
+  <div>
+    <button @click="useGlobalMethod">调用全局方法</button>
+  </div>
+</template>
+
+<script>
+export default {
+  methods: {
+    useGlobalMethod() {
+      this.$myGlobalMethod();
+    }
+  }
+}
+</script>
+```
+
+## Vue 中父组件怎么监听到子组件的生命周期？
+
+在 Vue.js 中，父组件不能直接监听子组件的生命周期钩子。然而，有几种方法可以实现父组件对子组件生命周期的间接监听或执行特定操作。
+
+**方法一：通过事件通信**
+
+子组件在生命周期钩子中触发自定义事件，父组件监听这些事件。
+
+1. **子组件**
+
+```vue
+<template>
+  <div>子组件</div>
+</template>
+
+<script>
+export default {
+  name: 'ChildComponent',
+  mounted() {
+    this.$emit('childMounted');
+  }
+}
+</script>
+```
+
+2. **父组件**
+
+```vue
+<template>
+  <div>
+    <ChildComponent @childMounted="handleChildMounted" />
+  </div>
+</template>
+
+<script>
+import ChildComponent from './ChildComponent.vue';
+
+export default {
+  components: {
+    ChildComponent
+  },
+  methods: {
+    handleChildMounted() {
+      console.log('子组件已挂载');
+    }
+  }
+}
+</script>
+```
+
+**方法二：使用 `ref`**
+
+父组件通过 `ref` 直接访问子组件实例，并在父组件的生命周期钩子中调用子组件的方法。
+
+1. **子组件**
+
+```vue
+<template>
+  <div>子组件</div>
+</template>
+
+<script>
+export default {
+  name: 'ChildComponent',
+  mounted() {
+    console.log('子组件已挂载');
+  }
+}
+</script>
+```
+
+2. **父组件**
+
+```vue
+<template>
+  <div>
+    <ChildComponent ref="child" />
+  </div>
+</template>
+
+<script>
+import ChildComponent from './ChildComponent.vue';
+
+export default {
+  components: {
+    ChildComponent
+  },
+  mounted() {
+    this.$refs.child.$on('hook:mounted', this.handleChildMounted);
+  },
+  methods: {
+    handleChildMounted() {
+      console.log('通过 ref 获取子组件的挂载');
+    }
+  }
+}
+</script>
+```
+
+**方法三：使用 `provide` 和 `inject`**
+
+通过 `provide` 和 `inject` 实现跨层级组件通信。
+
+1. **子组件**
+
+```vue
+<template>
+  <div>子组件</div>
+</template>
+
+<script>
+export default {
+  name: 'ChildComponent',
+  inject: ['notifyParent'],
+  mounted() {
+    this.notifyParent('mounted');
+  }
+}
+</script>
+```
+
+2. **父组件**
+
+```vue
+<template>
+  <div>
+    <ChildComponent />
+  </div>
+</template>
+
+<script>
+import ChildComponent from './ChildComponent.vue';
+
+export default {
+  components: {
+    ChildComponent
+  },
+  provide() {
+    return {
+      notifyParent: this.handleNotification
+    }
+  },
+  methods: {
+    handleNotification(hook) {
+      if (hook === 'mounted') {
+        console.log('子组件已挂载');
+      }
+    }
+  }
+}
+</script>
+```
+
+
+
+## Vue 组件里写的原生 addEventListeners 监听事件，要手动去销毁吗？为什么？
+
+在 Vue 组件中，如果你使用 `addEventListener` 添加了原生的 DOM 事件监听器，通常需要在组件销毁时手动移除这些监听器。
+
+原因如下：
+
+1. **内存泄漏**： 如果不手动移除事件监听器，监听器会继续存在于内存中，即使对应的 DOM 元素已经被移除。这会导致内存泄漏，因为监听器持有对 DOM 元素的引用，导致垃圾回收机制无法回收这些元素。
+2. **意外行为**： 如果监听器没有被移除，在组件销毁后这些监听器可能会继续响应事件，这可能导致应用程序的意外行为或错误。
+3. **性能问题**： 随着时间的推移，未移除的事件监听器会堆积，导致性能下降，尤其是在频繁创建和销毁组件的情况下。
+
+在 Vue 组件中，可以利用生命周期钩子来添加和移除事件监听器：
+
+```
+<template>
+  <div ref="myElement">点击我</div>
+</template>
+
+<script>
+export default {
+  mounted() {
+    // 在组件挂载时添加事件监听器
+    this.$refs.myElement.addEventListener('click', this.handleClick);
+  },
+  beforeDestroy() {
+    // 在组件销毁前移除事件监听器
+    this.$refs.myElement.removeEventListener('click', this.handleClick);
+  },
+  methods: {
+    handleClick(event) {
+      console.log('元素被点击了');
+    }
+  }
+};
+</script>
+```
+
+## Vue中，created 和 mounted 两个钩子之间调用时间差值受什么影响？
+
+`created` 和 `mounted` 这两个生命周期钩子，分别在实例创建和挂载的不同阶段被调用。
+
+它们之间的时间差值主要受以下几个因素的影响：
+
+1. **模板编译时间**：
+   - 当实例被创建时，Vue 会编译模板（或将模板转换为渲染函数），这个过程在 `created` 钩子之前完成。如果模板非常复杂或包含大量指令、组件，这个过程会更耗时，从而延长 `created` 和 `mounted` 之间的时间差。
+2. **虚拟 DOM 渲染时间**：
+   - 在 `mounted` 钩子调用之前，Vue 会将虚拟 DOM 渲染为实际的 DOM 元素。渲染复杂的组件树或处理大量数据绑定会增加这段时间。
+3. **异步操作**：
+   - 如果在 `created` 钩子中发起了异步操作（如 API 请求），这些操作本身不会直接影响 `created` 和 `mounted` 的时间差，但如果这些操作涉及数据更新，可能会间接增加挂载时间。
+4. **浏览器性能**：
+   - 浏览器的性能和设备的硬件配置也会影响模板编译和 DOM 渲染的速度，从而影响这两个钩子之间的时间差。
+5. **其他钩子执行时间**：
+   - 在 `beforeCreate`、`created`、`beforeMount` 等钩子中执行的代码也会影响到 `mounted` 钩子的触发时间。如果这些钩子中有大量计算或耗时操作，也会增加时间差。
+
+总结起来，`created` 和 `mounted` 之间的时间差主要受到模板编译、虚拟 DOM 渲染的复杂性、异步操作、浏览器性能及其他生命周期钩子中执行代码的影响。在编写 Vue 应用时，优化这些方面可以减少 `created` 和 `mounted` 之间的时间差，提高应用性能。
+
+## 为什么 React 需要 fiber 架构，而 Vue 却不需要？
+
+React引入Fiber架构的主要原因是为了实现更好的异步渲染和更高效的任务调度。Fiber架构使得React能够更细粒度地控制和中断渲染过程，以便更好地响应用户交互、实现懒加载等功能。Vue在设计上采用了不同的策略，因此并不需要类似于Fiber的架构。
+
+以下是一些原因解释为什么React选择了Fiber架构，而Vue没有类似的架构：
+
+1. **异步渲染和任务优先级：** React的Fiber架构使得实现异步渲染和任务优先级变得更加容易。这对于复杂的用户界面和大规模应用中的性能优化非常重要。React可以通过中断和恢复渲染过程，根据任务的优先级调度渲染工作，从而更好地响应用户输入和满足实时性要求。
+2. **更好的中断和恢复机制：** Fiber架构提供了一种更灵活的中断和恢复机制，允许React在渲染过程中暂停、中断，然后根据优先级恢复。这使得React能够更好地处理复杂的渲染逻辑，并在需要时放弃低优先级的工作。
+3. **增量更新：** Fiber允许React实现增量更新，即只更新变化的部分而不必重新渲染整个组件树。这对于提高渲染性能和减少不必要的工作非常有帮助。
+
+Vue在设计上采用了一种不同的响应式系统和渲染机制，不需要像React那样进行复杂的中断和任务调度。Vue的设计目标可能更注重简洁性和开发体验，而React的目标之一是提供更灵活和强大的性能优化工具。每个框架在设计上都有权衡和取舍，选择适合其目标和使用场景的策略。
+
+
+
+## 说说你对渐进式框架的理解
+
+渐进式的含义：没有多做职责之外的事，只做了自己该做的事，没有做不该做的事，仅此而已。
+
+更直白一点就是，用你想用或者能用的功能特性，你不想用的部分功能可以先不用。VUE不强求你一次性接受并使用它的全部功能特性。
+
+比如以下两种场景，Vue 发挥了很大的优点：
+
+- 场景一：公司刚开始一个项目，技术人员对Vue的掌握也不足够。那么我们就不能使用VUE了么？当然不是，如果你只是使用VUE做些基础操作，如：页面渲染、表单处理提交功能，那还是非常简单的，成熟技术人员上手也就一两天。完全可以用它去代替jquery。并不需要你去引入其他复杂特性功能。
+- 场景二：我们的项目规模逐渐的变大了，我们可能会逐渐用到前端路由、状态集中管理、并最终实现一个高度工程化的前端项目。这些功能特性我们可以逐步引入，当然不用也可以。
+
+Vue 的适用面很广，你可以用它代替老项目中的JQuery。也可以在新项目启动初期，有限的使用VUE的功能特性，从而降低上手的成本。
+
+
+
+## Vue 的祖孙组件的通信方案有哪些？
+
+在 Vue 中，祖孙组件之间的通信可以通过以下几种方式来实现：
+
+1. **Props / $emit**:
+   - 祖组件通过 `props` 将数据传递给子组件，并且子组件通过 `$emit` 触发事件将数据传递回祖组件。
+   - 这是一种常见的父子组件通信方式，通过属性(props)和自定义事件($emit)进行数据交流。
+2. **Provide / Inject**:
+   - 使用 `provide` 在祖组件中提供数据，然后使用 `inject` 在孙组件中注入这些数据。
+   - 这种方式允许祖组件向下级组件共享数据，无需显式地将数据逐层传递。但要注意潜在的耦合性。
+3. **Event Bus**:
+   - 创建一个全局的事件总线(Event Bus)，用于在祖孙组件之间发送和接收事件。
+   - 通过在事件总线上注册事件监听器和触发器，组件可以相互通信，传递数据和触发特定操作。
+4. **Vuex**:
+   - 使用 Vuex 进行状态管理，可以在祖孙组件之间共享和更新数据。
+   - Vuex 是 Vue 的官方状态管理库，提供了集中式存储管理和响应式更新，使得不同组件之间的通信更加简单和可预测。
+
+这些通信方式各有特点，可以根据具体情况选择合适的方式来实现祖孙组件之间的通信。对于简单的父子组件通信，Props / $emit 是常用的方式；而对于更复杂的应用程序状态管理和跨层级通信，使用 Vuex 或 Event Bus 可能更适合。
+
+## 如何打破 scope 对样式隔离的限制？
+
+在 Vue 中，作用域样式（Scoped Styles）的目的是将样式限制在单个组件的作用域中，以确保样式不会被其他组件影响。然而，有时候你可能需要打破作用域限制，让样式能够在组件外部生效。以下是几种打破作用域限制的方式：
+
+1. **使用 /deep/ 或 ::v-deep**：
+   - 在样式中使用 `/deep/` 或 `::v-deep`（Vue 2.x 中的别名）选择器可以覆盖作用域限制。
+   - 这样可以使得样式选择器的范围扩大到所有子组件，甚至是整个应用程序的 DOM 树。
+   - 例如，使用 `.container /deep/ .child` 可以选择 `.child` 类名的元素，即使 `.child` 是在另一个组件中定义的。
+2. **使用全局样式**：
+   - 如果你希望一些样式在多个组件之间共享，并且不受作用域限制，可以使用全局样式。
+   - 在 Vue 单文件组件中，可以在 `<style>` 标签外部或使用 `@import` 引入全局样式文件，这样样式将不受作用域限制。
+3. **使用类名继承**：
+   - 如果你希望某些样式继承自父组件或特定组件的样式，可以使用类名继承。
+   - 在子组件的 `<style>` 标签中使用 `@extend` 来继承父组件或其他组件的样式，这样可以打破作用域限制。
+
+需要注意的是，打破作用域限制可能会导致样式冲突和不可预测的结果。建议尽量遵循作用域限制，仅在必要时才使用上述方法来打破限制。同时，合理地组织组件结构和样式层级，可以更好地管理样式和避免冲突。
+
+
+
+## Scoped Styles 为什么可以实现样式隔离？
+
+在 Vue 中，作用域样式（Scoped Styles）是通过以下原理实现的：
+
+1. **唯一选择器**：
+   - 当 Vue 编译单文件组件时，在样式中使用 `scoped` 特性或 `module` 特性时，Vue 会为每个样式选择器生成一个唯一的属性选择器。
+   - 这里的唯一选择器是类似于 `[data-v-xxxxxxx]` 的属性选择器，其中 `xxxxxxx` 是一个唯一的标识符。
+2. **编译时转换**：
+   - Vue 在编译过程中会解析单文件组件的模板，并对样式进行处理。
+   - 对于具有 `scoped` 特性的样式，Vue 会将选择器转换为带有唯一属性选择器的形式，例如 `.class` 会被转换为 `.class[data-v-xxxxxxx]`。
+   - 对于具有 `module` 特性的样式，Vue 会为每个选择器生成一个唯一的类名，并将类名与元素关联起来。
+3. **渲染时应用**：
+   - 在组件渲染过程中，Vue 会为组件的根元素添加一个属性值为唯一标识符的属性，例如 `data-v-xxxxxxx`。
+   - 当组件渲染完成后，样式选择器中的唯一属性选择器或唯一类名将与组件根元素的属性匹配，从而实现样式的隔离。
+   - 这样，只有具有相同属性值的元素才会应用相应的样式，避免了样式冲突和泄漏。
+
+通过以上原理，Vue 实现了作用域样式的隔离。每个组件的样式都被限制在自己的作用域内，不会影响其他组件或全局样式。这种方式实现了组件级别的样式隔离，使得组件可以更好地封装和重用，同时减少了样式冲突的可能性。
+
+## 说说 Vue 页面渲染流程
+
+
+
+## computed 怎么实现的缓存
+
+## vue-loader 做了哪些事情？
+
+## vuex 中的辅助函数怎么使用？
