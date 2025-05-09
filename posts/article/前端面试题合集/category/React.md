@@ -3076,11 +3076,11 @@ render() 方法是 class 组件中唯一必须实现的方法。
 
 当 render 被调用时，它会检查 this.props 和 this.state 的变化并返回以下类型之一：
 
-- React 元素。通常通过 JSX 创建。例如，<div /> 会被 React 渲染为 DOM 节点，<MyComponent /> 会被 React 渲染为自定义组件，无论是 <div /> 还是 <MyComponent /> 均为 React 元素。
+- React 元素。通常通过 JSX 创建。例如，\<div /> 会被 React 渲染为 DOM 节点，\<MyComponent /> 会被 React 渲染为自定义组件，无论是 \<div /> 还是 \<MyComponent /> 均为 React 元素。
 - 数组或 fragments。 使得 render 方法可以返回多个元素。欲了解更多详细信息，请参阅 fragments 文档。
 - Portals。可以渲染子节点到不同的 DOM 子树中。欲了解更多详细信息，请参阅有关 portals 的文档
 - 字符串或数值类型。它们在 DOM 中会被渲染为文本节点
-- 布尔类型或 null。什么都不渲染。（主要用于支持返回 test && <Child /> 的模式，其中 test 为布尔类型。）
+- 布尔类型或 null。什么都不渲染。（主要用于支持返回 test && \<Child /> 的模式，其中 test 为布尔类型。）
 
 render() 函数应该为纯函数，这意味着在不修改组件 state 的情况下，每次调用时都返回相同的结果，并且它不会直接与浏览器交互。
 
@@ -3154,7 +3154,7 @@ componentWillUnmount() 中不应调用 setState()，因为该组件将永远不�
 
 getDerivedStateFromProps 会在调用 render 方法之前调用，并且在初始挂载及后续更新时都会被调用。它应返回一个对象来更新 state，如果返回 null 则不更新任何内容。
 
-此方法适用于罕见的用例，即 state 的值在任何时候都取决于 props。例如，实现 <Transition> 组件可能很方便，该组件会比较当前组件与下一组件，以决定针对哪些组件进行转场动画。
+此方法适用于罕见的用例，即 state 的值在任何时候都取决于 props。例如，实现 \<Transition> 组件可能很方便，该组件会比较当前组件与下一组件，以决定针对哪些组件进行转场动画。
 
 派生状态会导致代码冗余，并使组件难以维护。 确保你已熟悉这些简单的替代方案：
 

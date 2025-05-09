@@ -20,9 +20,16 @@ type Category = {
 
 
 // 获取url参数, c: category, q: question
-const searchParams = new URLSearchParams(window.location.search);
-const c = searchParams.get('c');
-const q = searchParams.get('q');
+let searchParams
+let c
+let q
+// @ts-ignore
+if (!import.meta.env.SSR) {
+   searchParams = new URLSearchParams(window.location.search);
+   c = searchParams.get('c');
+   q = searchParams.get('q');
+}
+
 // 获取用户答题数据
 const getUserAnswerData = () => {
   // @ts-ignore
@@ -69,7 +76,10 @@ export const useQuestion = () => {
 
   // 依赖currentQuestion和currentCategory设置url参数
   watchEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
+    // @ts-ignore
+    if (!import.meta.env.SSR) {
+      const searchParams = new URLSearchParams(window.location.search);
+
     if (currentQuestion.value) {
       searchParams.set('q', currentQuestion.value?.title);
     } else {
@@ -79,6 +89,7 @@ export const useQuestion = () => {
       searchParams.set('c', currentCategory.value);
     }
     history.replaceState(null, '', '?' + searchParams.toString());
+    }
   })
 
   // 依赖isPracticing设置当前题目

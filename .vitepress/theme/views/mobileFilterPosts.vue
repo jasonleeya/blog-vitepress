@@ -6,7 +6,6 @@ import {usePosts} from "@hooks/usePosts";
 import {ref} from "vue";
 import PostList from "@components/PostList.vue";
 
-console.log('%c window.location.href ','color:white;background:red',window.location.href)
 const url = new URL(window.location.href);
 const params = new URLSearchParams(url.search);
 const type = params.get("type");

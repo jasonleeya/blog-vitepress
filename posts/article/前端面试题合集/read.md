@@ -1,51 +1,19 @@
 <script setup>
 import Back from "./components/Back.vue";
+import fileData from './json/fileData.json';
+import { withBase } from 'vitepress';
+
+const list = fileData.sort((a,b)=>a.order-b.order)
 </script>
 
 # 前端面试题合集
+
 <p></p>
 <Back/>
 
-[1. JavaScript](category/JavaScript.md)
-
-[2. HTML](category/HTML.md)
-
-[3.CSS](category/CSS.md)
-
-[4. Vue](category/Vue.md)
-
-[5. React](category/React.md)
-
-[6. 综合](category/综合.md)
-
-[7. 场景题](category/场景题.md)
-
-[8. 笔试](category/笔试题.md)
-
-[9. 网络](category/网络.md)
-
-[10. 浏览器](category/浏览器.md)
-
-[11. 工程化](category/工程化.md)
-
-[12. 架构](category/架构.md)
-
-[13. NodeJs](category/NodeJs.md)
-
-[14. TypeScript](category/TypeScript.md)
-
-[15. Git](category/Git.md)
-
-[16. 移动端](category/移动端.md)
-
-[17. 可视化](category/可视化.md)
-
-[18. 微前端](category/微前端)
-
-[19. 算法](category/算法.md)
-
-[20. 其他](category/其他.md)
-
+<p v-for="(item,index) in fileData" :key="item.category">
+<a  :href="withBase(`category/${item.category}`)">{{index + 1}}. {{item.category}}</a>
+</p>
 
 
 > **网上收集题目主要来源**
