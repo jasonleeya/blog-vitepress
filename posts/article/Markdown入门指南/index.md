@@ -9,7 +9,7 @@ tags:
   <read></read>
 </ClientOnly>
 
-![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2023_12/markdown.svg)
+![cover](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2023_12/markdown.svg)
 
 # Markdown入门指南
 
@@ -28,7 +28,7 @@ Markdown是一种轻量级标记语言，排版语法简洁，让人们更多地
 ```
 效果：
 
-![标题效果](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2023_12/202312_1.png)
+![标题效果](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2023_12/202312_1.png)
 
 
 ## 段落

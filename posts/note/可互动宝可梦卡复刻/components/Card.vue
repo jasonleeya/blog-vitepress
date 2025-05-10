@@ -36,11 +36,11 @@ import {nextTick, onMounted, PropType, ref} from "vue";
 const props = defineProps({
   imgUrl: {
     type: String as PropType<string>,
-    default: 'https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2025_05/49_hires.png',
+    default: 'https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2025_05/49_hires.png',
   },
   foilUrl: {
     type: String as PropType<string>,
-    default: 'https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2025_05/49_foil.webp',
+    default: 'https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2025_05/49_foil.webp',
   }
 })
 

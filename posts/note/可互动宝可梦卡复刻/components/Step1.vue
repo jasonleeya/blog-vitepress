@@ -34,7 +34,7 @@ const handleMouseMove = (e: MouseEvent) => {
 .game-card {
   width: 367px;
   height: 512px;
-  background-image: url("https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2025_05/49_hires.png");
+  background-image: url("https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2025_05/49_hires.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

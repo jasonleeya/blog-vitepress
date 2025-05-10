@@ -3,6 +3,7 @@ import CollapsibleBox from "@components/CollapsibleBox.vue";
 import {ArrowLeftBold, ArrowRightBold, Location} from "@element-plus/icons-vue";
 import {PropType, ref} from "vue";
 import {useIsMobile} from "@hooks/useIsMobile";
+import MicrosoftBing from "@icons/MicrosoftBing.vue";
 
 defineProps({
   info: {
@@ -38,7 +39,12 @@ const toggleInfoShow = () => {
 
       </div>
       <div class="description">{{ info?.locales.zh?.description }}</div>
-      <div class="copyright">{{ info?.locales.zh?.copyright }}</div>
+      <div class="copyright"><span>{{ info?.locales.zh?.copyright }}</span>
+        <span class="bing">
+          <span>© 每日必应壁纸</span>
+          <MicrosoftBing class="icon"></MicrosoftBing>
+        </span>
+      </div>
       <div class="address">
         <el-icon>
           <Location/>
@@ -136,6 +142,22 @@ const toggleInfoShow = () => {
     padding: 0.5rem 0.25rem;
     color: #aaa;
     font-size: .8em;
+    white-space: wrap;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .bing {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    .icon{
+      width: 80px;
+      padding-top: 2px;
+      opacity: 0.5;
+    }
   }
 
   .address {

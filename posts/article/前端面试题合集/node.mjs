@@ -91,6 +91,6 @@ function parseQuestion(question) {
     return result;
 }
 readFile();
-//别管tsc报错
+//必须单独拿出来编译，别管tsc报错
 // tsc --target esnext --module nodeNext --skipLibCheck  posts/article/前端面试题合集/node.mts
 // node posts/article/前端面试题合集/node.mjs

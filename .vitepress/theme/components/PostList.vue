@@ -1,41 +1,40 @@
 <script lang="ts" setup>
 import {usePosts} from "@hooks/usePosts";
 import {useData} from "vitepress";
-import {buildQueryString, formatDate, getQueryParams} from "@/utils";
+import {formatDate} from "@/utils";
 import {ref, watch, computed} from "vue";
 import Tag from "@components/Tag.vue";
 import {useIsMobile} from "@hooks/useIsMobile";
 
-const {postList} = usePosts()
+const {postList: _postList} = usePosts()
 const globalAuthor = useData().theme.value.author
 
 const currentPage = ref(1)
 const pageSize = 10
 
-const prevQuery = getQueryParams(window.location.href)
-const currentPageChange = (page: number) => {
-  prevQuery.page = String(page)
-  history.pushState('', '', window.location.pathname+'?'+buildQueryString(prevQuery));
-}
-const currentPageFromQuery = window.location.search.match(/[?&]page=(\d+)/)
-if (currentPageFromQuery) {
-  currentPage.value = parseInt(currentPageFromQuery[1])
-}
 
-const _postList = computed(() => postList.value.slice((currentPage.value - 1) * pageSize, currentPage.value * pageSize))
-watch(postList, () => {
+const postList = computed(() => _postList.value.slice(0, currentPage.value * pageSize))
+watch(_postList, () => {
   currentPage.value = 1
-  currentPageChange(1)
 }, {deep: true})
 const {getTagColorByName} = usePosts()
 
 const isMobile = useIsMobile()
 
+const isLoading = ref(false)
+const loadList = () => {
+  isLoading.value = true
+  setTimeout(() => {
+    currentPage.value += 1
+    isLoading.value = false
+  }, 500)
+}
+
 </script>
 
 <template>
-  <div class="post-list">
-    <a v-for="item in _postList" v-if="!isMobile" :href="item.path" class="card post">
+  <div class="post-list" v-infinite-scroll="loadList">
+    <a v-for="item in postList" v-if="!isMobile" :href="item.path" class="card post">
       <div class="card-left">
         <div class="title"><span v-if="item.sticky" class="top">
           <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
@@ -62,7 +61,7 @@ const isMobile = useIsMobile()
       <img v-if="item.cover||item.imgs.length" :src="item.cover?item.cover:item.imgs[0]" alt="" class="cover">
     </a>
 
-    <a v-for="item in _postList" v-else :href="item.path" class="post-mobile">
+    <a v-for="item in postList" v-else :href="item.path" class="post-mobile">
       <div class="content">
         <div class="content-left">
           <div class="title"><span v-if="item.sticky" class="top">
@@ -74,7 +73,7 @@ const isMobile = useIsMobile()
           </div>
           <div class="description">{{ item.description }}</div>
         </div>
-        <img v-if="item.cover||item.imgs.length"  :src="item.cover?item.cover:item.imgs[0]" alt="" class="cover">
+        <img v-if="item.cover||item.imgs.length" :src="item.cover?item.cover:item.imgs[0]" alt="" class="cover">
       </div>
       <div class="footer">
         <div class="time split">{{ formatDate(item.updateTime, 'yyyy-MM-dd') }}</div>
@@ -87,17 +86,12 @@ const isMobile = useIsMobile()
       </div>
     </a>
   </div>
-
-  <div v-if="postList.length>pageSize" class="pagination-wrapper">
-    <el-pagination v-model:current-page="currentPage"
-                   :page-size="pageSize"
-                   :total="postList.length"
-                   background
-                   class="pagination"
-                   layout="prev, pager, next"
-                   small
-                   @current-change="currentPageChange"/>
-  </div>
+  <p class="loading" v-if="isLoading||postList.length < postList.length">加载中...
+    <el-icon class="icon">
+      <Loading/>
+    </el-icon>
+  </p>
+  <p class="loading" v-else>没有更多了</p>
 </template>
 
 <style lang="scss" scoped>
@@ -289,5 +283,26 @@ const isMobile = useIsMobile()
   padding: 0 4px;
   margin-right: 4px;
   border-radius: 4px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--el-text-color-secondary);
+
+  .icon {
+    animation: loading 1s linear infinite;
+    @keyframes loading {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  }
 }
 </style>

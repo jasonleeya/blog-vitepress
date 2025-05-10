@@ -3,7 +3,7 @@ category: 笔记
 tags:
   - JavaScript
   - Three.js
-cover: https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2024_01/pie_chart_3d.png
+cover: https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2024_01/pie_chart_3d.png
 ---
 
 <script setup>
@@ -180,7 +180,7 @@ const pointArr = arcOuterPoints.concat(arcInnerPoints);
 上述代码会生成一个扇形轮廓的点数组，如果将这些点具象化到我们的场景中，会得到如下图的一条线段：
 
 
-![step2](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2024_01/20240108092815.png)
+![step2](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2024_01/20240108092815.png)
 
 其中，线段的两段弧形是由 `arcOuterLine` 和 `arcInnerLine`构成的，他们是由 `EllipseCurve` 实例化而来。
 `EllipseCurve` 可以创建一个形状为椭圆的曲线，他的参数如下：
@@ -227,7 +227,7 @@ const shape = new THREE.Shape(pointArr);
 
 如果将此图形具象化出来，会得到如下图的扇形：
 
-![step4](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2024_01/20240108092833.png)
+![step4](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2024_01/20240108092833.png)
 
 ## 挤出扇形生成扇体
 
@@ -439,7 +439,7 @@ scene.add(group)
 
 关键问题有了解决方法后，我们就可以开始实现了。首先先看下面的图：
 
-![step8](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2024_01/20240108092854.png)
+![step8](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2024_01/20240108092854.png)
 
 图中每个扇体旁边的白线便是我们要添加的标签的线的俯视图，要绘制这两条线，我们需要知道线段两端的两个点的坐标，起点坐标可以由扇形圆弧中心点的角度通过三角函数计算得出，终点坐标可以由相似三角形计算得出。
 由此我们需要的变量：每个扇体圆弧中心点的角度和扇形半径，也就是 `outerRadius`。坐标的 `z`轴为也很好确立，为每个扇体的高度。下面我们来画出这些线段：

@@ -17,7 +17,7 @@ import RegexpTest3 from "./RegexpTest3.vue";
   <read></read>
 </ClientOnly>
 
-![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2024_01/regexp.jpg)
+![cover](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2024_01/regexp.jpg)
 
 # JavaScript中的正则表达式
 

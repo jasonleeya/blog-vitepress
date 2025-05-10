@@ -57,7 +57,7 @@ const feTurbulenceStitchTiles = ref('noStitch');
               .stop3 { stop-color: blue; }
 </style>
 
-![cover](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/imgs/2023_12/svg.svg)
+![cover](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2023_12/svg.svg)
 
 # SVG入门到入土
 

@@ -5,6 +5,7 @@ import ImgInfo from "@components/ImgInfo.vue";
 import {useIsMobile} from "@hooks/useIsMobile"
 import Loading from "@components/Loading.vue";
 import VPNavBarMenu from "@vp-theme/components/VPNavBarMenu.vue";
+import MicrosoftBing from "@icons/MicrosoftBing.vue";
 
 const bingImgList = ref<{ isLoaded: boolean, img: BingImg }[]>([])
 const currentImgIndex = ref(0)
