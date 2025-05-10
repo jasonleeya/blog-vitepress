@@ -33,7 +33,7 @@
     "node_modules"
   ],
   "include": [
-    "node/index.ts",
+    "node/*.ts",
     "posts/**/*.ts",
     "posts/**/*.mts",
     "posts/**/*.vue",
