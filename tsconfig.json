@@ -5,9 +5,9 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node",
     "baseUrl": "./",
-    "types": [  "vite/client" ],
+    "types": [  "vite/client", "node" ],
     "paths": {
       "@/*": [
         ".vitepress/*"
