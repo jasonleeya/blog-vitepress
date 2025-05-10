@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { inBrowser } from 'vitepress'
 import { computed, provide, watchEffect } from 'vue'
-//@ts-ignore
 import { useData } from '@vp-theme/composables/data'
-//@ts-ignore
 import { useNav } from '@vp-theme/composables/nav'
 import VPNavBar from '@vp-theme/components/VPNavBar.vue'
 import VPNavScreen from '@components/vp-theme/NavScreen.vue'

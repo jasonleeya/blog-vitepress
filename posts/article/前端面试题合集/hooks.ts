@@ -1,15 +1,5 @@
-import {ref, computed, watchEffect, onMounted} from "vue";
+import {ref, computed, watchEffect} from "vue";
 import category from './json/fileData.json'
-
-const currentCategory = ref<string>('');
-const questionList = ref([]);
-const currentIndex = ref(0);
-const currentQuestion = ref(null)
-const isPracticing = ref(false)
-const isLearned = ref(false);
-const isCollected = ref(false);
-const questionListLength = computed(() => questionList.value.length)
-const userAnswerData = ref({})
 
 type Category = {
   category: string
@@ -17,29 +7,44 @@ type Category = {
   count: number
   icon?: string
 }
+type Question = {
+  title: string
+  description: string
+  answer: string
+}
+
+const currentCategory = ref<string>('');
+const questionList = ref<Question[]>([]);
+const currentIndex = ref<number>(0);
+const currentQuestion = ref<Question>(null)
+const isPracticing = ref<boolean>(false)
+const isLearned = ref<boolean>(false);
+const isCollected = ref<boolean>(false);
+const questionListLength = computed(() => questionList.value.length)
+const userAnswerData = ref<{[key: string]: {isCollected?: boolean,isLearned?: boolean}}>({})
+
+
 
 
 // 获取url参数, c: category, q: question
-let searchParams
-let c
-let q
-// @ts-ignore
+let searchParams: URLSearchParams
+let c:string
+let q:string
 if (!import.meta.env.SSR) {
-   searchParams = new URLSearchParams(window.location.search);
-   c = searchParams.get('c');
-   q = searchParams.get('q');
+  searchParams = new URLSearchParams(window.location.search);
+  c = searchParams.get('c');
+  q = searchParams.get('q');
 }
 
 // 获取用户答题数据
 const getUserAnswerData = () => {
-  // @ts-ignore
   if (!import.meta.env.SSR) {
     userAnswerData.value = Object.assign(userAnswerData.value, JSON.parse(localStorage.getItem('userAnswerData') || '{}'))
   }
 }
 getUserAnswerData()
 
-currentCategory.value =c?c: (category as Category[]).find(item => item.order === 1).category
+currentCategory.value = c ? c : (category as Category[]).find(item => item.order === 1).category
 
 export const useQuestion = () => {
 
@@ -76,19 +81,18 @@ export const useQuestion = () => {
 
   // 依赖currentQuestion和currentCategory设置url参数
   watchEffect(() => {
-    // @ts-ignore
     if (!import.meta.env.SSR) {
       const searchParams = new URLSearchParams(window.location.search);
 
-    if (currentQuestion.value) {
-      searchParams.set('q', currentQuestion.value?.title);
-    } else {
-      searchParams.delete('q');
-    }
-    if (currentCategory.value) {
-      searchParams.set('c', currentCategory.value);
-    }
-    history.replaceState(null, '', '?' + searchParams.toString());
+      if (currentQuestion.value) {
+        searchParams.set('q', currentQuestion.value?.title);
+      } else {
+        searchParams.delete('q');
+      }
+      if (currentCategory.value) {
+        searchParams.set('c', currentCategory.value);
+      }
+      history.replaceState(null, '', '?' + searchParams.toString());
     }
   })
 
@@ -111,7 +115,6 @@ export const useQuestion = () => {
       userAnswerData.value[questionTitle].isLearned = isLearned.value
       userAnswerData.value[questionTitle].isCollected = isCollected.value
     }
-    //@ts-ignore
     if (!import.meta.env.SSR) {
       localStorage.setItem('userAnswerData', JSON.stringify(userAnswerData.value))
     }

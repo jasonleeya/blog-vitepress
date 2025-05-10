@@ -48,12 +48,12 @@
 
 <script setup lang="ts">
 import NavHead from "./NavHead.vue";
-import {onMounted, ref, watchEffect} from "vue";
+import {onMounted, ref} from "vue";
 import Practice from "./Practice.vue";
 import {useQuestion} from "../hooks";
 import Collect from "./Collect.vue";
 import Checkbox from "./Checkbox.vue";
-import {useIsMobile} from "../../../../.vitepress/hooks/useIsMobile";
+import {useIsMobile} from "@hooks/useIsMobile";
 
 const isMobile = useIsMobile();
 const containerRef = ref();

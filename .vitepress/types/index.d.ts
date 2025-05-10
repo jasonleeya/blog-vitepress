@@ -33,10 +33,6 @@ interface Tag {
   backgroundColor: string
 }
 
-interface ImportMetaEnv {
-  readonly SSR: string;
-}
-
 interface BingImg {
   url: string
   wallpaper: string

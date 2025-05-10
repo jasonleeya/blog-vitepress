@@ -20,7 +20,6 @@ const router = useRouter()
 const getItem = ({type,value}) => {
   props.closeScreen();
   // router.go(`/pages/mobileFilterPosts?type=${type}&value=${value}`)
-  //@ts-ignore
   if (!import.meta.env.SSR) {
     window.location.href = `/pages/mobileFilterPosts?type=${type}&value=${value}`
   }

@@ -1,17 +1,16 @@
 import grayMatter from 'gray-matter';
 import * as fs from 'fs';
-
-const dirPath = './posts/article/前端面试题合集';
 import MarkdownIt from 'markdown-it'
 import {createHighlighter} from 'shiki'
+const dirPath = './posts/article/前端面试题合集';
 
-let md
+
 const langs = ['javascript', 'css', 'html', 'typescript', 'js', 'shell', 'vue', 'json']
 const highlighter = await createHighlighter({
   themes: ['vitesse-light'],
   langs,
 })
-md = MarkdownIt({
+const md = MarkdownIt({
   highlight: (str, lang) => {
     if(!lang || lang&&!langs.includes(lang)) {
       lang = 'text'
@@ -107,6 +106,6 @@ function parseQuestion(question: string) {
 readFile()
 export {};
 
-//别管tsc报错
-// tsc posts/article/前端面试题合集/node.mts
+//必须单独拿出来编译，别管tsc报错
+// tsc --target esnext --module nodeNext --skipLibCheck  posts/article/前端面试题合集/node.mts
 // node posts/article/前端面试题合集/node.mjs

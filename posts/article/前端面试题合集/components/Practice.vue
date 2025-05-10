@@ -23,7 +23,7 @@ import {ref, watch} from "vue";
 import ActionBar from "./ActionBar.vue";
 import {useQuestion} from "../hooks";
 import LookAnswer from "./LookAnswer.vue";
-import {useIsMobile} from "../../../../.vitepress/hooks/useIsMobile";
+import {useIsMobile} from "@hooks/useIsMobile";
 
 const {currentQuestion, currentIndex, questionList, questionListLength} = useQuestion()
 

@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import {nextTick, PropType, ref} from "vue";
+import { PropType, ref} from "vue";
 
 const props = defineProps({
   modelValue: {

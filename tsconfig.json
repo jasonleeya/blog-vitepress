@@ -5,8 +5,9 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "baseUrl": "./",
+    "types": [  "vite/client" ],
     "paths": {
       "@/*": [
         ".vitepress/*"
@@ -29,12 +30,16 @@
     }
   },
   "exclude": [
-//    "node_modules"
+    "node_modules"
   ],
   "include": [
+    "node/index.ts",
+    "posts/**/*.ts",
+    "posts/**/*.mts",
+    "posts/**/*.vue",
     ".vitepress/**/*.ts",
     ".vitepress/**/*.d.ts",
     ".vitepress/**/*.vue",
-    "node_modules/vitepress/dist/client/theme-default/**/*.vue",
-  ]
+//    "node_modules/vitepress/dist/client/theme-default/**/*.vue",
+  ],
 }
