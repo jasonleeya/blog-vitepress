@@ -17,7 +17,7 @@ import RegexpTest3 from "./RegexpTest3.vue";
   <read></read>
 </ClientOnly>
 
-![cover](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2024_01/regexp.jpg)
+![cover](https://file.lsj97.com/imgs/2024_01/regexp.jpg)
 
 # JavaScript中的正则表达式
 
@@ -25,7 +25,7 @@ import RegexpTest3 from "./RegexpTest3.vue";
 
 网上有很多正则表达式的教程，为什么还要多次一举写这篇文章呢？其实我也是读那些优秀的文章学会的，但是过程是非常枯燥的，而且往往是过来一段时间后又会忘记，不得不再次翻阅那些博客，所以我写下此篇文章一是为了巩固正则知识，二是想以一种全新的方式写一篇正则教程，希望帮助到大家。话不多说了，让我们开始吧。
 
-> 文章部分内容参考自书籍《[JavaScript正则表达式迷你书](https://6c73-lsj97-9giu4cj4abdc0985-1256331827.tcb.qcloud.la/docs/JavaScript%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%BF%B7%E4%BD%A0%E4%B9%A6.pdf)》，有兴趣的同学可以自行下载阅读。
+> 文章部分内容参考自书籍《[JavaScript正则表达式迷你书](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/docs/JavaScript%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%BF%B7%E4%BD%A0%E4%B9%A6.pdf)》，有兴趣的同学可以自行下载阅读。
 
 ## 正则两种匹配模式
 

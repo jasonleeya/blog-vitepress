@@ -4,7 +4,7 @@ tags:
   - CSS
   - JavaScript
 description: 最近偶然发现一个令人惊艳的卡牌效果网站 Poke-Holo，其动态全息效果和3D交互令人印象深刻。出于学习目的，我决定尝试复刻这个效果，以下是实现过程的完整记录。
-cover: https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2025_05/pokemon.svg
+cover: https://file.lsj97.com/imgs/2025_05/pokemon.svg
 ---
 <script setup>
 import Read from "@components/Read.vue";

@@ -75,7 +75,7 @@ export default defineConfig({
       {
         icon: '/images/medias/wechat.svg',
         type: 'wx',
-        qrcodeImg: 'https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/blog/wechat_qrcode.jpg',
+        qrcodeImg: 'https://file.lsj97.com/imgs/blog/wechat_qrcode.jpg',
       },
       {icon: '/images/medias/mail.svg', type: 'email', link: 'jasonleeya@qq.com'},
       {icon: '/images/medias/zhihu.svg', type: 'zhihu', link: 'https://www.zhihu.com/people/jasonleeya'},

@@ -15,7 +15,7 @@ import LazyLoader from "@components/LazyLoader.vue";
   <read></read>
 </ClientOnly>
 
-![cover](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2024_01/threejs.png?sign=0edef579d07efe758efbc8b5cabd031a&t=1704267419)
+![cover](https://file.lsj97.com/imgs/2024_01/threejs.png?sign=0edef579d07efe758efbc8b5cabd031a&t=1704267419)
 
 # ThreeJs简单入门
 
@@ -120,10 +120,10 @@ document.body.appendChild(renderer.domElement);
 
 - 紧接着我们实例化了一个 `camera` 相机，它是一个**PerspectiveCamera（透视摄像机）**，它的参数包括：视野角度，宽高比，近截面距离，远截面距离，这里设置为 75，宽高比为窗口宽高比，近截面距离为 0.1，远截面距离为 1000。另外，除了透视摄像机之外，还有 **OrthographicCamera（正交摄像机）**，它和透视摄像机的区别是它的投影方式是正交投影，下面是两种相机的视野区别：
 
-![PerspectiveCamera（透视摄像机）](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2024_01/perspectiveCamera_view.webp)
+![PerspectiveCamera（透视摄像机）](https://file.lsj97.com/imgs/2024_01/perspectiveCamera_view.webp)
 ***PerspectiveCamera（透视摄像机）***
 
-![PerspectiveCamera（透视摄像机）](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2024_01/orthographicCamera_view.webp)
+![PerspectiveCamera（透视摄像机）](https://file.lsj97.com/imgs/2024_01/orthographicCamera_view.webp)
 ***OrthographicCamera（正交摄像机）***
 
 正投照相机所呈现的图形，远近大小都一样，而透视照相机，远小近大，更接近于人眼观察物体的感觉。

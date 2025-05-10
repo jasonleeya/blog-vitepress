@@ -11,7 +11,7 @@ import Read from "@components/Read.vue";
   <read></read>
 </ClientOnly>
 
-![cover](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2025_05/一根绳子.png)
+![cover](https://file.lsj97.com/imgs/2025_05/一根绳子.png)
 
 # 一根绳子 
 

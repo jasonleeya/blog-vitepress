@@ -16,7 +16,7 @@ import Navigation from "./components/Navigation.vue";
 
 
 
-![cover](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2025_04/前端面试题合集.png){class="mst_cover"}
+![cover](https://file.lsj97.com/imgs/2025_04/前端面试题合集.png){class="mst_cover"}
 
 <style>
 @media (max-width: 992px) {

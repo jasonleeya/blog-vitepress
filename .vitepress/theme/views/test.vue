@@ -39,7 +39,7 @@ requestAnimationFrame(() => {
 <style lang="scss" scoped>
 #container,
 #water {
-  background-image: url("https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2024_01/lake.jpg");
+  background-image: url("https://file.lsj97.com/imgs/2024_01/lake.jpg");
   background-position: center bottom;
   background-repeat: no-repeat;
   background-size: cover;

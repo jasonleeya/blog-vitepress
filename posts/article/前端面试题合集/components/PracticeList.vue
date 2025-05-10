@@ -20,7 +20,7 @@
            :id="item.category"
            :class="{active: item.category === currentCategory}">
         <img class="icon"
-             :src="`https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2025_04/${item.category}.png`"
+             :src="`https://file.lsj97.com/imgs/2025_04/${item.category}.png`"
              alt="">
         <span class="category-name">{{ item.category }}</span>
         <span class="count">（{{ item.count }}）</span>

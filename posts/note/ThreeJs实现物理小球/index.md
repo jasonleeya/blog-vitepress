@@ -11,7 +11,7 @@ import Read from "@components/Read.vue";
   <read></read>
 </ClientOnly>
 
-![cover](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2025_05/ThreeJs实现物理小球.png)
+![cover](https://file.lsj97.com/imgs/2025_05/ThreeJs实现物理小球.png)
 
 # ThreeJs实现物理小球
 

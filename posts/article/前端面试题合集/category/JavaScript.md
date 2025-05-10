@@ -107,7 +107,7 @@ Javascript中的作用域说的是变量的可访问性和可见性。也就是�
 
 每个函数都有一个 `prototype(原型)` 属性，这个属性是一个指针，指向一个对象，而这个对象的用途是包含可以由特定类型的所有实例共享的属性和方法。原型对象自身也有一个原型，层层上溯，直到达到 `null`，形成一个“原型链”。
 
-![img](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2025_04/原型.jpg)
+![img](https://file.lsj97.com/imgs/2025_04/原型.jpg)
 
 - 每一个构造函数都拥有一个 `prototype` 属性，这个属性指向一个对象，也就是原型对象
 - 原型对象默认拥有一个 `constructor` 属性，指向指向它的那个构造函数
@@ -117,7 +117,7 @@ Javascript中的作用域说的是变量的可访问性和可见性。也就是�
 
 JavaScript 中所有的对象都是由它的原型对象继承而来。而原型对象自身也是一个对象，它也有自己的原型对象，这样层层上溯，就形成了一个类似链表的结构，这就是原型链
 
-![img](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2025_04/原型链.jpg)
+![img](https://file.lsj97.com/imgs/2025_04/原型链.jpg)
 
 - 所有原型链的终点都是 `Object` 函数的 `prototype` 属性
 - `Objec.prototype` 指向的原型对象同样拥有原型，不过它的原型是 `null` ，而 `null` 则没有原型
@@ -166,7 +166,7 @@ javascript 是一门单线程语言，意思就是同一时间段只能做一件
 
 宏任务与微任务关系如下图：
 
-![img](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/imgs/2025_04/宏任务与微任务.png)
+![img](https://file.lsj97.com/imgs/2025_04/宏任务与微任务.png)
 
 ## 数组的常用方法有哪些？
 
