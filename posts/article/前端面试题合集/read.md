@@ -1,6 +1,6 @@
 <script setup>
 import Back from "./components/Back.vue";
-import fileData from './json/fileData.json';
+import fileData from './fileData.json';
 import { withBase } from 'vitepress';
 
 const list = fileData.sort((a,b)=>a.order-b.order)
