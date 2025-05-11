@@ -51,7 +51,7 @@ const handleClick = () => {
 .fave {
   width: 60px;
   height: 45px;
-  background: url(../images/add-to-favorites.png) 0, 0;
+  background: url(https://file.lsj97.com/imgs/2025_04/add-to-favorites.png) 0, 0;
   transform: scale(0.9) translateY(-2px);
 
   &:hover {

@@ -25,7 +25,7 @@ import RegexpTest3 from "./RegexpTest3.vue";
 
 网上有很多正则表达式的教程，为什么还要多次一举写这篇文章呢？其实我也是读那些优秀的文章学会的，但是过程是非常枯燥的，而且往往是过来一段时间后又会忘记，不得不再次翻阅那些博客，所以我写下此篇文章一是为了巩固正则知识，二是想以一种全新的方式写一篇正则教程，希望帮助到大家。话不多说了，让我们开始吧。
 
-> 文章部分内容参考自书籍《[JavaScript正则表达式迷你书](https://cdn.jsdelivr.net/gh/lsj97Blog/imgs@master/docs/JavaScript%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%BF%B7%E4%BD%A0%E4%B9%A6.pdf)》，有兴趣的同学可以自行下载阅读。
+> 文章部分内容参考自书籍《[JavaScript正则表达式迷你书](https://file.lsj97.com/docs/JavaScript%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%BF%B7%E4%BD%A0%E4%B9%A6.pdf)》，有兴趣的同学可以自行下载阅读。
 
 ## 正则两种匹配模式
 
@@ -60,7 +60,7 @@ import RegexpTest3 from "./RegexpTest3.vue";
 
 比如匹配 `/be{1,3}r/g` 能匹配字符串 `ber beer beeer`中的每个单词，其中每个 `b` 和 `r` 中间的 `e` 出现 1 到 3 次。
 
-![img_1](./imgs/img_1.svg)
+![img_1](https://file.lsj97.com/imgs/2024_01/img_1.svg)
 
 <ClientOnly>
   <RegexpTest :text="['ber','beer','beeer']" answer="be{1,3}r" description="在下面输入框输入<b>be{1,3}r</b>，匹配下面每一行文本。"></RegexpTest>
@@ -72,7 +72,7 @@ import RegexpTest3 from "./RegexpTest3.vue";
 
 例如要匹配 `test text teat tect`中的每个单词，需要用到字符集合的匹配方式，正则为`/te[sxac]t/`。
 
-![img_1](./imgs/img_2.svg)
+![img_1](https://file.lsj97.com/imgs/2024_01/img_2.svg)
 
 <ClientOnly>
   <RegexpTest :text="['test','text','teat','tect']" answer="te[sxac]t" description="在下面输入框输入<b>te[sxac]t</b>，匹配下面每一行文本。"></RegexpTest>

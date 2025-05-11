@@ -1,5 +1,6 @@
 import {ref, computed, watchEffect} from "vue";
-import category from './json/fileData.json'
+import category from './fileData.json'
+import {getObject} from "@/utils/cos";
 
 type Category = {
   category: string
@@ -21,15 +22,13 @@ const isPracticing = ref<boolean>(false)
 const isLearned = ref<boolean>(false);
 const isCollected = ref<boolean>(false);
 const questionListLength = computed(() => questionList.value.length)
-const userAnswerData = ref<{[key: string]: {isCollected?: boolean,isLearned?: boolean}}>({})
-
-
+const userAnswerData = ref<{ [key: string]: { isCollected?: boolean, isLearned?: boolean } }>({})
 
 
 // 获取url参数, c: category, q: question
 let searchParams: URLSearchParams
-let c:string
-let q:string
+let c: string
+let q: string
 if (!import.meta.env.SSR) {
   searchParams = new URLSearchParams(window.location.search);
   c = searchParams.get('c');
@@ -50,8 +49,14 @@ export const useQuestion = () => {
 
   // 依赖currentCategory获取题目list
   watchEffect(async () => {
-    const file = await import(`./json/${currentCategory.value}.json`);
-    let list = file.default
+    // getObject(`json/${currentCategory.value}.json`)
+    const currentCategoryData = category.find(item => item.category === currentCategory.value)
+    const file = await getObject(currentCategoryData.filePath)
+
+    // const file = await import(`./json/${currentCategory.value}.json`);
+    // let list = file.default
+
+    let list = JSON.parse(file.Body as string || "{}")
     list = list.map(item => {
       return {
         ...item,
