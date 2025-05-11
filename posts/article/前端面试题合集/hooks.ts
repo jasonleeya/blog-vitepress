@@ -1,6 +1,5 @@
 import {ref, computed, watchEffect} from "vue";
 import category from './fileData.json'
-import {getObject} from "@/utils/cos";
 
 type Category = {
   category: string
@@ -45,35 +44,43 @@ getUserAnswerData()
 
 currentCategory.value = c ? c : (category as Category[]).find(item => item.order === 1).category
 
+const getQuestionList = async (filePath: string) => {
+  return fetch(import.meta.env.VITE_FILE_BASE_URL + '/' + filePath)
+      .then(res => res.json())
+      .then(res => {
+        questionList.value = res
+      })
+}
+
 export const useQuestion = () => {
 
   // 依赖currentCategory获取题目list
   watchEffect(async () => {
     // getObject(`json/${currentCategory.value}.json`)
     const currentCategoryData = category.find(item => item.category === currentCategory.value)
-    const file = await getObject(currentCategoryData.filePath)
-
+    const file = await getQuestionList(currentCategoryData.filePath)
+    console.log(file)
     // const file = await import(`./json/${currentCategory.value}.json`);
     // let list = file.default
 
-    let list = JSON.parse(file.Body as string || "{}")
-    list = list.map(item => {
-      return {
-        ...item,
-        title: item.title.replace(/\\/g, '')
-      }
-    })
-    questionList.value = list
-
-    // 如果url有问题，设置当前题目
-    if (q) {
-      const index = list.findIndex(item => item.title === q);
-      if (index !== -1) {
-        currentIndex.value = index
-        currentQuestion.value = list[index]
-        isPracticing.value = true
-      }
-    }
+    // let list = JSON.parse(file.Body as string || "{}")
+    // list = list.map(item => {
+    //   return {
+    //     ...item,
+    //     title: item.title.replace(/\\/g, '')
+    //   }
+    // })
+    // questionList.value = list
+    //
+    // // 如果url有问题，设置当前题目
+    // if (q) {
+    //   const index = list.findIndex(item => item.title === q);
+    //   if (index !== -1) {
+    //     currentIndex.value = index
+    //     currentQuestion.value = list[index]
+    //     isPracticing.value = true
+    //   }
+    // }
   })
 
   // 依赖currentIndex获取当前题目, 设置答题状态

@@ -10,9 +10,7 @@ import NavHead from "../components/NavHead.vue";
 
 # CSS
 
-
 ## CSS3 有哪些新特性
-
 
 1. **弹性布局**（Flexbox）与**网格布局**（Grid）；
 2. **过渡动画**（`transition`/`animation`）；
@@ -295,7 +293,7 @@ CSS浮动（float）使元素脱离标准文档流，向左/右移动直至触�
 - **优点**：HTML结构更简洁。
 - **缺点**：需处理相对定位和边距，窄屏下可能错乱。
 
-```javascript
+```html
 <div class="container">
   <div class="center"></div>
   <div class="left"></div>
@@ -344,7 +342,7 @@ CSS浮动（float）使元素脱离标准文档流，向左/右移动直至触�
 - **优点**：稳定性更好，无需复杂定位。
 - **缺点**：多一层DOM结构。
 
-```javascript
+```html
 <div class="main">       <!-- 外层容器 -->
   <div class="content"></div> <!-- 内容区 -->
 </div>
@@ -1393,5 +1391,5 @@ Atom CSS（原子化CSS）是一种**将样式拆分为单一职责的最小化C
 
 ## CSS 如何硬件加速?
 
-## css module 是什么？
+## CSS Module 是什么？
 
