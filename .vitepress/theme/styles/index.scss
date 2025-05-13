@@ -222,7 +222,7 @@ html {
 
 .VPHome {
   padding-bottom: 0 !important;
-  margin-bottom: 0!important;
+  margin-bottom: 0 !important;
 }
 
 .card {
@@ -294,16 +294,21 @@ iframe {
     max-width: unset;
     padding: 0;
   }
-  a{
+
+  a {
     div, span {
       text-decoration: none !important;
     }
   }
 }
+
 @media screen and (max-width: 992px) {
-  .vp-doc{
-    a{
+  .vp-doc {
+    a {
       text-decoration: none !important;
     }
+  }
+  .VPDoc {
+    padding: 32px 24px 90px!important;
   }
 }

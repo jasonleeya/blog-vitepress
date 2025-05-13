@@ -214,6 +214,8 @@ javascript 是一门单线程语言，意思就是同一时间段只能做一件
 
 - `join()` 方法接收一个参数，即字符串分隔符，返回包含所有项的字符串
 
+## splice 和 slice 函数有什么区别？
+
 ## JavaScript 由哪三大部分组成?
 
 1. **ECMAScript（核心语法）**：定义基础语法规则（变量、函数、循环等），是 JavaScript 的标准和语言核心。
@@ -304,6 +306,8 @@ console.log(stringValue.substr(3, 7)); // "lo worl"
 - `search()` 接收一个参数，可以是一个正则表达式字符串，也可以是一个`RegExp`对象，找到则返回匹配索引，否则返回 `-1`
 - `replace()` 接收两个参数，第一个参数为匹配的内容，第二个参数为替换的元素（可用函数）
 
+## substring 和 substr 函数的区别是什么？
+
 ## JavaSript 中如何判断一个变量的类型
 
 - **typeof**
@@ -321,6 +325,8 @@ console.log(stringValue.substr(3, 7)); // "lo worl"
 - **Object.prototype.toString.call()**
 
 方法可以精确地判断一个变量的具体类型。它返回一个表示变量具体类型的字符串，格式为"[object Type]"。
+
+*注意：*通过`[Symbol.toStringTag]`可以更改 "[object Type]"里面的`Type`
 
 - **Array.isArray**判断是否是数组类型，**Number.isNaN**判断是否是`NaN`
 
@@ -399,6 +405,10 @@ const isEmpty = JSON.stringify(obj) === '{}';
 - 用 `===` 代替 `==` 避免隐式转换（如 `0 === false` → false）。
 - 复杂转换尽量显式写清逻辑（如 `+new Date()` 转时间戳）。
 
+## 隐式类型转换的转换规则是怎么样的？
+
+## 什么是 JavaScript 中的包装类型？
+
 ## null 和 undefined 的区别？
 
 `null`和`undefined`都是js中的特殊值，表示缺失或未定义的值。
@@ -409,7 +419,7 @@ const isEmpty = JSON.stringify(obj) === '{}';
 
 ## NaN是什么？它的类型是什么？如何可靠地判断一个值是否等于NaN？
 
-**NaN**（Not a Number）表示“不是一个有效的数字”，但它的类型是 `Number`（属于数字类型）,判断方法`Number.isNaN(NaN);`,不能直接“==”或“===”判断，`NaN ===NaN`结果是`false`
+**NaN**（Not a Number）表示“不是一个有效的数字”，但它的类型是 `Number`（属于数字类型）,判断方法`Number.isNaN(NaN);`,不能直接“\==”或“\===”判断，`NaN ===NaN`结果是`false`
 
 ## isNaN 和 Number.isNaN 函数有什么区别？
 
@@ -1359,6 +1369,10 @@ AJAX（Asynchronous JavaScript and XML）核心是**用JavaScript异步发送HTT
    ```javascript
    xhr.send(); // POST可传参数，如xhr.send(JSON.stringify({ key: 'value' }));  
    ```
+   
+   
+
+## 说说你对 fetch 的理解，它有哪些优点和不足？
 
 ## 异步加载 JS 的方式有哪些?
 
@@ -1431,6 +1445,8 @@ AJAX（Asynchronous JavaScript and XML）核心是**用JavaScript异步发送HTT
   ```
 
 - **特点**：工程化方案，支持代码分割（Code Splitting）。
+
+## 什么是回调地狱？如何避免？
 
 ## 说说同步和异步的区别?
 
@@ -1750,7 +1766,7 @@ observer.observe(target);
 
 ## 详细讲一下 Symbol 数据类型特征与实际使用案例？
 
-
+## BigInt 和 Number 类型有什么区别？
 
 ## 哪些方法可以保持前后端实时通信？
 
@@ -2496,6 +2512,8 @@ console.log([...myIterable]); // 输出 [1, 2]
 - **Map**：适合键类型复杂或需保持插入顺序的场景，如缓存数据。
 - **WeakSet**：临时跟踪对象存在性（如记录已处理过的 DOM 元素）。
 - **WeakMap**：关联对象与元数据且避免内存泄漏（如存储对象私有数据）。
+
+## JavaScript 中 Map 和 Object 的区别是什么？
 
 ## 谈谈你对 requestanimationframe 和 requestidlecallback 的了解
 
@@ -4280,6 +4298,8 @@ a[c] = 456;
 console.log(a[b]);
 ```
 
+---
+
 **答案**：`456` **解析**：对象作为键时会被转换为字符串 `[object Object]`，两次赋值会覆盖同一个键。
 
 ## "5" + 3 和 "5" - 3 的结果是什么？
@@ -4293,6 +4313,8 @@ for (var i = 0; i < 3; i++) {
   setTimeout(() => console.log(i), 0);
 }
 ```
+
+---
 
 **答案**：`3, 3, 3` **解析**：`var` 无块级作用域，循环结束后 `i=3`，所有回调共享同一变量。
 
@@ -4315,6 +4337,8 @@ function mutate(obj) {
 mutate(obj);
 console.log(obj.a);
 ```
+
+---
 
 **答案**：`2` **解析**：`obj = { a: 3 }`修改的是`mutate`形参的地址，使得形参指向另外一个对象，而obj的地址并未改变。
 
@@ -4344,6 +4368,8 @@ new Promise(res => { console.log(6); res(); }).then(() => console.log(7));
 console.log(8);
 ```
 
+---
+
 **答案**：`4,1,3,6,8,2,7,5` **解析**：
 
 - 同步代码顺序执行：`4`, `1`, `3`, `6`, `8`
@@ -4370,6 +4396,8 @@ new Foo.getName();   // E
 new Foo().getName(); // F
 ```
 
+---
+
 **答案**：`2,4,1,1,2,3` **解析**：
 
 - A：调用静态方法 `Foo.getName` → 2
@@ -4388,6 +4416,8 @@ a.x = a = {n: 2};
 console.log(a.x)    
 console.log(b.x)
 ```
+
+---
 
 **答案**：`undefined` 和 `{n: 2}`
 
@@ -4438,4 +4468,557 @@ const obj = {
 
 const [a, b] = obj
 ```
+
+## 下面代码的输出结果是什么？
+
+```javascript
+const promise1 = new Promise((resolve, reject) => {
+  console.log('promise1')
+  resolve('resolve1')
+})
+const promise2 = promise1.then(res => {
+  console.log(res)
+})
+console.log('1', promise1);
+console.log('2', promise2);
+```
+
+**过程分析**
+
+- 从上至下，先遇到new Promise，执行该构造函数中的代码promise1
+- 碰到resolve函数, 将promise1的状态改变为resolved, 并将结果保存下来
+- 碰到promise1.then这个微任务，将它放入微任务队列
+- promise2是一个新的状态为pending的Promise
+- 执行同步代码1， 同时打印出promise1的状态是resolved
+- 执行同步代码2，同时打印出promise2的状态是pending
+- 宏任务执行完毕，查找微任务队列，发现promise1.then这个微任务且状态为resolved，执行它。
+
+**结果**
+
+```
+'promise1'
+'1' Promise{<resolved>: 'resolve1'}
+'2' Promise{<pending>}
+'resolve1'
+```
+
+## 下面代码的输出结果是什么？
+
+```javascript
+const fn = () =>
+  new Promise((resolve, reject) => {
+    console.log(1);
+    resolve("success");
+  });
+console.log("start");
+fn().then(res => {
+  console.log(res);
+})
+```
+
+---
+
+**解析**
+
+start就在1之前打印出来了，因为fn函数是之后执行的。
+
+注意：不要看到new Promise()，就以为执行它的第一个参数函数，我们还需要注意它是不是被包裹在函数当中，如果是的话，只有在函数调用的时候才会执行。
+
+答案
+
+```
+"start"
+1
+"success"
+```
+
+## 下面代码的输出结果是什么？
+
+```javascript
+const promise = new Promise((resolve, reject) => {
+  console.log(1);
+  setTimeout(() => {
+    console.log("timerStart");
+    resolve("success");
+    console.log("timerEnd");
+  }, 0);
+  console.log(2);
+});
+promise.then((res) => {
+  console.log(res);
+});
+console.log(4);
+```
+
+---
+
+**解析**
+
+- 从上至下，先遇到new Promise，执行该构造函数中的代码1
+- 然后碰到了定时器，将这个定时器中的函数放到下一个宏任务的延迟队列中等待执行
+- 执行同步代码2
+- 跳出promise函数，遇到promise.then，但其状态还是为pending，这里理解为先不执行
+- 执行同步代码4
+- 一轮循环过后，进入第二次宏任务，发现延迟队列中有setTimeout定时器，执行它
+- 首先执行timerStart，然后遇到了resolve，将promise的状态改为resolved且保存结果并将之前的promise.then推入微任务队列
+- 继续执行同步代码timerEnd
+- 宏任务全部执行完毕，查找微任务队列，发现promise.then这个微任务，执行它。
+
+**结果**
+
+```
+1
+2
+4
+"timerStart"
+"timerEnd"
+"success"
+```
+## 下面代码的输出结果是什么？
+
+```javascript
+Promise.resolve()
+  .then(function success (res) {
+    throw new Error('error!!!')
+  }, function fail1 (err) {
+    console.log('fail1', err)
+  }).catch(function fail2 (err) {
+    console.log('fail2', err)
+  })
+```
+
+---
+
+**解析**
+由于Promise调用的是resolve()，因此.then()执行的应该是success()函数，可是success()函数抛出的是一个错误，它会被后面的catch()给捕获到，而不是被fail1函数捕获。
+
+**结果**
+
+```
+fail2 Error: error!!!
+    at success
+```
+
+## 下面代码的输出结果是什么？
+
+```javascript
+const p1 = new Promise((resolve) => {
+  setTimeout(() => {
+    resolve('resolve3');
+    console.log('timer1')
+  }, 0)
+  resolve('resovle1');
+  resolve('resolve2');
+}).then(res => {
+  console.log(res)
+  setTimeout(() => {
+    console.log(p1)
+  }, 1000)
+}).finally(res => {
+  console.log('finally', res)
+})
+
+```
+
+---
+
+**解析**
+
+- Promise的状态一旦改变就无法改变
+- finally不管Promise的状态是`resolved`还是`rejected`都会执行，且它的回调函数是接收不到Promise的结果的，所以finally()中的res是一个迷惑项。
+- 最后一个定时器打印出的p1其实是`.finally`的返回值，我们知道`.finally`的返回值如果在没有抛出错误的情况下默认会是上一个Promise的返回值，而这道题中`.finally`上一个Promise是`.then()`，但是这个`.then()`并没有返回值，所以p1打印出来的Promise的值会是`undefined`，如果你在定时器的下面加上一个`return 1`，则值就会变成1。
+
+**结果**
+
+```
+'resolve1'
+'finally' undefined
+'timer1'
+Promise{<resolved>: undefined}
+```
+
+## 下面代码的输出结果是什么？
+
+```javascript
+const async1 = async () => {
+  console.log('async1');
+  setTimeout(() => {
+    console.log('timer1')
+  }, 2000)
+  await new Promise(resolve => {
+    console.log('promise1')
+  })
+  console.log('async1 end')
+  return 'async1 success'
+} 
+console.log('script start');
+async1().then(res => console.log(res));
+console.log('script end');
+Promise.resolve(1)
+  .then(2)
+  .then(Promise.resolve(3))
+  .catch(4)
+  .then(res => console.log(res))
+setTimeout(() => {
+  console.log('timer2')
+}, 1000)
+
+
+```
+
+---
+
+**解析**
+
+需要注意的点：
+
+- async函数中await的`new Promise`要是没有返回值的话则不执行后面的内容
+- .then函数中的参数期待的是函数，如果不是函数的话会发生透传
+- 注意定时器的延迟时间
+
+**结果**
+
+```
+'script start'
+'async1'
+'promise1'
+'script end'
+1
+'timer2'
+'timer1'
+```
+
+## 下面代码的输出结果是什么？
+
+```javascript
+const first = () => (new Promise((resolve, reject) => {
+    console.log(3);
+    let p = new Promise((resolve, reject) => {
+        console.log(7);
+        setTimeout(() => {
+            console.log(5);
+            resolve(6);
+            console.log(p)
+        }, 0)
+        resolve(1);
+    });
+    resolve(2);
+    p.then((arg) => {
+        console.log(arg);
+    });
+}));
+first().then((arg) => {
+    console.log(arg);
+});
+console.log(4);
+```
+
+---
+
+**解析**
+
+需要注意的点：
+
+- 第一段代码定义的是一个函数，所以我们得看看它是在哪执行的，发现它在4之前，所以可以来看看first函数里面的内容了。
+- 函数first返回的是一个`new Promise()`，因此先执行里面的同步代码3
+- 接着又遇到了一个`new Promise()`，直接执行里面的同步代码7
+- 执行完7之后，在p中，遇到了一个定时器，先将它放到下一个宏任务队列里不管它，接着向下走
+- 碰到了`resolve(1)`，这里就把p的状态改为了resolved，且返回值为1，不过这里也先不执行
+- 跳出p，碰到了`resolve(2)`，这里的`resolve(2)`，表示的是把first函数返回的那个Promise的状态改了，也先不管它。
+- 然后碰到了`p.then`，将它加入本次循环的微任务列表，等待执行
+- 跳出first函数，遇到了`first().then()`，将它加入本次循环的微任务列表(p.then的后面执行)
+- 然后执行同步代码4
+- 本轮的同步代码全部执行完毕，查找微任务列表，发现`p.then`和`first().then()`，依次执行，打印出1和2
+- 本轮任务执行完毕了，发现还有一个定时器没有跑完，接着执行这个定时器里的内容，执行同步代码5
+- 然后又遇到了一个resolve(6)，它是放在p里的，但是p的状态在之前已经发生过改变了，因此这里就不会再改变，也就是说resolve(6)相当于没任何用处，因此打印出来的p为`Promise{<resolved>: 1}`。
+
+**结果**
+
+```
+3
+7
+4
+1
+2
+5
+Promise{<resolved>: 1}
+```
+
+
+
+## 下面代码的输出结果是什么？
+
+```javascript
+async function async1 () {
+  try {
+    await Promise.reject('error!!!')
+  } catch(e) {
+    console.log(e)
+  }
+  console.log('async1');
+  return Promise.resolve('async1 success')
+}
+async1().then(res => console.log(res))
+console.log('script start')
+```
+
+---
+
+
+```
+'script start'
+'error!!!'
+'async1'
+'async1 success'
+
+```
+
+
+
+## 下面代码的输出结果是什么？
+
+```javascript
+async function async1 () {
+  await async2();
+  console.log('async1');
+  return 'async1 success'
+}
+async function async2 () {
+  return new Promise((resolve, reject) => {
+    console.log('async2')
+    reject('error')
+  })
+}
+async1().then(res => console.log(res))
+```
+
+---
+
+
+```
+'async2'
+Uncaught (in promise) error
+
+```
+
+## 下面代码的输出结果是什么？
+
+```javascript
+async function testSometing() {
+  console.log("执行testSometing");
+  return "testSometing";
+}
+
+async function testAsync() {
+  console.log("执行testAsync");
+  return Promise.resolve("hello async");
+}
+
+async function test() {
+  console.log("test start...");
+  const v1 = await testSometing();
+  console.log(v1);
+  const v2 = await testAsync();
+  console.log(v2);
+  console.log(v1, v2);
+}
+
+test();
+
+var promise = new Promise(resolve => {
+  console.log("promise start...");
+  resolve("promise");
+});
+promise.then(val => console.log(val));
+
+console.log("test end...");
+```
+
+---
+
+**分析**
+
+1. **同步代码执行阶段**：
+   - 调用`test()`函数，首先输出`test start...`
+   - 执行`await testSometing()`，立即调用`testSometing`函数，输出`执行testSometing`
+   - `testSometing`返回 resolved Promise，但`await`会将后续代码放入微任务队列
+   - 继续执行同步代码，创建`promise`对象，输出`promise start...`
+   - 将`promise.then`回调加入微任务队列
+   - 输出`test end...`
+2. **微任务队列处理顺序**：
+   - **第一个微任务**（来自第一个`await`）：
+     - 输出`testSometing`
+     - 执行`await testAsync()`，立即调用`testAsync`函数，输出`执行testAsync`
+     - 将后续代码放入微任务队列
+   - **第二个微任务**（来自`promise.then`）：
+     - 输出`promise`
+   - **第三个微任务**（来自第二个`await`）：
+     - 输出`hello async`
+     - 最后输出`testSometing hello async`
+
+```
+'test start...'
+'执行testSometing'
+'promise start...'
+'test end...'
+'testSometing'
+'执行testAsync'
+'promise'
+'hello async'
+'testSometing' 'hello async'
+
+```
+
+## 下面代码的输出结果是什么？
+
+```
+Promise.resolve(1)
+  .then(2)
+  .then(Promise.resolve(3))
+  .then(console.log)
+```
+
+---
+
+**解析**
+
+.then 或者 .catch 的参数期望是函数，传入非函数则会发生值透传。
+
+第一个then和第二个then中传入的都不是函数，一个是数字类型，一个是对象类型，因此发生了透传，将resolve(1) 的值直接传到最后一个then里。
+
+**结果**
+
+```
+1
+```
+
+
+## 下面代码的输出结果是什么？
+
+```
+const promise = new Promise((resolve, reject) => {
+  resolve("success1");
+  reject("error");
+  resolve("success2");
+});
+promise
+.then(res => {
+    console.log("then: ", res);
+  }).catch(err => {
+    console.log("catch: ", err);
+  })
+
+
+---
+
+**解析**
+
+构造函数中的 resolve 或 reject 只有第一次执行有效，多次调用没有任何作用 ，Promise的状态一经改变就不能再改变。
+
+**结果**
+
+```
+"then: success1"
+```
+
+
+## 下面代码的输出结果是什么？
+
+```
+const promise = new Promise((resolve, reject) => {
+  resolve("success1");
+  reject("error");
+  resolve("success2");
+});
+promise
+.then(res => {
+    console.log("then: ", res);
+  }).catch(err => {
+    console.log("catch: ", err);
+  })
+
+
+---
+
+**解析**
+
+构造函数中的 resolve 或 reject 只有第一次执行有效，多次调用没有任何作用 ，Promise的状态一经改变就不能再改变。
+
+**结果**
+
+```
+"then: success1"
+```
+
+
+
+## 下面代码的输出结果是什么？
+
+```javascript
+const promise = new Promise((resolve, reject) => {
+  reject("error");
+  resolve("success2");
+});
+promise
+.then(res => {
+    console.log("then1: ", res);
+  }).then(res => {
+    console.log("then2: ", res);
+  }).catch(err => {
+    console.log("catch: ", err);
+  }).then(res => {
+    console.log("then3: ", res);
+  })
+```
+
+---
+
+**解析**
+
+catch不管被连接到哪里，都能捕获上层未捕捉过的错误。
+
+至于then3也会被执行，那是因为catch()也会返回一个Promise，且由于这个Promise没有返回值，所以打印出来的是undefined。
+
+**结果**
+
+```
+"catch: " "error"
+"then3: " undefined
+```
+
+
+
+## 下面代码的输出结果是什么？
+
+```javascript
+Promise.resolve().then(() => {
+  return new Error('error!!!')
+}).then(res => {
+  console.log("then: ", res)
+}).catch(err => {
+  console.log("catch: ", err)
+})
+```
+
+---
+
+**解析**
+
+返回任意一个非 promise 的值都会被包裹成 promise 对象，因此这里的`return new Error('error!!!')`也被包裹成了`return Promise.resolve(new Error('error!!!'))`。
+
+**结果**
+
+```
+"then: " "Error: error!!!"
+```
+
+此题中，当然如果想抛出一个错误的话，可以用下面的任意一种：
+
+```
+复制1return Promise.reject(new Error('error!!!'));
+2// or
+3throw new Error('error!!!')
+```
+
+
 

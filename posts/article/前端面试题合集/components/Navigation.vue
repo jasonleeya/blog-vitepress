@@ -7,15 +7,15 @@
 -->
 <template>
   <div class="mst_container">
-    <a class="mst_box" href="./read">
-      <div class="mst_icon"><span class="mst_read">📖</span></div>
-      <span class="mst_name">阅读模式</span>
-      <span class="mst_desc">文档阅读，查漏补缺</span>
-    </a>
     <a class="mst_box" href="./practice">
       <div class="mst_icon">📝</div>
       <span class="mst_name">练习模式</span>
       <span class="mst_desc">实战练习，展现实力</span>
+    </a>
+    <a class="mst_box" href="./read">
+      <div class="mst_icon"><span class="mst_read">📖</span></div>
+      <span class="mst_name">阅读模式</span>
+      <span class="mst_desc">文档阅读，查漏补缺</span>
     </a>
   </div>
 </template>

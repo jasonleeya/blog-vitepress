@@ -29,4 +29,4 @@ const list = fileData.sort((a,b)=>a.order-b.order)
 > - [面试专区|【74道Node.js高频题整理(附答案背诵版)】](https://blog.csdn.net/qq_40522090/article/details/139738677)
 > - [前端面试题宝典](https://fe.ecool.fun/)
 > - [面试鸭](https://www.mianshiya.com/)
->
+> - [Type Challenges](https://github.com/type-challenges/type-challenges/blob/main/README.zh-CN.md)

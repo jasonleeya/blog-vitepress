@@ -15,9 +15,6 @@
         <collect v-model="isCollected" @update:model-value="storeState"></collect>
       </div>
     </div>
-    <!--把footer顶起来   -->
-    <div style="height: 60px">
-    </div>
   </teleport>
 </template>
 
@@ -32,8 +29,15 @@ const {isLearned, isCollected, currentIndex, questionListLength,storeState} = us
 
 
 const prevNextEl: HTMLElement = document.querySelector('.prev-next')
-onMounted(() => prevNextEl!.style.display = 'none')
-onUnmounted(() => prevNextEl!.style.display = 'block')
+const footer: HTMLElement = document.querySelector('.VPFooter')
+onMounted(() => {
+  prevNextEl!.style.display = 'none'
+  footer!.style.bottom = '60px'
+})
+onUnmounted(() => {
+  prevNextEl!.style.display = 'block'
+  footer!.style.bottom = '0'
+})
 
 const handleNext = () => {
   currentIndex.value = currentIndex.value + 1 > questionListLength.value - 1 ? 0 : currentIndex.value + 1

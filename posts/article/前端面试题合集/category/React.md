@@ -5836,7 +5836,7 @@ Vue在设计上采用了一种不同的响应式系统和渲染机制，不需�
 
 在使用 React 开发 Web 应用时，通常会同时安装和引入这两个包：
 
-```shell
+```bash
 npm install react react-dom
 ```
 

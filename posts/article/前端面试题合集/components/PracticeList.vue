@@ -205,6 +205,7 @@ const handleClickQuestion = (index) => {
 
 .content-wrapper {
   margin-top: -95px;
+  min-height: calc(100vh - 540px);
 }
 
 @media (max-width: 992px) {

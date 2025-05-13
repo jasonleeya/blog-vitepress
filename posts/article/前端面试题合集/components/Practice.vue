@@ -63,7 +63,6 @@ const handleLookAnswer = () => {
   position: relative;
 }
 .answer {
-  min-height: calc(100vh - 500px);
 
   &.unreadable {
     filter: blur(5px);

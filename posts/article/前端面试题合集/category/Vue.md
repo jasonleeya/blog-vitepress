@@ -58,7 +58,7 @@ Vue的数据响应式核心是让数据变动自动触发视图更新。实现�
 3. **派发更新**：数据变化时触发`setter`或`Proxy`的拦截，通知所有关联的`Watcher`重新渲染组件。
    需要注意，直接通过索引改数组或给对象新增属性无法触发响应（Vue2中需用`Vue.set`或数组变异方法），而Vue3的`Proxy`天然支持这些操作。
 
-## Vue 实例挂载的过程中发生了什么??
+## Vue 实例挂载的过程中发生了什么?
 
 1. **合并配置**：把用户传的`options`（比如data、methods）和全局配置（如Vue.mixin的内容）合并。
 2. **初始化生命周期/事件/渲染函数**：创建组件实例关联的`$parent`、`$children`，初始化事件监听等。
@@ -98,6 +98,8 @@ Vue的数据响应式核心是让数据变动自动触发视图更新。实现�
   需要基于依赖数据**动态计算新值**，且希望利用缓存优化性能时（如模板中频繁使用的计算值）。
 - **用 `watch`**：
   需要**响应数据变化执行副作用**（如异步请求、操作 DOM、调用方法），或需要监听非响应式数据（如路由参数）。
+
+## computed 和 methods 的区别是什么？
 
 ## Vue 中的 v-show 和 v-if 怎么理解？
 
@@ -145,6 +147,8 @@ Vue的数据响应式核心是让数据变动自动触发视图更新。实现�
 - `created`在实例创建后被调用，适合处理数据初始化和非DOM相关的任务。
 - `mounted`在实例挂载到DOM后被调用，适合进行DOM操作、初始化第三方库和绑定事件监听。
 
+## 你知道哪些 Vue 指令？
+
 ## 为什么 Vue 中的 v-if 和 v-for 不建议一起用?
 
 1. **优先级问题**：
@@ -163,8 +167,6 @@ Vue的`data`必须是一个函数，主要目的是**保证组件复用时数据
 - **函数的作用**：函数每次返回一个全新的数据对象，确保每个实例维护自己的独立状态（类似工厂模式）。
 
 ## Vue2 动态给 data 添加一个新的属性时会发生什么
-
-
 
 ## 父子组件的生命周期执行顺序是什么？
 
@@ -539,6 +541,10 @@ Vue 3 引入 Composition API 主要是为了提升代码组织和复用性、提
 - 跨层级用 **provide/inject** 或 **Vuex/Pinia**；
 - 简单场景可用 **Event Bus**，复杂场景推荐状态管理库。
 
+## 什么是 Vue 的 provide 和 inject？
+
+
+
 ## 谈谈什么是单向数据流？
 
 单向数据流指数据在应用中**单向传递**的设计模式，核心规则为：
@@ -583,34 +589,9 @@ Vue 3 引入 Composition API 主要是为了提升代码组织和复用性、提
 2. **实现细节**：
    - **内部实现**：`v-model` 在内部使用了事件监听（如 `input` 事件）和数据绑定（如 `value` 属性）来实现双向同步，但在组件设计层面，数据流动仍然是单向的。
 
-## 说说你对 nexttick 的理解?
+## 说说你对 nexttick 的理解？它的原理是什么？
 
-Vue 的 `nextTick` 用于在 **下次 DOM 更新周期后执行回调**，**解决数据变化后 DOM 未及时更新的问题**，确保代码逻辑在正确时机执行。核心作用与原理如下：
 
-**1. 核心作用**
-
-- **确保操作基于最新 DOM**：在数据变化后，若需立即访问更新后的 DOM（如获取元素尺寸、焦点等），需将逻辑放入 `nextTick` 回调。
-- **解决异步更新导致的视图不一致**：Vue 的响应式更新是异步的，连续修改数据时，`nextTick` 可保证逻辑在 DOM 渲染完成后执行。
-
-**2. 使用场景**
-
-- **数据变化后操作 DOM**：
-
-  ```javascript
-  this.showModal = true;  
-  this.$nextTick(() => {  
-    this.$refs.modal.focus(); // DOM 已渲染  
-  });  
-  ```
-
-- **生命周期钩子中的 DOM 操作**：如 `created` 钩子中访问 DOM。
-
-**3. 实现原理**
-
-- **异步队列**：Vue 将数据变更后的 DOM 更新任务推入队列，同一事件循环内的多次更新合并为一次。
-- **优先级策略**：
-  - 优先使用 `Promise.then`（微任务）。
-  - 不支持则降级到 `MutationObserver` → `setImmediate` → `setTimeout`（宏任务）。
 
 ## 说说你对 Vue 的 mixin 的理解，有什么应用场景？
 
@@ -757,7 +738,7 @@ Vue 的 `slot`（插槽）是 **组件内容分发的核心机制**，允许父�
 
 ## Vue中的$nextTick有什么作用？
 
-
+## v-text与\{\{}}与v-html区别
 
 ## Vue 常用的修饰符有哪些？有什么应用场景？
 
@@ -879,6 +860,10 @@ Vue 的 `slot`（插槽）是 **组件内容分发的核心机制**，允许父�
    - **高亮元素**：特定条件下动态添加样式（如输入验证错误）。
    - **拖拽指令**：封装拖拽逻辑，复用至可拖拽组件。
 
+## Vue 的 template 标签有什么用？
+
+
+
 ## template 标签为什么不可以使用 v-show？
 
 `<template>` 标签在 Vue 中是一个 **占位符元素**，它本身在渲染时不会生成任何实际的 DOM 元素，只是为了包裹一些结构或逻辑，帮助开发者更好地组织模板内容。因此，`<template>` 标签没有实际的渲染结果，它的存在只在编译和渲染过程中起到作用。
@@ -933,20 +918,16 @@ Vue Teleport 用于将组件模板内的内容**渲染到 DOM 中的指定位置
 
 - 默认情况下，`<script setup>` 的组件是**封闭的**，父组件无法直接访问子组件的内部状态或方法,`defineExpose` 可**显式暴露子组件的属性或方法**，允许父组件通过 `ref` 访问这些内容
 
-## Vuex 是什么？有哪几种属性？
+## Vuex 是什么？原理是什么？有哪几种属性？
 
-Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式，包含5个属性，分别是：
 
-- **State**：存储响应式数据；
-- **Getters**：计算属性（类似 `computed`）；
-- **Mutations**：**同步**修改 `state`（通过 `commit` 触发）；
-- **Actions**：**异步**操作（通过 `dispatch` 触发，内部可调用 `commit`）；
-- **Modules**：模块化拆分复杂 Store。
 
 ##  Vuex 中 Action 和 Mutation 的区别？
 
 - **Mutation**：同步修改 `state`，通过 `commit` 调用；
 - **Action**：处理异步（如接口请求），通过 `dispatch` 调用，内部可提交多个 Mutation。
+
+## 如何监听 Vuex 数据的变化？
 
 ## 页面刷新 Vuex 数据刷新丢失怎么办？
 
@@ -960,6 +941,8 @@ store.subscribe((mutation, state) => {
   localStorage.setItem('store', JSON.stringify(state));  
 });  
 ```
+
+## vuex 中的辅助函数怎么使用？
 
 ## Pinia 和 Vuex 的核心区别及优势？
 
@@ -1214,6 +1197,10 @@ const storeA = createDynamicStore('moduleA');
 const storeB = createDynamicStore('moduleB');
 ```
 
+
+
+## vue-router 的核心实现原理是什么？
+
 ## vue-router 中\$route和\$router的区别？
 
 1. **`$router`**：
@@ -1386,6 +1373,8 @@ Vue Router 传参方式主要有三种：
 ## vue-router 如何实现嵌套路由？
 
 Vue Router 通过路由配置中的 `children` 属性然后再父组件模板中放置**`<router-view>`**来实现嵌套路由
+
+## vue-router 如何配置 404 页面？
 
 ## Vue 中的过滤器了解吗？过滤器的应用场景有哪些？
 
@@ -1878,6 +1867,10 @@ export default defineComponent({
 **6. 性能优化**
 
 `h` 函数通过创建虚拟 DOM，Vue 可以在数据变化时比较新旧虚拟 DOM，计算出最小的 DOM 更新，优化性能。这种方式避免了频繁的实际 DOM 操作，从而提升了应用的性能。
+
+## v-cloak 和 v-pre 指令有什么作用？
+
+##  你了解 filter 吗？它有哪些应用场景？
 
 ## Vue3 性能提升体现在哪些方面？
 
@@ -2609,7 +2602,7 @@ Vue CLI 是 Vue.js 官方提供的一个工具，用于快速构建和管理 Vue
 
 - **快速创建项目**：使用命令行工具快速生成新的 Vue 项目结构，包括基础的配置文件和示例代码。
 
-  ```shell
+  ```bash
   vue create my-project
   ```
 
@@ -2624,7 +2617,7 @@ Vue CLI 是 Vue.js 官方提供的一个工具，用于快速构建和管理 Vue
 
 - **开发服务器**：提供内置的开发服务器，支持热重载（Hot Module Replacement），使得开发过程更加高效和流畅。
 
-  ```shell
+  ```bash
   npm run serve
   ```
 
@@ -2632,7 +2625,7 @@ Vue CLI 是 Vue.js 官方提供的一个工具，用于快速构建和管理 Vue
 
 - **生产构建**：支持一键构建项目并输出到 `dist` 文件夹，适合部署到生产环境。
 
-  ```shell
+  ```bash
   npm run build
   ```
 
@@ -2642,7 +2635,7 @@ Vue CLI 是 Vue.js 官方提供的一个工具，用于快速构建和管理 Vue
 
 - **插件生态**：支持官方和社区开发的插件，可以在项目中方便地安装和使用，如 Vue Router、Vuex、PWA 支持等。
 
-  ```shell
+  ```bash
   vue add router
   ```
 
@@ -2652,7 +2645,7 @@ Vue CLI 是 Vue.js 官方提供的一个工具，用于快速构建和管理 Vue
 
 - **生成组件**：提供命令生成 Vue 组件、页面、路由等代码片段，减少重复工作。
 
-  ```shell
+  ```bash
   vue generate component MyComponent
   ```
 
@@ -2673,7 +2666,7 @@ Vue CLI 是 Vue.js 官方提供的一个工具，用于快速构建和管理 Vue
 
 - **图形化界面**：提供 Vue UI 工具，允许开发者通过图形界面管理项目配置、插件、依赖等，无需手动编辑配置文件。
 
-  ```shell
+  ```bash
   vue ui
   ```
 
@@ -3200,10 +3193,16 @@ Vue 的适用面很广，你可以用它代替老项目中的JQuery。也可以�
 
 ## 说说 Vue 页面渲染流程
 
+## 如果想扩展某个现有的 Vue 组件，应该怎么做？
 
+## Vue 中如何实现强制刷新组件？
 
 ## computed 怎么实现的缓存
 
 ## vue-loader 做了哪些事情？
 
-## vuex 中的辅助函数怎么使用？
+## Vue 中什么是递归组件？
+
+## Vue 3 中的 Suspense 组件有什么作用？
+
+## 如何解决 Vue 打包时 vendor 文件过大的问题？
