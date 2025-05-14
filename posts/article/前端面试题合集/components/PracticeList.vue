@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 import NavHead from "./NavHead.vue";
-import {nextTick, onMounted, onUnmounted, ref, watchEffect} from "vue";
+import {nextTick, onMounted, onUnmounted, ref} from "vue";
 import Practice from "./Practice.vue";
 import {useQuestion} from "../hooks";
 import Collect from "./Collect.vue";

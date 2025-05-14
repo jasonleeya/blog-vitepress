@@ -216,6 +216,44 @@ javascript 是一门单线程语言，意思就是同一时间段只能做一件
 
 ## splice 和 slice 函数有什么区别？
 
+`splice` 是**原地修改**数组的增删方法，返回被删除元素；`slice` 是**非破坏性**截取子数组，返回新数组。
+
+**详细区别**：  
+
+1. **功能与用途**：  
+   - **splice**：用于在数组中**添加/删除元素**，直接修改原数组。  
+   - **slice**：用于**截取数组片段**，返回新数组，原数组不变。  
+
+2. **参数差异**：  
+   - **splice(start, deleteCount, ...items)**：  
+     - `start`：操作起始索引  
+     - `deleteCount`：删除元素个数（0表示仅添加）  
+     - `...items`：可选，要插入的新元素  
+   - **slice(start, end)**：  
+     - `start`：起始索引（包含）  
+     - `end`：结束索引（不包含，可省略）  
+
+3. **返回值**：  
+   - `splice` 返回被删除元素组成的数组。  
+   - `slice` 返回截取的新数组。  
+
+4. **示例对比**：  
+   ```javascript
+   let arr = [1, 2, 3, 4];
+   
+   // splice 示例
+   let removed = arr.splice(1, 2, 'a'); 
+   // arr变为 [1, 'a', 4]，removed为 [2, 3]
+   
+   // slice 示例
+   let subArr = arr.slice(1, 3); 
+   // arr仍为 [1, 'a', 4]，subArr为 ['a', 4]
+   ```
+
+**使用场景**：  
+- 需要增删元素且关注原数组变化时用 `splice`。  
+- 仅需获取子数组副本时用 `slice`。
+
 ## JavaScript 由哪三大部分组成?
 
 1. **ECMAScript（核心语法）**：定义基础语法规则（变量、函数、循环等），是 JavaScript 的标准和语言核心。
@@ -1900,7 +1938,7 @@ WebSocket 是一种在单个 TCP 连接上实现**全双工实时通信**的协�
 
    **示例请求头**：
 
-   ```javascript
+   ```bash
    GET /chat HTTP/1.1  
    Host: example.com  
    Upgrade: websocket  

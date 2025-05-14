@@ -1,9 +1,13 @@
 <script setup>
+import {ref} from "vue";
 import Back from "./components/Back.vue";
-import fileData from './fileData.json';
-import { withBase } from 'vitepress';
+import {withBase} from "vitepress";
 
-const list = fileData.sort((a,b)=>a.order-b.order)
+let list = ref();
+fetch(import.meta.env.VITE_FILE_BASE_URL + '/json/question/fileData.json').then(res => res.json())
+.then(res=>{
+  list.value = res.sort((a,b)=>a.order-b.order)
+})
 </script>
 
 # 前端面试题合集
@@ -11,7 +15,7 @@ const list = fileData.sort((a,b)=>a.order-b.order)
 <p></p>
 <Back/>
 
-<p v-for="(item,index) in fileData" :key="item.category">
+<p v-for="(item,index) in list" :key="item.category">
 <a  :href="withBase(`category/${item.category}`)">{{index + 1}}. {{item.category}}</a>
 </p>
 

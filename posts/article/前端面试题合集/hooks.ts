@@ -1,11 +1,11 @@
 import {ref, computed, watchEffect} from "vue";
-import category from './fileData.json'
 
 type Category = {
   category: string
   order: number
   count: number
   icon?: string
+  filePath:string
 }
 type Question = {
   title: string
@@ -13,6 +13,7 @@ type Question = {
   answer: string
 }
 
+const categoryList = ref<Category[]>([]);
 const currentCategory = ref<string>('');
 const questionList = ref<Question[]>([]);
 const currentIndex = ref<number>(0);
@@ -34,7 +35,16 @@ if (!import.meta.env.SSR) {
   q = searchParams.get('q');
 }
 
-// 获取用户答题数据
+const getFileData = async ():Promise<Category[]> => {
+  return fetch(import.meta.env.VITE_FILE_BASE_URL + '/json/question/fileData.json').then(res => res.json())
+}
+try {
+  categoryList.value = await getFileData()
+} catch (e) {
+  console.log(e)
+}
+
+// 获取本地用户答题数据
 const getUserAnswerData = () => {
   if (!import.meta.env.SSR) {
     userAnswerData.value = Object.assign(userAnswerData.value, JSON.parse(localStorage.getItem('userAnswerData') || '{}'))
@@ -42,7 +52,7 @@ const getUserAnswerData = () => {
 }
 getUserAnswerData()
 
-currentCategory.value = c ? c : (category as Category[]).find(item => item.order === 1).category
+currentCategory.value = c ? c : categoryList.value.find(item => item.order === 1).category
 
 const getQuestionList = async (filePath: string):Promise<Question[]> => {
   return fetch(import.meta.env.VITE_FILE_BASE_URL + '/' + filePath)
@@ -50,10 +60,9 @@ const getQuestionList = async (filePath: string):Promise<Question[]> => {
 }
 
 export const useQuestion = () => {
-
   // 依赖currentCategory获取题目list
   watchEffect(async () => {
-    const currentCategoryData = category.find(item => item.category === currentCategory.value)
+    const currentCategoryData = categoryList.value.find(item => item.category === currentCategory.value)
     const list = await getQuestionList(currentCategoryData.filePath)
     questionList.value = list.map(item => {
         return {
@@ -123,7 +132,7 @@ export const useQuestion = () => {
   }
 
   return {
-    categoryList: category,
+    categoryList,
     currentCategory,
     questionList,
     currentIndex,
