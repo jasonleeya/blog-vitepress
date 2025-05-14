@@ -22,8 +22,8 @@
 <script setup lang="ts">
 import {onMounted, onUnmounted, ref} from "vue";
 import {useIsMobile} from "@hooks/useIsMobile";
-const isMobile = useIsMobile()
 
+const isMobile = useIsMobile()
 const windowWidth = window.innerWidth
 const windowHeight = window.innerHeight
 let mouseX = 0
@@ -31,41 +31,42 @@ let mouseY = 0
 const skew = ref(0)
 const scaleY = ref(0.5)
 
-const handleMouseMove = (e: MouseEvent|TouchEvent) => {
+const handleMouseMove = (e: MouseEvent | TouchEvent) => {
   const event = e instanceof MouseEvent ? e : e.touches[0]
   mouseX = event.clientX
   mouseY = event.clientY
   skew.value = 180 * (mouseX - windowWidth / 2) / windowWidth
+
   if (mouseY > windowHeight / 2) {
-    scaleY.value = -(1 - (mouseY / (windowHeight / 2))) + 0.5
+    scaleY.value = (mouseY - windowHeight / 2) / (windowHeight / 2) + 0.5
   } else {
-    scaleY.value = 0.5 - (0.5 * (1 - mouseY / (windowHeight / 2))) * 0.8
+    scaleY.value = 0.5 - 0.5 * (1 - mouseY / (windowHeight / 2)) * 0.8
   }
 }
 
-onMounted(()=>{
-  document.addEventListener('mousemove',handleMouseMove)
-  document.addEventListener('touchmove',handleMouseMove)
+onMounted(() => {
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('touchmove', handleMouseMove)
 })
 
-onUnmounted(()=>{
-  document.removeEventListener('mousemove',handleMouseMove)
+onUnmounted(() => {
+  document.removeEventListener('mousemove', handleMouseMove)
 })
 
 </script>
 
 <style scoped lang="scss">
 .container {
-  --skew: 0deg;
-  --scaleY: 0.5;
   width: 100%;
+  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #CBD2D5;
   font-weight: bold;
   overflow: hidden;
-  height: 300px;
+  --skew: 0deg;
+  --scaleY: 0.5;
 
   .text {
     color: #fff;
