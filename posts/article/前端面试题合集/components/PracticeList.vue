@@ -13,7 +13,7 @@
     </filter>
   </svg>
   <nav-head :link="isPracticing?'':'/posts/article/前端面试题合集'"
-            @click="()=>{isPracticing = false;getUserAnswerData()}">
+            @click="handleBack">
     <div class="tab-container" ref="containerRef" @wheel="handleWheel">
       <div class="item" v-for="item in categoryList" :key="item.category" :style="{order:item.order}"
            @click="handleTabClick(item.category)"
@@ -33,7 +33,7 @@
   <div class="content-wrapper">
     <div class="question-list" v-if="!isPracticing">
       <div v-for="(item,index) in questionList" class="question" @click="handleClickQuestion(index)"
-           :title="item.title">{{ index + 1 }}.&nbsp;
+           :title="item.title" :id="'question_'+index">{{ index + 1 }}.&nbsp;
         <span class="title">{{ item.title }}</span>
         <div class="icons">
           <collect :style="{width: isMobile?'52px':''}" :disabled="true"
@@ -48,12 +48,13 @@
 
 <script setup lang="ts">
 import NavHead from "./NavHead.vue";
-import {onMounted, ref} from "vue";
+import {nextTick, onMounted, onUnmounted, ref, watchEffect} from "vue";
 import Practice from "./Practice.vue";
 import {useQuestion} from "../hooks";
 import Collect from "./Collect.vue";
 import Checkbox from "./Checkbox.vue";
 import {useIsMobile} from "@hooks/useIsMobile";
+
 
 const isMobile = useIsMobile();
 const containerRef = ref();
@@ -68,7 +69,7 @@ let {
 } = useQuestion()
 
 // category tab滚动到中间
-const handleScrollToCenter = (element: HTMLElement) => {
+const handleTabScrollToCenter = (element: HTMLElement) => {
   const elementBCR = element.getBoundingClientRect();
   const containerBCR = containerRef.value.getBoundingClientRect();
   const elementXCenter = elementBCR.left + elementBCR.width / 2;
@@ -86,14 +87,24 @@ const handleScrollToCenter = (element: HTMLElement) => {
     })
   }
 }
-
+// 点击tab
 const handleTabClick = (category: string) => {
   const element = document.getElementById(category);
-  handleScrollToCenter(element)
+  handleTabScrollToCenter(element)
 
-  currentCategory.value = category;
   isPracticing.value = false
   getUserAnswerData()
+
+  // 如果category不同则滚到第一个问题，否则滚至当前问题
+  if (currentCategory.value !== category) {
+    currentIndex.value = 0
+  } else {
+    if (!isPracticing.value) {
+      scrollQuestionToCenter()
+    }
+  }
+
+  currentCategory.value = category;
 }
 
 
@@ -103,16 +114,17 @@ onMounted(() => {
   if (categoryEl) {
     categoryEl.scrollIntoView({block: 'center'});
 
-    handleScrollToCenter(categoryEl)
+    handleTabScrollToCenter(categoryEl)
   }
 })
-
+// 点击右箭头
 const handleRightIconClick = () => {
   containerRef.value.scrollTo({
     left: containerRef.value.scrollLeft + containerRef.value.offsetWidth / 4 * 3,
     behavior: 'smooth'
   })
 }
+// tab鼠标滚轮
 const handleWheel = (e: WheelEvent) => {
   e.preventDefault()
   const containerWidth = containerRef.value.offsetWidth;
@@ -129,11 +141,57 @@ const handleWheel = (e: WheelEvent) => {
   }
 }
 
+// 点击问题
 const handleClickQuestion = (index) => {
   currentIndex.value = index
   isPracticing.value = true
 }
 
+// 点击返回
+const handleBack = () => {
+  isPracticing.value = false;
+  getUserAnswerData()
+  nextTick(() => {
+    scrollQuestionToCenter()
+  })
+}
+
+// 滚动到对应的问题
+const scrollQuestionToCenter = () => {
+  const questionEl = document.getElementById('question_' + currentIndex.value);
+  if (questionEl) {
+    questionEl.scrollIntoView({block: 'center', behavior: 'instant'})
+  }
+}
+
+// 刷新页面sidebar不显示bug
+onMounted(() => {
+  try {
+    const sidebar: HTMLElement = document.querySelector('.nav .group .items');
+    sidebar!.style.display = 'block';
+    sidebar.querySelectorAll('.VPSidebarItem')?.forEach(item => {
+      const itemEl = item.querySelector('.item .link')
+      if (itemEl.getAttribute('href').includes('前端面试题合集')) {
+        item.classList.add('is-active')
+      }
+    });
+  } catch (e) {
+    console.log(e)
+  }
+})
+onUnmounted(()=>{
+  try {
+    const sidebarItems:NodeListOf<Element> = document.querySelectorAll('.nav .group .items .VPSidebarItem');
+    sidebarItems.forEach(item => {
+      const itemEl = item.querySelector('.item .link')
+      if (itemEl.getAttribute('href').includes('前端面试题合集')) {
+        item.classList.remove('is-active')
+      }
+    })
+  } catch (e) {
+    console.log(e)
+  }
+})
 </script>
 
 <style scoped lang="scss">

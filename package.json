@@ -7,7 +7,7 @@
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview",
-    "docs:deploy": "tcb framework deploy"
+    "docs:deploy": "vitepress build && tcb framework deploy"
   },
   "author": "JasonLee",
   "license": "ISC",

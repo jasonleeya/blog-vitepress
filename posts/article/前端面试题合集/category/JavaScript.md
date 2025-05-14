@@ -4871,7 +4871,7 @@ console.log("test end...");
 
 ## 下面代码的输出结果是什么？
 
-```
+```javascript
 Promise.resolve(1)
   .then(2)
   .then(Promise.resolve(3))
@@ -4895,7 +4895,7 @@ Promise.resolve(1)
 
 ## 下面代码的输出结果是什么？
 
-```
+```javascript
 const promise = new Promise((resolve, reject) => {
   resolve("success1");
   reject("error");
@@ -4907,36 +4907,7 @@ promise
   }).catch(err => {
     console.log("catch: ", err);
   })
-
-
----
-
-**解析**
-
-构造函数中的 resolve 或 reject 只有第一次执行有效，多次调用没有任何作用 ，Promise的状态一经改变就不能再改变。
-
-**结果**
-
 ```
-"then: success1"
-```
-
-
-## 下面代码的输出结果是什么？
-
-```
-const promise = new Promise((resolve, reject) => {
-  resolve("success1");
-  reject("error");
-  resolve("success2");
-});
-promise
-.then(res => {
-    console.log("then: ", res);
-  }).catch(err => {
-    console.log("catch: ", err);
-  })
-
 
 ---
 
