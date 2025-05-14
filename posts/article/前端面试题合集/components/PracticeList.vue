@@ -164,32 +164,40 @@ const scrollQuestionToCenter = () => {
   }
 }
 
+
 // 刷新页面sidebar不显示bug
+const pageName = '前端面试题合集'
 onMounted(() => {
-  try {
-    const sidebar: HTMLElement = document.querySelector('.nav .group .items');
-    sidebar!.style.display = 'block';
-    sidebar.querySelectorAll('.VPSidebarItem')?.forEach(item => {
-      const itemEl = item.querySelector('.item .link')
-      if (itemEl.getAttribute('href').includes('前端面试题合集')) {
-        item.classList.add('is-active')
-      }
-    });
-  } catch (e) {
-    console.log(e)
+  if (!import.meta.env.SSR) {
+    try {
+      const sidebar: HTMLElement = document.querySelector('.nav .group .items');
+      sidebar!.style.display = 'block';
+      sidebar.querySelectorAll('.VPSidebarItem')?.forEach(item => {
+        const itemEl = item.querySelector('.item .link')
+        if (itemEl.getAttribute('href').includes(pageName)) {
+          item.classList.add('is-active')
+        }
+      });
+    } catch (e) {
+      console.log(e)
+    }
   }
 })
-onUnmounted(()=>{
-  try {
-    const sidebarItems:NodeListOf<Element> = document.querySelectorAll('.nav .group .items .VPSidebarItem');
-    sidebarItems.forEach(item => {
-      const itemEl = item.querySelector('.item .link')
-      if (itemEl.getAttribute('href').includes('前端面试题合集')) {
-        item.classList.remove('is-active')
+onUnmounted(() => {
+  if (!import.meta.env.SSR) {
+    if (!decodeURIComponent(location.href).includes(pageName)) {
+      try {
+        const sidebarItems: NodeListOf<Element> = document.querySelectorAll('.nav .group .items .VPSidebarItem');
+        sidebarItems.forEach(item => {
+          const itemEl = item.querySelector('.item .link')
+          if (itemEl.getAttribute('href').includes(pageName)) {
+            item.classList.remove('is-active')
+          }
+        })
+      } catch (e) {
+        console.log(e)
       }
-    })
-  } catch (e) {
-    console.log(e)
+    }
   }
 })
 </script>

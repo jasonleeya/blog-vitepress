@@ -5,7 +5,7 @@ type Category = {
   order: number
   count: number
   icon?: string
-  filePath:string
+  filePath: string
 }
 type Question = {
   title: string
@@ -17,7 +17,7 @@ const categoryList = ref<Category[]>([]);
 const currentCategory = ref<string>('');
 const questionList = ref<Question[]>([]);
 const currentIndex = ref<number>(0);
-const currentQuestion = ref<Question>(null)
+const currentQuestion = ref<Question>({answer: "", description: "", title: ""})
 const isPracticing = ref<boolean>(false)
 const isLearned = ref<boolean>(false);
 const isCollected = ref<boolean>(false);
@@ -27,22 +27,27 @@ const userAnswerData = ref<{ [key: string]: { isCollected?: boolean, isLearned?:
 
 // 获取url参数, c: category, q: question
 let searchParams: URLSearchParams
-let c: string
-let q: string
+let categoryFromUrl: string
+let questionFromUrl: string
 if (!import.meta.env.SSR) {
   searchParams = new URLSearchParams(window.location.search);
-  c = searchParams.get('c');
-  q = searchParams.get('q');
+  categoryFromUrl = searchParams.get('c');
+  questionFromUrl = searchParams.get('q');
 }
 
-const getFileData = async ():Promise<Category[]> => {
-  return fetch(import.meta.env.VITE_FILE_BASE_URL + '/json/question/fileData.json').then(res => res.json())
+const init = () => {
+  fetch(import.meta.env.VITE_FILE_BASE_URL + '/json/question/fileData.json')
+      .then(res => res.json())
+      .then(res => {
+        categoryList.value = res
+        currentCategory.value = categoryFromUrl ? categoryFromUrl : categoryList.value.find(item => item.order === 1).category
+        getUserAnswerData()
+      }).catch(e => {
+    console.log('获取题库数据失败', e)
+  })
 }
-try {
-  categoryList.value = await getFileData()
-} catch (e) {
-  console.log(e)
-}
+init()
+
 
 // 获取本地用户答题数据
 const getUserAnswerData = () => {
@@ -50,11 +55,9 @@ const getUserAnswerData = () => {
     userAnswerData.value = Object.assign(userAnswerData.value, JSON.parse(localStorage.getItem('userAnswerData') || '{}'))
   }
 }
-getUserAnswerData()
 
-currentCategory.value = c ? c : categoryList.value.find(item => item.order === 1).category
 
-const getQuestionList = async (filePath: string):Promise<Question[]> => {
+const getQuestionList = async (filePath: string): Promise<Question[]> => {
   return fetch(import.meta.env.VITE_FILE_BASE_URL + '/' + filePath)
       .then(res => res.json())
 }
@@ -62,18 +65,19 @@ const getQuestionList = async (filePath: string):Promise<Question[]> => {
 export const useQuestion = () => {
   // 依赖currentCategory获取题目list
   watchEffect(async () => {
+    if (!categoryList.value.length) return
     const currentCategoryData = categoryList.value.find(item => item.category === currentCategory.value)
     const list = await getQuestionList(currentCategoryData.filePath)
     questionList.value = list.map(item => {
-        return {
-          ...item,
-          title: item.title.replace(/\\/g, '')
-        }
-      })
+      return {
+        ...item,
+        title: item.title.replace(/\\/g, '')
+      }
+    })
 
     // 如果url有问题，设置当前题目
-    if (q) {
-      const index = list.findIndex(item => item.title === q);
+    if (questionFromUrl) {
+      const index = list.findIndex(item => item.title === questionFromUrl);
       if (index !== -1) {
         currentIndex.value = index
         currentQuestion.value = list[index]
