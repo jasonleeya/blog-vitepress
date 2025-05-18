@@ -6,18 +6,13 @@
  * @Description:
 -->
 <template>
-  <div class="mst_container">
-    <a class="mst_box" href="./practice">
-      <div class="mst_icon">📝</div>
-      <span class="mst_name">练习模式</span>
-      <span class="mst_desc">实战练习，展现实力</span>
-    </a>
-    <a class="mst_box" href="./read">
-      <div class="mst_icon"><span class="mst_read">📖</span></div>
-      <span class="mst_name">阅读模式</span>
-      <span class="mst_desc">文档阅读，查漏补缺</span>
+  <div class="start_container">
+    <a class="start_box" href="./practice">
+      <span class="start_name">点击开始刷题</span>
+      <span class="start_desc">LET`S GO🚀</span>
     </a>
   </div>
+
 </template>
 
 <script lang="ts" setup>
@@ -26,7 +21,7 @@
 
 <style scoped lang="scss">
 
-.mst {
+.start {
   &_container {
     display: flex;
     gap: 16px;
@@ -44,23 +39,13 @@
     flex-direction: column;
     cursor: pointer;
     text-decoration: none !important;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 
     &:hover {
       box-shadow: 0 0 0 2px var(--vp-c-default-soft);
     }
-  }
-
-  &_icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    border-radius: 6px;
-    background-color: var(--vp-c-default-soft);
-    width: 48px;
-    height: 48px;
-    font-size: 24px;
-    transition: background-color .25s;
   }
 
   &_read {
@@ -77,9 +62,10 @@
     flex-grow: 1;
     padding-top: 8px;
     line-height: 24px;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--vp-c-text-2);
+    font-size: 18px;
+    font-weight: bold;
+    font-family: serif;
+    font-style: italic;
   }
 }
 

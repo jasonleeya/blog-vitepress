@@ -40,15 +40,18 @@ const sentenceList = ref([])
 const author = ref("")
 
 let timeout = null
+// hitokoto加载失败了就不再加载了
+let flag = false
 // 随机获取一句话
 const getSentence = () => Promise.race(
     [
-      new Promise((resolve) =>{
+      new Promise(async (resolve) => {
+        if (flag) return Promise.reject(null)
         return fetch("https://v1.hitokoto.cn?c=d&c=f&c=h&c=i&c=j&c=k").then((res) => res.json()).then(res => {
           resolve({from: res?.from || '', content: res?.hitokoto || ''})
-        })
+        }).catch(() => flag = true)
       }),
-      new Promise(resolve=>setTimeout(()=>{
+      new Promise(resolve => setTimeout(() => {
         fetch("https://api.xygeng.cn/one").then((res) => res.json()).then(res => {
           const data = res?.data || {}
           resolve({from: data.origin || '', content: data.content || ''})
@@ -91,22 +94,16 @@ onUnmounted(() => {
 
 
 const scrollToContent = () => {
-  // document.documentElement.scrollTo({
-  //   top: window.innerHeight - 63,
-  //   behavior: 'smooth'
-  // })
   window.scrollTo({
     top: window.innerHeight - 63,
     behavior: 'smooth'
   })
 }
 
+// 只要第一张图片加载出来了就不loading了
 const isLoading = ref(true)
-let i = 0
-const imgsLoading = (index:number) => {
-  if (index === 0) {
-    isLoading.value = false
-  }
+const firstImageLoaded = () => {
+  isLoading.value = false
 }
 setTimeout(() => {
   isLoading.value = false
@@ -116,12 +113,18 @@ const isMobile = useIsMobile()
 </script>
 
 <template>
-  <loading v-if="isLoading"></loading>
+  <loading v-model="isLoading"></loading>
+  <!-- 放循环里监听不知为什么onload总会慢一点，所以单独拿出来 -->
   <div class="hero">
-    <img v-for="(item,index) in bingImgList" :key="item.img.url"
-         :class="{current:currentImgIndex === index}"
-         :style="{'z-index':bingImgList.length - index}"
-         :src="item.isLoaded?item.img.url:''" alt="" class="img-bg" @load="imgsLoading(index)">
+    <img :key="bingImgList[0]?.img.url"
+         :class="{current:currentImgIndex === 0}"
+         :style="{'z-index':bingImgList.length}"
+         :src="bingImgList[0]?.isLoaded?bingImgList[0].img.url:''" alt="" class="img-bg" @load="firstImageLoaded">
+
+    <img v-for="(item,index) in bingImgList.slice(1)" :key="item.img.url"
+         :class="{current:currentImgIndex === index + 1}"
+         :style="{'z-index':bingImgList.length - index + 1}"
+         :src="item.isLoaded?item.img.url:''" alt="" class="img-bg">
     <div class="indicators">
       <div v-for="(item,index) in bingImgList" :key="item.img.url" :class="{current:index === currentImgIndex}"
            class="indicator" @click="changeImg(null,index)"></div>
@@ -220,24 +223,18 @@ const isMobile = useIsMobile()
     }
 
     .logo {
-      width: 200px;
+      height: 7vw;
       position: absolute;
       left: 50%;
-      top: 20%;
-      transform: translateX(-50%);
+      top: 50%;
+      transform: translate(-50%, -50%);
     }
 
-    @include mobile {
-      .logo {
-        width: 100px;
-        top: 30%;
-      }
-    }
 
     .sentence {
       position: absolute;
       left: 50%;
-      top: 50%;
+      top: calc(50% + 100px);
       transform: translateX(-50%);
       color: #fff;
       text-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
@@ -341,9 +338,20 @@ const isMobile = useIsMobile()
   }
 }
 
-@media screen and (max-width: 992px) {
+@include mobile {
+  .logo {
+    height: 12vw!important;
+  }
+}
+
+@include mobile {
   .sentence {
     width: 80%;
+    top: calc(50% + 40px)!important;
+
+    .sentence-text {
+      margin-top: 0;
+    }
   }
 }
 
