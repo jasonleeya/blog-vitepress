@@ -52,3 +52,15 @@ export function buildQueryString(params: { [key: string]: string }): string {
 export function getRandomNumber(min: number, max: number) {
   return Math.floor(Math.random() * (max - min)) + min
 }
+
+export function throttle(fn: Function, delay: number) {
+  let timer = null
+  return function () {
+    if (!timer) {
+      fn.apply(this, arguments)
+      timer = setTimeout(() => {
+        timer = null
+      }, delay)
+    }
+  }
+}

@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import {nextTick, onMounted, PropType, ref} from "vue";
+import {nextTick, PropType, ref} from "vue";
 
 const props = defineProps({
   imgUrl: {
@@ -84,12 +84,12 @@ const handleMouseMove = (e: any) => {
       shouldTransition.value = false
     }, 300)
   }
-  pointerX.value = event.clientX - cardLeft
-  pointerY.value = event.clientY - cardTop
+  pointerX.value = event.pageX - cardLeft
+  pointerY.value = event.pageY - cardTop
 
 
-  const posX = (event.clientX - cardLeft) - cardRef.value.offsetWidth / 2;
-  const posY = (event.clientY - cardTop) - cardRef.value.offsetHeight / 2
+  const posX = (event.pageX - cardLeft) - cardRef.value.offsetWidth / 2;
+  const posY = (event.pageY - cardTop) - cardRef.value.offsetHeight / 2
   rotateX.value = posY / 10
   rotateY.value = -posX / 10
 }
