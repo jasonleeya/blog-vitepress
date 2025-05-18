@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import IconLoading from "@icons/IconLoading.vue";
 import {PropType, ref, watch} from "vue";
 
 const isAnim = ref(true)
@@ -24,8 +23,10 @@ watch(() => props.modelValue, () => {
 
 <template>
   <div class="mask" :style="{display:isAnim?'flex':'none'}">
-    <div class="loading-wrapper" :style="{'max-width': modelValue?'30vw':'0'}"><span style="color:#fff">1</span>
-      <icon-loading class="loading-icon"></icon-loading>
+    <div class="loading-wrapper" :style="{'max-width': modelValue?'30vw':'0'}">
+      <!--      使用svg组件的话第一次进入页面不会显示-->
+      <!--      <icon-loading class="loading-icon"></icon-loading>-->
+      <img src="./icons/loading.svg" alt="" class="loading-icon">
     </div>
 
     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
@@ -74,19 +75,21 @@ watch(() => props.modelValue, () => {
   width: 100%;
   position: absolute;
 }
+
 @include mobile {
   .loading-icon {
-    width: 40vw!important;
-    min-width: 40vw!important;
+    width: 35vw !important;
+    min-width: 35vw !important;
   }
   .logo {
-    height: 12vw!important;
+    height: 12vw !important;
   }
 }
 
 #logo-left {
   transform-origin: center;
   transform: translate(-80%, 200px) rotate(-45deg);
+  opacity: 0;
 
   &.is-anim {
     animation: logo-l 0.4s linear;
@@ -96,39 +99,48 @@ watch(() => props.modelValue, () => {
 #logo-right {
   transform-origin: center;
   transform: translate(80%, -300px) rotate(-45deg);
+  opacity: 0;
 
   &.is-anim {
     animation: logo-r 0.4s linear;
   }
+
 }
 
 @keyframes logo-l {
   0% {
-    transform: translate(-80%, 200px) rotate(-45deg);
+    transform: translate(-90%, 200px) rotate(-45deg);
+    opacity: 0;
   }
   30% {
     transform: translate(0%, 200px) rotate(-45deg);
   }
   50% {
     transform: translate(0%, 200px) rotate(-45deg);
+    opacity: 1;
   }
   100% {
     transform: translate(0%, 0) rotate(0);
+    opacity: 1;
   }
 }
 
 @keyframes logo-r {
   0% {
-    transform: translate(80%, -300px) rotate(-45deg);
+    transform: translate(90%, -300px) rotate(-45deg);
+    opacity: 0;
   }
   30% {
     transform: translate(0%, -300px) rotate(-45deg);
+    opacity: 1;
   }
   50% {
     transform: translate(0%, -300px) rotate(-45deg);
+    opacity: 1;
   }
   100% {
     transform: translate(0%, 0) rotate(0);
+    opacity: 1;
   }
 }
 </style>

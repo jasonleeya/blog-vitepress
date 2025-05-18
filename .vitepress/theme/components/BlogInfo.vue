@@ -51,7 +51,7 @@ const copyText = (text: string) => {
             <img class="icon" :src="withBase(item.icon)" alt="">
           </template>
         </el-popover>
-        <el-link v-else type="primary" :href="item.link" target="_blank" :underline="false"><img class="icon" :src="withBase(item.icon)" alt=""></el-link>
+        <el-link v-else type="primary" :href="item.link" target="_blank" underline="never"><img class="icon" :src="withBase(item.icon)" alt=""></el-link>
 
       </div>
     </div>

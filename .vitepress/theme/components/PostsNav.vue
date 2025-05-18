@@ -150,7 +150,7 @@ const isMobile = useIsMobile()
           热门文章</div>
         <div class="hot-post-wrapper">
           <div v-for="(item,index) in hotList" :key="index" class="hot-post">
-            <el-link :href="item.path" class="hot-post-title" :underline="false">
+            <el-link :href="item.path" class="hot-post-title" underline="never">
               <span class="index">{{ index + 1 }}</span>
               <div :title="item.title" class="hot-post-title-text">{{ item.title }}</div>
             </el-link>

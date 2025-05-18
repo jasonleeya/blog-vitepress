@@ -36,7 +36,6 @@ const toggleInfoShow = () => {
             <ArrowRightBold/>
           </el-icon>
         </div>
-
       </div>
       <div class="description">{{ info?.locales.zh?.description }}</div>
       <div class="copyright"><span>{{ info?.locales.zh?.copyright }}</span>
