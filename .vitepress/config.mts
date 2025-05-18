@@ -149,12 +149,21 @@ export default defineConfig({
           replacement: fileURLToPath(
               new URL('./theme/components/vp-theme/SwitchAppearance.vue', import.meta.url)
           )
-        },
+        }
       ]
     }
   },
   markdown: {
     lineNumbers: true
   },
-  metaChunk:true
+  metaChunk:true,
+  srcExclude:[
+      '**/前端面试题合集/category/*.md',
+  ],
+  cleanUrls: true,
+  //开启重写刷新页面会404，sidebar会失效
+  // rewrites:{
+    // 'posts/:type/:category/index.md':':category/index.md', //sidebar会失效
+    // 'pages/demos.md':'/demos.md'
+  // }
 })
