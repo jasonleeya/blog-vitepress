@@ -49,7 +49,8 @@ interface BingImg {
 
 interface SidebarItem {
   text: string
-  link: string
+  collapsed?: boolean
+  link?: string
   items?: SidebarItem[]
 }
 

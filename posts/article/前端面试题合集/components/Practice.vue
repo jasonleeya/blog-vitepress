@@ -81,7 +81,7 @@ const handleLookAnswer = () => {
 
 .index {
   margin-left: -18px;
-  color: rgba(0,0,0,0.45);
+  color: var(--vp-c-text-3);
 }
 </style>
 <style>

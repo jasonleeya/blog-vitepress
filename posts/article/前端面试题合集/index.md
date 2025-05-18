@@ -53,9 +53,3 @@ AI 生成，内容仅供参考。
 - [面试鸭](https://www.mianshiya.com/)
 - [Type Challenges](https://github.com/type-challenges/type-challenges/blob/main/README.zh-CN.md)
 :::
-
-
-::: details ****
-
-
-:::

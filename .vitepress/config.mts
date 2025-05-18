@@ -10,19 +10,19 @@ const categoryInfo = [
     description: ''
   },
   {
-    type: 'category2',
+    type: 'note',
     name: '笔记',
     icon: '/images/categories/note.svg',
     description: ''
   },
   {
-    type: 'category1',
+    type: 'knowledge',
     name: '知识点',
     icon: '/images/categories/knowledge.svg',
     description: ''
   },
   {
-    type: 'category3',
+    type: 'life',
     name: '生活',
     icon: '/images/categories/lift.svg',
     description: ''
@@ -39,14 +39,21 @@ posts.forEach(post => {
 })
 categoryMap.forEach((value, key) => {
   sidebar.push({
-    text: categoryInfo.find(item => item.type === key)?.name,
-    collapsed: true,
+    text: key,
+    collapsed: false,
     items: value.map(post => ({
       text: post.title,
       link: post.path
     }))
   })
 })
+sidebar.push(...[{
+  text: '我的作品',
+  link:'/pages/demos'
+},{
+  text: '关于我',
+  link:'/intro/'
+}])
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -162,8 +169,8 @@ export default defineConfig({
   ],
   cleanUrls: true,
   //开启重写刷新页面会404，sidebar会失效
-  // rewrites:{
-    // 'posts/:type/:category/index.md':':category/index.md', //sidebar会失效
-    // 'pages/demos.md':'/demos.md'
-  // }
+  rewrites:{
+    'pages/demos.md':'/demos.md',
+    'posts/:type/:category/:page.md':':category/:page.md'
+  }
 })
