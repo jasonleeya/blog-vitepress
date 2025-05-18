@@ -49,10 +49,10 @@ categoryMap.forEach((value, key) => {
 })
 sidebar.push(...[{
   text: '我的作品',
-  link:'/pages/demos'
+  link:'/demos'
 },{
   text: '关于我',
-  link:'/intro/'
+  link:'/intro'
 }])
 
 // https://vitepress.dev/reference/site-config
@@ -74,7 +74,7 @@ export default defineConfig({
     avatar: 'https://q.qlogo.cn/g?b=qq&nk=1615685977&s=100',
     nav: [
       {text: '首页', link: '/'},
-      {text: '个人作品', link: '/pages/demos'},
+      {text: '个人作品', link: '/demos'},
       {text: '关于我', link: '/intro'},
     ],
     medias: [
@@ -168,9 +168,8 @@ export default defineConfig({
       '**/前端面试题合集/category/*.md',
   ],
   cleanUrls: true,
-  //开启重写刷新页面会404，sidebar会失效
   rewrites:{
-    'pages/demos.md':'/demos.md',
-    'posts/:type/:category/:page.md':':category/:page.md'
+    'pages/demos.md':'demos.md',
+    'posts/:type/:category/:page.md':':type/:category/:page.md'
   }
 })

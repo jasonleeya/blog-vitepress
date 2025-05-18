@@ -67,7 +67,7 @@ setTimeout(async () => {
   const bcr = cardRef.value?.getBoundingClientRect()
   cardLeft = bcr?.left
   cardTop = bcr?.top
-},500)
+},1000)
 
 const shouldTransition = ref(false)
 const handleMouseEnter = () => {
