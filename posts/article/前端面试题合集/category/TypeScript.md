@@ -5,7 +5,7 @@ order: 15
 <script setup>
 import NavHead from "../components/NavHead.vue";
 </script>
-<nav-head link="/posts/article/前端面试题合集/read.html">
+<nav-head link="/article/前端面试题合集/read.html">
 </nav-head>
 
 # TypeScript

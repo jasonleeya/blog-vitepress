@@ -5,7 +5,7 @@ order: 5
 <script setup>
 import NavHead from "../components/NavHead.vue";
 </script>
-<nav-head link="/posts/article/前端面试题合集/read.html">
+<nav-head link="/article/前端面试题合集/read.html">
 </nav-head>
 
 # React
@@ -3209,7 +3209,7 @@ React 的开发和生产构建版本在 componentDidCatch() 的方式上有轻�
 
 ## React Native 工作原理是什么？
 
-##  函数组件和 class 组件有什么区别？
+##  函数组件和 class 组件有什么区别，各有什么优缺点？
 
 ## 从 React 层面上， 能做的性能优化有哪些？
 

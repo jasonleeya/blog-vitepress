@@ -12,7 +12,7 @@
                      values="0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0"/>
     </filter>
   </svg>
-  <nav-head :link="isPracticing?'':'/posts/article/前端面试题合集'"
+  <nav-head :link="isPracticing?'':'/article/前端面试题合集'"
             @click="handleBack">
     <div class="tab-container" ref="containerRef" @wheel="handleWheel">
       <div class="item" v-for="item in categoryList" :key="item.category" :style="{order:item.order}"

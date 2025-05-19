@@ -20,7 +20,7 @@
 const props = defineProps({
   link : {
     type : String,
-    default : '/posts/article/前端面试题合集'
+    default : '/article/前端面试题合集'
   }
 })
 </script>
