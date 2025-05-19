@@ -2111,6 +2111,8 @@ for (const val of arr) {
 - **`for...of`**：遍历可迭代对象的值，简洁高效，推荐用于数组操作。
 - **关键区别**：前者遍历键，后者遍历值；前者兼容性更好，后者功能更专注。
 
+## for...await...of 有什么作用？
+
 ## 解释可选链操作符（?.）和空值合并运算符（??）
 
 可选链操作符（`?.`）和空值合并运算符（`??`）是 ES6 之后新增的两个实用语法，共同目标是简化代码中对空值（`null/undefined`）的安全处理，但侧重点不同。
@@ -2632,6 +2634,10 @@ requestIdleCallback((deadline) => {
 
 - `e.target`：**触发**事件的元素
 - `e.currentTarget`：**绑定**事件的元素
+
+## offsetHeight 和 scrollHeight 有什么区别？
+
+## HTMLCollection 和 NodeList 有什么区别？
 
 ## 说说 Web Worker
 
@@ -3324,6 +3330,10 @@ requestHandler({ url: '/api' });
 **9.更多**
 
 [25个你不得不知道的数组reduce高级用法](https://segmentfault.com/a/1190000021737914)
+
+
+
+## 函数修改形参，能否影响实参？
 
 ## 谈谈你对迭代器(Iterator)的认识
 
@@ -4293,6 +4303,8 @@ setTimeout(() => console.log("宏任务"), 0);
 1. **兼容旧浏览器的 `requestAnimationFrame`**
 
 在需要与浏览器渲染帧同步但缺乏 `requestAnimationFrame` 支持时，可用 `setTimeout(fn, 0)` 模拟（现代代码应优先使用 `requestAnimationFrame`）。
+
+## 如何深度优先和广度优先遍历 DOM 树？
 
 
 ## ["1", "2", "3"].map(parseInt) 答案是多少？
