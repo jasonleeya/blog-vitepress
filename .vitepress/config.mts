@@ -57,6 +57,7 @@ sidebar.push(...[{
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  lang: 'zh-CN',
   title: "JasonLee的技术分享",
   description: "欢迎来到我的技术分享小站",
   lastUpdated: true,

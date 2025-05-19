@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "vitepress dev",
     "docs:dev": "vitepress dev",
-    "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview",
-    "tcb:login": "tcb login",
-    "docs:deploy": "tcb framework deploy"
+    "build": "vitepress build",
+    "preview": "vitepress preview"
   },
   "author": "JasonLee",
   "license": "ISC",
