@@ -32,7 +32,7 @@ import DayNightSwitch from "@components/vp-theme/SwitchAppearance.vue";
 :::
 
 :::info 查看放大效果
-[dayNightSwitch](/demos?item=dayNightSwitch){target=_self}
+[dayNightSwitch](/demos?item=dayNightSwitch)
 :::
 
 ## 分析结构
