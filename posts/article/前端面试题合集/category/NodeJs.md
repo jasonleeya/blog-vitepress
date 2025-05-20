@@ -40,6 +40,8 @@ import NavHead from "../components/NavHead.vue";
 
 ## 解释 setImmediate 和 process.nextTick 的区别
 
+## process.nextTick 和 Promise.then 谁先执行？
+
 ## 如何实现并行和串行的异步操作？
 
 ## 请介绍 Node.js 中的事件驱动架构，它与传统线程模型有什么区别？
