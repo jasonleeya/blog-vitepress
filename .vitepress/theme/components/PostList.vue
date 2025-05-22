@@ -189,10 +189,12 @@ const loadList = () => {
 
   .content {
     display: flex;
+    max-width: 100vw;
+    overflow: hidden;
 
     .content-left {
-      flex: 1;
       margin-right: 10px;
+      width: calc(100% - 100px);
 
       .title {
         font-size: 18px;
