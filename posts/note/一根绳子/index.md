@@ -1,6 +1,7 @@
 ---
 category: 笔记
 tags:
+  - JavaScript
   - Canvas
 ---
 <script setup>
